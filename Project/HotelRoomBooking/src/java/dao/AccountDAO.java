@@ -15,129 +15,109 @@ import model.*;
  *
  * @author My PC
  */
-public class AccountDAO extends DBContext
-{
-    public List<Account> GetAccountList()
-    {
+public class AccountDAO extends DBContext {
+
+    public List<Account> GetAccountList() {
         String sql = "SELECT * FROM Account WHERE 1 = 1";
         List<Account> Accounts = new ArrayList<>();
-        
-        try
-        {
+
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            
-            while(rs.next()){
+
+            while (rs.next()) {
                 Account a = new Account();
                 a.setAccountID(rs.getInt("AccontID"));
                 a.setUsername(rs.getString("Username"));
                 a.setPassword(rs.getString("Password"));
                 a.setEmail(rs.getString("Email"));
                 a.setCreatedDate(rs.getDate("CreatedDate"));
-                
+
                 Accounts.add(a);
             }
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             System.out.println(ex);
         }
-        
+
         return Accounts;
     }
-    
-    public Account SearchAccount(String Username, String Email, String Password)
-    {
+
+    public Account SearchAccount(String Username, String Email, String Password) {
         String sql = "SELECT * FROM [Account] WHERE [Username] = " + Username + " AND [Email] = " + Email + " AND [Password] = " + Password;
         Account a = new Account();
-        
-        try
-        {
+
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            
-            while(rs.next())
-            {
+
+            while (rs.next()) {
                 a.setAccountID(rs.getInt("AccontID"));
                 a.setUsername(rs.getString("Username"));
                 a.setPassword(rs.getString("Password"));
                 a.setEmail(rs.getString("Email"));
                 a.setCreatedDate(rs.getDate("CreatedDate"));
             }
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             System.out.println(ex);
         }
-        
+
         return a;
     }
-    
-    public void Add(Account a)
-    {
-        if(ValidateEmail(a) && ValidateUsername(a))
-        {
+
+    public void Add(Account a) {
+        if (ValidateEmail(a) && ValidateUsername(a)) {
             String SQL = "INSERT INTO [dbo].[Account]([Username], [Email], [Password], [CreatedDate]) "
-                       + "VALUES (?, ?, ?, ?)";
-            
-            try
-            {
+                    + "VALUES (?, ?, ?, ?)";
+
+            try {
                 PreparedStatement st = connection.prepareStatement(SQL);
                 st.setString(1, a.getUsername());
                 st.setString(2, a.getEmail());
                 st.setString(3, a.getPassword());
                 st.setDate(4, a.getCreatedDate());
-                
+
                 st.executeUpdate();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println(e.toString());
             }
         }
     }
-    
-    private boolean ValidateEmail(Account a)
-    {
+
+    private boolean ValidateEmail(Account a) {
         String sql = "SELECT * FROM [dbo].[Account] WHERE Email = " + a.getEmail();
-        
-        try
-        {
+
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
-            
+
             ResultSet rs = st.executeQuery();
-            
-            if(rs.next())//check xem neu co account dung trung email
+
+            if (rs.next())//check xem neu co account dung trung email
             {
                 return false;
             }
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex);
         }
-        
+
         return true;
     }
-    
-    private boolean ValidateUsername(Account a)
-    {
+
+    private boolean ValidateUsername(Account a) {
         String sql = "SELECT * FROM [dbo].[Account] WHERE Username = " + a.getUsername();
-        
-        try
-        {
+
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
-            
+
             ResultSet rs = st.executeQuery();
-            
-            if(rs.next())//check xem neu co account dung trung username
+
+            if (rs.next())//check xem neu co account dung trung username
             {
                 return false;
             }
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex);
         }
-        
+
         return true;
     }
 }
