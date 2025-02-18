@@ -95,54 +95,56 @@
             </div>
         </header>
 
-        <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
-    <div class="card p-4 shadow-lg">
-        <div class="profile-header text-center">
-            <img src="img/default-avatar.png" class="rounded-circle profile-img" width="120">
-            <h3 class="mt-3"><%= user.getUsername() %></h3>
-            <p class="text-muted">Email: <%= user.getEmail() %></p>
-        </div>
+        <form id="addRoomForm" action="AddRoomServlet" method="post" onsubmit="return validateForm()">
+            <div class="formbold-input-group">
+                <label class="formbold-form-label">Room Name</label>
+                <input type="text" name="roomName" id="roomName" placeholder="Enter room name" class="formbold-form-input" required>
+                <span class="error-message" id="roomNameError"></span>
+            </div>
 
-        <!-- Bảng thông tin người dùng -->
-        <div class="profile-details mt-4">
-            <table class="table table-striped">
-                <tbody>
-                    <tr>
-                        <th scope="row">Full Name</th>
-                        <td><%= profile != null ? profile.getName() : "N/A" %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Phone</th>
-                        <td><%= profile != null ? profile.getPhoneNumber() : "N/A" %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Gender</th>
-                        <td><%= profile != null ? profile.getGender() : "N/A" %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Role</th>
-                        <td><%= profile != null ? profile.getRole() : "N/A" %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Address</th>
-                        <td><%= profile != null ? profile.getAddress() : "N/A" %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Account Created Date</th>
-                        <td><%= user.getCreatedDate() %></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <div class="formbold-input-group">
+                <label class="formbold-form-label">Description</label>
+                <textarea name="description" id="description" placeholder="Enter room description" class="formbold-form-input" rows="3"></textarea>
+                <span class="error-message" id="descriptionError"></span>
+            </div>
 
-        <!-- Nút Edit Profile -->
-        <div class="text-center mt-3">
-            <button class="btn btn-primary btn-lg">Edit Profile</button>
-        </div>
-    </div>
-</div>
+            <div class="formbold-input-group">
+                <label class="formbold-form-label">Price</label>
+                <input type="text" name="price" id="price" placeholder="Enter price" class="formbold-form-input" required>
+                <span class="error-message" id="priceError"></span>
+            </div>
 
-        
+            <div class="formbold-input-group">
+                <label class="formbold-form-label">Room Type</label>
+                <select name="type" id="type" class="formbold-form-select" required>
+                    <option value="">Select Room Type</option>
+                    <option value="single">Single</option>
+                    <option value="double">Double</option>
+                    <option value="suite">Suite</option>
+                </select>
+                <span class="error-message" id="typeError"></span>
+            </div>
+
+            <div class="formbold-input-group">
+                <label class="formbold-form-label">Status</label>
+                <select name="status" id="status" class="formbold-form-select" required>
+                    <option value="">Select Status</option>
+                    <option value="available">Available</option>
+                    <option value="occupied">Occupied</option>
+                    <option value="maintenance">Maintenance</option>
+                </select>
+                <span class="error-message" id="statusError"></span>
+            </div>
+
+            <div class="formbold-input-group">
+                <label class="formbold-form-label">Upload Image</label>
+                <input type="file" name="roomImage" class="formbold-form-input">
+            </div>
+
+            <button class="formbold-btn">Submit</button>
+        </form>
+
+
         <footer class="footer-section">
             <div class="container">
                 <div class="footer-text">

@@ -1,101 +1,79 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-import java.awt.Image;
-
-/**
- *
- * @author My PC
- */
 public class Room {
-    private int RoomID;
-    private String RoomName;
-    private String Description;
-    private double Price;
-    private String Image;
-    private int StatusID;
-    private int TypeID;
+    private int roomID;
+    private String roomName;
+    private String description;
+    private double price;
+    private String image;
+    private String statusRoom;
+    private String typeRoom;
 
-    public Room() {
+    // Constructor
+    public Room(int roomID, String roomName, String description, double price, String image, String statusRoom, String typeRoom) {
+        this.roomID = roomID;
+        this.roomName = roomName;
+        this.description = description;
+        this.price = price;
+        this.image = image;
+        this.statusRoom = statusRoom;
+        this.typeRoom = typeRoom;
     }
 
-    public Room(int RoomID, String RoomName, String Description, double Price, String Image, int StatusID, int TypeID) {
-        this.RoomID = RoomID;
-        this.RoomName = RoomName;
-        this.Description = Description;
-        this.Price = Price;
-        this.Image = Image;
-        this.StatusID = StatusID;
-        this.TypeID = TypeID;
-    }
-    
-    public Room(String RoomName, String Description, double Price, String Image, int StatusID, int TypeID) {
-        this.RoomName = RoomName;
-        this.Description = Description;
-        this.Price = Price;
-        this.Image = Image;
-        this.StatusID = StatusID;
-        this.TypeID = TypeID;
-    }
-
+    // Getters and Setters
     public int getRoomID() {
-        return RoomID;
+        return roomID;
     }
 
-    public void setRoomID(int RoomID) {
-        this.RoomID = RoomID;
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
     }
 
     public String getRoomName() {
-        return RoomName;
+        return roomName;
     }
 
-    public void setRoomName(String RoomName) {
-        this.RoomName = RoomName;
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
-    public void setDescription(String Description) {
-        this.Description = Description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getPrice() {
-        return Price;
+        return price;
     }
 
-    public void setPrice(double Price) {
-        this.Price = Price;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public String getImage() {
-        return Image;
+        return image;
     }
 
-    public void setImage(String Image) {
-        this.Image = Image;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public int getStatusID() {
-        return StatusID;
+    public String getStatusRoom() {
+        return statusRoom;
     }
 
-    public void setStatusID(int StatusID) {
-        this.StatusID = StatusID;
+    public void setStatusRoom(String statusRoom) {
+        this.statusRoom = statusRoom;
     }
 
-    public int getTypeID() {
-        return TypeID;
+    public String getTypeRoom() {
+        return typeRoom;
     }
 
-    public void setTypeID(int TypeID) {
-        this.TypeID = TypeID;
+    public void setTypeRoom(String typeRoom) {
+        this.typeRoom = typeRoom;
     }
-    
-    
 }

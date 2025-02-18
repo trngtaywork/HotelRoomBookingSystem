@@ -8,6 +8,17 @@
         <servlet-name>ProfileServlet</servlet-name>
         <servlet-class>servlet.ProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddRoomServlet</servlet-name>
+        <servlet-class>servlet.AddRoomServlet</servlet-class>
+        <multipart-config>
+            <max-file-size>10485760</max-file-size> <!-- 10 MB -->
+            <max-request-size>20971520</max-request-size> <!-- 20 MB -->
+            <file-size-threshold>0</file-size-threshold>
+        </multipart-config>
+    </servlet>
+
+
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -15,6 +26,10 @@
     <servlet-mapping>
         <servlet-name>ProfileServlet</servlet-name>
         <url-pattern>/ProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddRoomServlet</servlet-name>
+        <url-pattern>/AddRoomServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
