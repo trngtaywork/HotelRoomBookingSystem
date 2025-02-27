@@ -2,6 +2,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 <%@ page import="model.Account" %>
+<%@ page import="dao.RoomDAO" %>
+<%@ page import="model.Room" %>
+
 <%
     HttpSession sessionUser = request.getSession(false);
     Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
@@ -9,7 +12,12 @@
         response.sendRedirect("login.jsp");
         return;
     }
+
+    // Fetch all rooms
+    RoomDAO roomDAO = new RoomDAO();
+    List<Room> roomList = roomDAO.getAll();
 %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,11 +27,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-        <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700&display=swap" rel="stylesheet">
-
-        <!-- Css Styles -->
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
         <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
         <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
@@ -34,8 +39,7 @@
         <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
-        <link rel="stylesheet" href="css/profile.css" type="text/css">
-
+        <link rel="stylesheet" href="css/room.css" type="text/css">
 
         <style>
             .header-section {
@@ -50,20 +54,27 @@
             body {
                 padding-top: 80px;
             }
-            .btn-custom {
+            .btn-custom1 {
                 height: 70px;
-                width: 160px;
+                width: 240px;
                 border-radius: 5%;
                 background-color: black;
                 color: white;
                 border: 1px solid black;
                 padding-left: 5px;
-                margin: 3px;
+            }
+            .btn-custom {
+                height: 30px;
+                width: 70px;
+                border-radius: 5%;
+                background-color: black;
+                color: white;
+                border: 1px solid black;
+                padding-left: 5px;
             }
         </style>
 
-        <title>Profile</title>
-        <link rel="stylesheet" href="css/profile.css">
+        <title>Room List For Admin</title>
     </head>
     <body>
         <header class="header-section">
@@ -84,14 +95,7 @@
                                         <li class="active"><a href="./index.html">Home</a></li>
                                         <li><a href="RoomList">Rooms</a></li>
                                         <li><a href="./about-us.html">About Us</a></li>
-                                        <li><a href="./pages.html">Pages</a>
-                                            <ul class="dropdown">
-                                                <li><a href="./room-details.html">Room Details</a></li>
-                                                <li><a href="./blog-details.html">Blog Details</a></li>
-                                                <li><a href="#">Family Room</a></li>
-                                                <li><a href="#">Premium Room</a></li>
-                                            </ul>
-                                        </li>
+                                        <li><a href="./pages.html">Pages</a></li>
                                         <li><a href="./blog.html">News</a></li>
                                         <li><a href="./contact.html">Contact</a></li>
                                     </ul>
@@ -106,60 +110,64 @@
             </div>
         </header>
 
-        <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
-            <div class="card p-4">
-                <div class="image d-flex flex-column justify-content-center align-items-center">
-                    <h4 class="mt-3"><%= user.getUsername() %></h4>
-                    <table class="table table-bordered mt-3">
-                        <tr>
-                            <th>Email</th>
-                            <td><%= user.getEmail() %></td>
-                        </tr>
-                        <%
-                            dao.AccountDAO accountDAO = new dao.AccountDAO();
-                            model.Profile profile = accountDAO.getProfileByAccountId(user.getAccountID());
-                            if (profile != null) {
-                        %>
-                        <tr>
-                            <th>Full Name</th>
-                            <td><%= profile.getName() %></td>
-                        </tr>
-                        <tr>
-                            <th>Phone</th>
-                            <td><%= profile.getPhoneNumber() %></td>
-                        </tr>
-                        <tr>
-                            <th>Gender</th>
-                            <td><%= profile.getGender() %></td>
-                        </tr>
-                        <tr>
-                            <th>Role</th>
-                            <td><%= profile.getRole() %></td>
-                        </tr>
-                        <tr>
-                            <th>Address</th>
-                            <td><%= profile.getAddress() %></td>
-                        </tr>
-                        <% } else { %>
-                        <tr>
-                            <td colspan="2" class="text-danger text-center">Profile information not available.</td>
-                        </tr>
-                        <% } %>
-                        <tr>
-                            <th>Account Created Date</th>
-                            <td><%= user.getCreatedDate() %></td>
-                        </tr>
-                    </table>
-                    <div class="d-flex mt-2">
-                        <button class="btn-custom btn-primary me-3 px-4 py-2" onclick="window.location.href = 'editProfile.jsp'">Edit Profile</button>
-                        <button class="btn-custom btn-danger px-4 py-2" onclick="window.location.href = 'changePassword.jsp'">Change Password</button>
-                    </div>
-                </div>
+        <!-- Room List Table -->
+        <div class="container mt-4 mb-4 p-3">
+            <%
+    HttpSession session = request.getSession(false);
+    String successMessage = (session != null) ? (String) session.getAttribute("successMessage") : null;
+    if (successMessage != null) {
+        session.removeAttribute("successMessage"); // Clear the message after displaying
+            %>
+            <div class="alert alert-success">
+                <%= successMessage %>
             </div>
+            <% } %>
+            <h3>Room List For Admin</h3>
+            <button class="btn-custom1 btn-primary" onclick="window.location.href = 'addRoom.jsp'">Add New Room</button>
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Room Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Status Room</th>
+                        <th>Type Room</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% 
+                        if (roomList != null && !roomList.isEmpty()) {
+                            for (Room room : roomList) { 
+                    %>
+                    <tr>
+                        <td><%= room.getRoomID() %></td>
+                        <td><img src="<%= request.getContextPath() + room.getImage() %>" width="100" height="100"></td>
+                        <td><%= room.getRoomName() %></td>
+                        <td><%= room.getDescription() %></td>
+                        <td><%= room.getPrice() %></td>
+                        <td><%= room.getStatusRoom() %></td>
+                        <td><%= room.getTypeRoom() %></td>
+                        <td>
+                            <button class="btn-custom btn-primary" onclick="window.location.href = 'editRoom.jsp?roomID=<%= room.getRoomID() %>'">Edit</button>
+                            <button class="btn-custom btn-danger" onclick="window.location.href = 'deleteRoom.jsp?roomID=<%= room.getRoomID() %>'">Delete</button>
+                        </td>
+                    </tr>
+                    <% 
+                            }
+                        } else {
+                    %>
+                    <tr>
+                        <td colspan="8" class="text-center">No rooms available</td>
+                    </tr>
+                    <% 
+                        }
+                    %>
+                </tbody>
+            </table>
         </div>
-
-
-
 
         <footer class="footer-section">
             <div class="container">
@@ -172,22 +180,23 @@
                                         <img src="img/footer-logo.png" alt="">
                                     </a>
                                 </div>
-                                <p>We inspire and reach millions of travelers<br /> across 90 local websites</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 offset-lg-1">
-                            <div class="ft-contact">
-                                <h6>Contact Us</h6>
-                                <ul>
-                                    <li>(12) 345 67890</li>
-                                    <li>hotelroombooking@gmail.com</li>
-                                    <li>856 Cordia Extension Apt. 356, Lake, United State</li>
-                                </ul>
+                                <p>We inspire and reach millions of travelers across 90 local websites</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </footer>
-    </body>
+
+        <script>
+            <script>
+function deleteRoom(roomID) {
+                    if (confirm("Are you sure you want to delete this room?")) {
+            window.location.href = "DeleteRoomServlet?roomID=" + roomID;
+            }
+            ;
+        };
+    </script>
+    </script>
+</body>
 </html>

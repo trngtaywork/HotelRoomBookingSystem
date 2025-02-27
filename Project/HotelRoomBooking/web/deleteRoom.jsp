@@ -1,15 +1,25 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
-<%@ page import="model.Account" %>
+<%@ page import="dao.RoomDAO" %>
+<%@ page import="model.Room" %>
+
 <%
-    HttpSession sessionUser = request.getSession(false);
-    Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
-    if (user == null) {
-        response.sendRedirect("login.jsp");
+    String roomIDStr = request.getParameter("roomID");
+    if (roomIDStr == null || roomIDStr.isEmpty()) {
+        response.sendRedirect("RoomListForAdmin.jsp");
+        return;
+    }
+
+    int roomID = Integer.parseInt(roomIDStr);
+    RoomDAO roomDAO = new RoomDAO();
+    Room room = roomDAO.getRoomById(roomID);
+
+    if (room == null) {
+        response.sendRedirect("RoomListForAdmin.jsp");
         return;
     }
 %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -34,7 +44,6 @@
         <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
-        <link rel="stylesheet" href="css/profile.css" type="text/css">
 
 
         <style>
@@ -52,20 +61,19 @@
             }
             .btn-custom {
                 height: 70px;
-                width: 160px;
+                width: 140px;
                 border-radius: 5%;
                 background-color: black;
                 color: white;
                 border: 1px solid black;
                 padding-left: 5px;
-                margin: 3px;
             }
         </style>
 
         <title>Profile</title>
         <link rel="stylesheet" href="css/profile.css">
     </head>
-    <body>
+    <body style="background-color: #ffffff;">
         <header class="header-section">
             <div class="menu-item">
                 <div class="container">
@@ -106,60 +114,47 @@
             </div>
         </header>
 
-        <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
-            <div class="card p-4">
-                <div class="image d-flex flex-column justify-content-center align-items-center">
-                    <h4 class="mt-3"><%= user.getUsername() %></h4>
-                    <table class="table table-bordered mt-3">
-                        <tr>
-                            <th>Email</th>
-                            <td><%= user.getEmail() %></td>
-                        </tr>
-                        <%
-                            dao.AccountDAO accountDAO = new dao.AccountDAO();
-                            model.Profile profile = accountDAO.getProfileByAccountId(user.getAccountID());
-                            if (profile != null) {
-                        %>
-                        <tr>
-                            <th>Full Name</th>
-                            <td><%= profile.getName() %></td>
-                        </tr>
-                        <tr>
-                            <th>Phone</th>
-                            <td><%= profile.getPhoneNumber() %></td>
-                        </tr>
-                        <tr>
-                            <th>Gender</th>
-                            <td><%= profile.getGender() %></td>
-                        </tr>
-                        <tr>
-                            <th>Role</th>
-                            <td><%= profile.getRole() %></td>
-                        </tr>
-                        <tr>
-                            <th>Address</th>
-                            <td><%= profile.getAddress() %></td>
-                        </tr>
-                        <% } else { %>
-                        <tr>
-                            <td colspan="2" class="text-danger text-center">Profile information not available.</td>
-                        </tr>
-                        <% } %>
-                        <tr>
-                            <th>Account Created Date</th>
-                            <td><%= user.getCreatedDate() %></td>
-                        </tr>
-                    </table>
-                    <div class="d-flex mt-2">
-                        <button class="btn-custom btn-primary me-3 px-4 py-2" onclick="window.location.href = 'editProfile.jsp'">Edit Profile</button>
-                        <button class="btn-custom btn-danger px-4 py-2" onclick="window.location.href = 'changePassword.jsp'">Change Password</button>
-                    </div>
-                </div>
-            </div>
+        <div class="container mt-4 mb-4">
+            <h3>Are you sure you want to delete this room?</h3>
+            <table class="table table-bordered mt-3">
+                <tr>
+                    <th>ID</th>
+                    <td><%= room.getRoomID() %></td>
+                </tr>
+                <tr>
+                    <th>Image</th>
+                    <td>
+                        <img src="<%= request.getContextPath() + room.getImage() %>" alt="Room Image" width="200" height="150">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Room Name</th>
+                    <td><%= room.getRoomName() %></td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td><%= room.getDescription() %></td>
+                </tr>
+                <tr>
+                    <th>Price</th>
+                    <td><%= room.getPrice() %></td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td><%= room.getStatusRoom() %></td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td><%= room.getTypeRoom() %></td>
+                </tr>
+            </table>
+
+            <form action="DeleteRoomServlet" method="post">
+                <input type="hidden" name="roomID" value="<%= room.getRoomID() %>">
+                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                <a href="RoomListForAdmin.jsp" class="btn btn-secondary">Cancel</a>
+            </form>
         </div>
-
-
-
 
         <footer class="footer-section">
             <div class="container">

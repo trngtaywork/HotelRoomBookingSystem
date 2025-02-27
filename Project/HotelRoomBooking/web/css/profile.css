@@ -24,9 +24,9 @@ body {
 }
 
 .btn {
-    height: 140px;
+    height: 40px;
     width: 140px;
-    border-radius: 50%;
+    border-radius: 0%;
 }
 
 .name {
