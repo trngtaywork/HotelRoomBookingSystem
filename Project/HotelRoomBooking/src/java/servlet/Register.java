@@ -24,7 +24,7 @@ public class Register extends HttpServlet {
 
     AccountDAO accountDAO = new AccountDAO();
     ProfileDAO profileDAO = new ProfileDAO();
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -65,24 +65,37 @@ public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String Username = request.getParameter("username");
-        String Email = request.getParameter("email");
-        String Password = request.getParameter("password");
+        String username = request.getParameter("username");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
         Date temp = new Date();
-        java.sql.Date CreatedDate = new java.sql.Date(temp.getTime());//get current date
+        java.sql.Date createdDate = new java.sql.Date(temp.getTime());//get current date
+
+        String fullName = request.getParameter("fullName");
+        String phone = request.getParameter("phoneNumber");
+        String gender = request.getParameter("gender");
+        String role = request.getParameter("role");
+        String address = request.getParameter("address");
         
-        /*
-        String Name = request.getParameter("name");
-        String PhoneNumber = request.getParameter("phoneNumber");
-        String Gender = request.getParameter("gender");
-        String Role = request.getParameter("role");
-        String Address = request.getParameter("address");
-        */
+        if(checkInputEmpty(username, email, password, fullName, phone, gender, role, address)){
+            request.setAttribute("error", "Invalid input");
+            request.getRequestDispatcher("Register.jsp").forward(request, response);
+        }
         
-        Account account = new Account(Username, Email, Password, CreatedDate);
+        Account account = new Account(username, email, password, createdDate);
         //Profile profile = new Profile();
-        
-        accountDAO.Add(account);
+
+        if(accountDAO.ValidateInput(account))//validate
+        {
+            accountDAO.Add(account);
+            Account added = accountDAO.SearchAccount(account.getUsername(), account.getEmail(), account.getPassword());
+            
+            profileDAO.Add(new Profile(fullName, phone, gender, role, address, added.getAccountID()));
+        }
+        else{
+            request.getRequestDispatcher("Register.jsp").forward(request, response);
+        }
+        request.getRequestDispatcher("RoomList").forward(request, response);
         //account added but not profile
         /*if(!((Name.equals(null) || Name.isBlank()) &&
            (PhoneNumber.equals(null) || PhoneNumber.isBlank()) &&
@@ -109,8 +122,8 @@ public class Register extends HttpServlet {
         else{
             request.getRequestDispatcher("Register.jsp").forward(request, response);
         }*/
-        
-        request.getRequestDispatcher("RoomList").forward(request, response);
+
+        //request.getRequestDispatcher("RoomList").forward(request, response);
     }
 
     /**
@@ -123,4 +136,7 @@ public class Register extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private boolean checkInputEmpty(String username, String email, String password, String fullName, String phone, String gender, String role, String address){
+        return username.isBlank() || email.isBlank() || password.isBlank() || fullName.isBlank() || phone.isBlank() || !phone.matches("[0-9]+") || gender.isBlank() || role.isBlank() || address.isBlank();
+    }
 }

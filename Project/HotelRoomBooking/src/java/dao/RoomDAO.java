@@ -16,27 +16,24 @@ import model.*;
  *
  * @author My PC
  */
-public class RoomDAO extends DBContext
-{
-    public List<Room> GetRoomList()
-    {
+public class RoomDAO extends DBContext {
+
+    public List<Room> GetRoomList() {
         String sql = """
                      SELECT [RoomID]
                      ,[RoomName]
                      ,[Description]
                      ,[Price]
                      ,[Image]
-                     ,[StatusID]
-                     ,[TypeID]
+                     ,[Status]
+                     ,[Type]
                      FROM [dbo].[Room] WHERE 1 = 1""";
         List<Room> Rooms = new ArrayList<>();
-        
-        try
-        {
+
+        try {
             ResultSet rs = getData(sql);
-            
-            while(rs.next())
-            {
+
+            while (rs.next()) {
                 Room r = new Room();
                 r.setRoomID(rs.getInt("RoomID"));
                 r.setRoomName(rs.getString("RoomName"));
@@ -45,41 +42,36 @@ public class RoomDAO extends DBContext
                 r.setPrice(rs.getDouble("Price"));
                 String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
                 r.setImage(imageTemp.isBlank() ? "" : imageTemp);////
-                r.setStatusID(rs.getInt("StatusID"));
-                r.setTypeID(rs.getInt("TypeID"));
-                
+                r.setStatus(rs.getString("Status"));
+                r.setType(rs.getString("Type"));
+
                 Rooms.add(r);
             }
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             System.out.println(ex);
         }
-        
+
         return Rooms;
     }
-    
-    public Room SearchRoomByID(int RoomID)
-    {
+
+    public Room SearchRoomByID(int RoomID) {
         String sql = """
                      SELECT [RoomID]
                      ,[RoomName]
                      ,[Description]
                      ,[Price]
                      ,[Image]
-                     ,[StatusID]
-                     ,[TypeID]
+                     ,[Status]
+                     ,[Type]
                      FROM [dbo].[Room] WHERE [RoomID] = """ + RoomID;
-        
-        try
-        {
+
+        try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            
-            if(rs.next())
-            {
+
+            if (rs.next()) {
                 Room r = new Room();
-                
+
                 r.setRoomID(rs.getInt("RoomID"));
                 r.setRoomName(rs.getString("RoomName"));
                 String desTemp = rs.getString("Description") == null ? "" : rs.getString("Description");
@@ -87,21 +79,17 @@ public class RoomDAO extends DBContext
                 r.setPrice(rs.getDouble("Price"));
                 String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
                 r.setImage(imageTemp.isBlank() ? "" : imageTemp);////
-                r.setStatusID(rs.getInt("StatusID"));
-                r.setTypeID(rs.getInt("TypeID"));
-                
+                r.setStatus(rs.getString("Status"));
+                r.setType(rs.getString("Type"));
+
                 return r;
-            }
-            else
-            {
+            } else {
                 return null;
             }
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             System.out.println(ex);
         }
-        
+
         return null;
     }
 }

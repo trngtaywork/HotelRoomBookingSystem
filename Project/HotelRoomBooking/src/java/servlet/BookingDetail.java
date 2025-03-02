@@ -4,6 +4,7 @@
  */
 package servlet;
 
+import dao.BookingDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,19 +12,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 import model.*;
-import dao.*;
 
 /**
  *
  * @author My PC
  */
-@WebServlet(name = "RoomList", urlPatterns = {"/RoomList"})
-public class RoomList extends HttpServlet {
-
-    RoomDAO roomDAO = new RoomDAO();
-
+@WebServlet(name = "BookingDetail", urlPatterns = {"/BookingDetail"})
+public class BookingDetail extends HttpServlet {
+    BookingDAO bookingDAO = new BookingDAO();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,10 +33,16 @@ public class RoomList extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Room> RoomList = roomDAO.GetRoomList();
-        request.setAttribute("roomList", RoomList);
+        var bookingID = request.getParameter("bookingID");
 
-        request.getRequestDispatcher("RoomList.jsp").forward(request, response);
+        if (bookingID == null || bookingID.length() == 0) {
+            request.getRequestDispatcher("BookingList.jsp").forward(request, response);
+        } else {
+            Booking booking = bookingDAO.SearchBooking(Integer.parseInt(bookingID));
+
+            request.setAttribute("booking", booking);
+            request.getRequestDispatcher("BookingDetail.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

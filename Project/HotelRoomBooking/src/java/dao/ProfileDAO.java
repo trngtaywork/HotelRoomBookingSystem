@@ -13,17 +13,14 @@ import utils.DBContext;
  *
  * @author My PC
  */
-public class ProfileDAO extends DBContext
-{
-    public void Add(Profile p)
-    {
-        if(Validate(p))
-        {
+public class ProfileDAO extends DBContext {
+
+    public void Add(Profile p) {
+        if (Validate(p)) {
             String SQL = "INSERT INTO [dbo].[Profile]([Name], [PhoneNumber], [Gender], [Role], [Address], [AccountID]) "
-                       + "VALUES (?, ?, ?, ?, ?, ?)";
-            
-            try
-            {
+                    + "VALUES (?, ?, ?, ?, ?, ?)";
+
+            try {
                 PreparedStatement st = connection.prepareStatement(SQL);
                 st.setString(1, p.getName());
                 st.setString(2, p.getPhoneNumber());
@@ -31,43 +28,48 @@ public class ProfileDAO extends DBContext
                 st.setString(4, p.getRole());
                 st.setString(5, p.getAddress());
                 st.setInt(6, p.getAccountID());
-                
+
                 st.executeUpdate();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println(e.toString());
             }
         }
     }
-    
-    private boolean Validate(Profile p)
-    {
+
+    private boolean Validate(Profile p) {
         String sql1 = "SELECT * FROM [dbo].[Profile] WHERE AccountID = " + p.getAccountID();
         String sql2 = "SELECT * FROM [dbo].[Account] WHERE AccountID = " + p.getAccountID();
-        
-        try
-        {
+
+        try {
             PreparedStatement st1 = connection.prepareStatement(sql1);
             PreparedStatement st2 = connection.prepareStatement(sql2);
-            
+
             ResultSet rs1 = st1.executeQuery();
             ResultSet rs2 = st2.executeQuery();
+
+            if(rs1 == null || rs2 == null)
+                return false;
             
-            if(rs1.next())//check xem neu co profile dung trung account
+            if (rs1.next())//check xem neu co profile dung trung account
+            {
+                int size = 0;
+                if (rs1 != null) {
+                    rs1.last();
+                    size = rs1.getRow();
+                }
+                
+                if(size > 1)
+                    return false;
+            }
+
+            if (!rs2.next())//check account exsist
             {
                 return false;
             }
-            
-            if(!rs2.next())//check account exsist
-            {
-                return false;
-            }
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex);
         }
-        
+
         return true;
     }
 }

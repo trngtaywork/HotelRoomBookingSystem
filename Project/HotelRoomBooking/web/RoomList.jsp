@@ -34,18 +34,18 @@
         <header>
             <jsp:include page="header.html"></jsp:include>
             </header>
-            <!--
-        <c:forEach items="${requestScope.roomList}" var="r">
-            Room Name: <p>${r.getRoomName()}</p><br>
-            Description: <P>${r.getDescription()}</P><br>
-            Price <P>${r.getPrice()}</P><br>
-            Image: <P>${r.getImage()}</P><br>
-            Type: <P>${r.getTypeID()}</P><br>
-            Status: <P>${r.getStatusID()}</P><br>
-            <a href="RoomDetail?roomID=${r.getRoomID()}">Details</a><br>
-            <br>
-        </c:forEach>
-        -->
+        <%--
+    <c:forEach items="${requestScope.roomList}" var="r">
+        Room Name: <p>${r.getRoomName()}</p><br>
+        Description: <P>${r.getDescription()}</P><br>
+        Price <P>${r.getPrice()}</P><br>
+        Image: <P>${r.getImage()}</P><br>
+        Type: <P>${r.getTypeID()}</P><br>
+        Status: <P>${r.getStatusID()}</P><br>
+        <a href="RoomDetail?roomID=${r.getRoomID()}">Details</a><br>
+        <br>
+    </c:forEach>
+        --%>
 
         <section class="rooms-section spad">
             <div class="container">
@@ -61,21 +61,11 @@
                                         <tbody>
                                             <tr>
                                                 <td class="r-o">Type:</td>
-                                                <c:forEach items="${requestScope.typeList}" var="t">
-                                                    <c:if test="${r.getTypeID() == t.getTypeID()}">
-                                                        <td>${t.getTypeName()}</td>
-                                                    </c:if>
-                                                </c:forEach>
-                                                <!--<td>${r.getTypeID()}</td>-->
+                                                <td>${r.getType()}</td>
                                             </tr>
                                             <tr>
                                                 <td class="r-o">Status:</td>
-                                                <c:forEach items="${requestScope.statusList}" var="s">
-                                                    <c:if test="${r.getStatusID() == s.getStatusID()}">
-                                                        <td>${s.getStatusName()}</td>
-                                                    </c:if>
-                                                </c:forEach>
-                                                <!--<td>${r.getStatusID()}</td>-->
+                                                <td>${r.getStatus()}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -87,6 +77,7 @@
                 </div>
             </div>
         </section>
+        
         <footer>
             <jsp:include page="footer.html"></jsp:include>
         </footer>

@@ -12,6 +12,7 @@ import java.sql.Date;
  * @author My PC
  */
 public class Account {
+
     private int AccountID;
     private String Username;
     private String Email;
@@ -28,7 +29,7 @@ public class Account {
         this.Password = Password;
         this.CreatedDate = CreatedDate;
     }
-    
+
     public Account(String Username, String Email, String Password, Date CreatedDate) {
         this.Username = Username;
         this.Email = Email;
@@ -75,6 +76,5 @@ public class Account {
     public void setCreatedDate(Date CreatedDate) {
         this.CreatedDate = CreatedDate;
     }
-    
-    
+
 }

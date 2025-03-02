@@ -11,34 +11,35 @@ import java.awt.Image;
  * @author My PC
  */
 public class Room {
+
     private int RoomID;
     private String RoomName;
     private String Description;
     private double Price;
     private String Image;
-    private int StatusID;
-    private int TypeID;
+    private String Status;
+    private String Type;
 
     public Room() {
     }
 
-    public Room(int RoomID, String RoomName, String Description, double Price, String Image, int StatusID, int TypeID) {
+    public Room(int RoomID, String RoomName, String Description, double Price, String Image, String Status, String Type) {
         this.RoomID = RoomID;
         this.RoomName = RoomName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
-        this.StatusID = StatusID;
-        this.TypeID = TypeID;
+        this.Status = Status;
+        this.Type = Type;
     }
-    
-    public Room(String RoomName, String Description, double Price, String Image, int StatusID, int TypeID) {
+
+    public Room(String RoomName, String Description, double Price, String Image, String Status, String Type) {
         this.RoomName = RoomName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
-        this.StatusID = StatusID;
-        this.TypeID = TypeID;
+        this.Status = Status;
+        this.Type = Type;
     }
 
     public int getRoomID() {
@@ -81,21 +82,20 @@ public class Room {
         this.Image = Image;
     }
 
-    public int getStatusID() {
-        return StatusID;
+    public String getStatus() {
+        return Status;
     }
 
-    public void setStatusID(int StatusID) {
-        this.StatusID = StatusID;
+    public void setStatus(String Status) {
+        this.Status = Status;
     }
 
-    public int getTypeID() {
-        return TypeID;
+    public String getType() {
+        return Type;
     }
 
-    public void setTypeID(int TypeID) {
-        this.TypeID = TypeID;
+    public void setType(String Type) {
+        this.Type = Type;
     }
-    
-    
+
 }

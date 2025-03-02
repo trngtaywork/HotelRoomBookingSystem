@@ -22,8 +22,7 @@ import model.*;
 public class RoomDetail extends HttpServlet {
 
     RoomDAO roomDAO = new RoomDAO();
-    StatusDAO statusDAO = new StatusDAO();
-    TypeDAO typeDAO = new TypeDAO();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,20 +35,13 @@ public class RoomDetail extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         var roomID = request.getParameter("roomID");
-        
-        if(roomID == null || roomID.length() == 0)
-        {
+
+        if (roomID == null || roomID.length() == 0) {
             request.getRequestDispatcher("RoomList.jsp").forward(request, response);
-        }
-        else
-        {
-            Room Room = roomDAO.SearchRoomByID(Integer.parseInt(roomID));
-            Type roomType = typeDAO.SearchTypeByID(Room.getTypeID());
-            Status roomStatus = statusDAO.SearchStatusByID(Room.getStatusID());
-            
-            request.setAttribute("room", Room);
-            request.setAttribute("type", roomType);
-            request.setAttribute("status", roomStatus);
+        } else {
+            Room room = roomDAO.SearchRoomByID(Integer.parseInt(roomID));
+
+            request.setAttribute("room", room);
             request.getRequestDispatcher("RoomDetail.jsp").forward(request, response);
         }
     }

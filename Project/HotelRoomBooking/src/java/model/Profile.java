@@ -9,6 +9,7 @@ package model;
  * @author My PC
  */
 public class Profile {
+
     private int ProfileID;
     private String Name;
     private String PhoneNumber;
@@ -29,7 +30,7 @@ public class Profile {
         this.Address = Address;
         this.AccountID = AccountID;
     }
-    
+
     public Profile(String Name, String PhoneNumber, String Gender, String Role, String Address, int AccountID) {
         this.Name = Name;
         this.PhoneNumber = PhoneNumber;
@@ -94,6 +95,5 @@ public class Profile {
     public void setAccountID(int AccountID) {
         this.AccountID = AccountID;
     }
-    
-    
+
 }

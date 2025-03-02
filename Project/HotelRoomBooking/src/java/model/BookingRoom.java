@@ -11,6 +11,7 @@ import java.sql.Date;
  * @author My PC
  */
 public class BookingRoom {
+
     private int BookingRoomID;
     private int BookingID;
     private int RoomID;
@@ -29,7 +30,7 @@ public class BookingRoom {
         this.StartTime = StartTime;
         this.EndTime = EndTime;
     }
-    
+
     public BookingRoom(int BookingID, int RoomID, int Quantity, Date StartTime, Date EndTime) {
         this.BookingID = BookingID;
         this.RoomID = RoomID;
@@ -85,6 +86,5 @@ public class BookingRoom {
     public void setEndTime(Date EndTime) {
         this.EndTime = EndTime;
     }
-    
-    
+
 }

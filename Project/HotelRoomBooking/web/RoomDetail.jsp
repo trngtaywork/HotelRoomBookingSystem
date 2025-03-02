@@ -36,8 +36,6 @@
             </header>
 
         <%Room r = (Room)request.getAttribute("room");%>
-        <%Type t = (Type)request.getAttribute("type");%>
-        <%Status s = (Status)request.getAttribute("status");%>
 
         <!--
         Room Name: <P><%=r.getRoomName()%></P><br>
@@ -69,11 +67,11 @@
                                     <tbody>
                                         <tr>
                                             <td class="r-o">Type:</td>
-                                            <td><%=t.getTypeName()%></td>
+                                            <td><%=r.getType()%></td>
                                         </tr>
                                         <tr>
                                             <td class="r-o">Status:</td>
-                                            <td><%=s.getStatusName()%></td>
+                                            <td><%=r.getStatus()%></td>
                                         </tr>
                                     </tbody>
                                 </table>

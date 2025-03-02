@@ -11,31 +11,32 @@ import java.awt.Image;
  * @author My PC
  */
 public class Service {
+
     private int ServiceID;
     private String ServiceName;
     private String Description;
     private float Price;
     private String Image;
-    private int StatusID;
+    private String Status;
 
     public Service() {
     }
 
-    public Service(int ServiceID, String ServiceName, String Description, float Price, String Image, int StatusID) {
+    public Service(int ServiceID, String ServiceName, String Description, float Price, String Image, String Status) {
         this.ServiceID = ServiceID;
         this.ServiceName = ServiceName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
-        this.StatusID = StatusID;
+        this.Status = Status;
     }
-    
-    public Service(String ServiceName, String Description, float Price, String Image, int StatusID) {
+
+    public Service(String ServiceName, String Description, float Price, String Image, String Status) {
         this.ServiceName = ServiceName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
-        this.StatusID = StatusID;
+        this.Status = Status;
     }
 
     public int getServiceID() {
@@ -78,13 +79,12 @@ public class Service {
         this.Image = Image;
     }
 
-    public int getStatusID() {
-        return StatusID;
+    public String getStatus() {
+        return Status;
     }
 
-    public void setStatusID(int StatusID) {
-        this.StatusID = StatusID;
+    public void setStatus(String Status) {
+        this.Status = Status;
     }
-    
-    
+
 }

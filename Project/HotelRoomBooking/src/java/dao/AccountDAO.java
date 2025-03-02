@@ -50,6 +50,11 @@ public class AccountDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
 
+            if(!rs.next())//if rs == null or length == 0
+            {
+                return null;
+            }
+            
             while (rs.next()) {
                 a.setAccountID(rs.getInt("AccontID"));
                 a.setUsername(rs.getString("Username"));
@@ -65,9 +70,9 @@ public class AccountDAO extends DBContext {
     }
 
     public void Add(Account a) {
-        if (ValidateEmail(a) && ValidateUsername(a)) {
+        if (ValidateInput(a)) {
             String SQL = "INSERT INTO [dbo].[Account]([Username], [Email], [Password], [CreatedDate]) "
-                    + "VALUES (?, ?, ?, ?)";
+                       + "VALUES (?, ?, ?, ?)";
 
             try {
                 PreparedStatement st = connection.prepareStatement(SQL);
@@ -80,6 +85,15 @@ public class AccountDAO extends DBContext {
             } catch (Exception e) {
                 System.out.println(e.toString());
             }
+        }
+    }
+    
+    public boolean ValidateInput(Account a){
+        if(a.getUsername().isBlank() || a.getEmail().isBlank() || a.getPassword().isBlank()){
+            return false;
+        }
+        else{
+            return ValidateEmail(a) && ValidateUsername(a);
         }
     }
 
