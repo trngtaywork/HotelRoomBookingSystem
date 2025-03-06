@@ -133,10 +133,6 @@
                             <td><%= profile.getGender() %></td>
                         </tr>
                         <tr>
-                            <th>Role</th>
-                            <td><%= profile.getRole() %></td>
-                        </tr>
-                        <tr>
                             <th>Address</th>
                             <td><%= profile.getAddress() %></td>
                         </tr>

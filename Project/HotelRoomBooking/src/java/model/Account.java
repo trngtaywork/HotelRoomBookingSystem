@@ -7,30 +7,15 @@ public class Account {
     private int accountID;
     private String username;
     private String email;
+    private String password;
     private String role;
-    private String name;
-    private String phoneNumber;
-    private String gender;
-    private String address;
+    private boolean isActive;
     private Date createdDate;
+    private Profile profile;
 
-    public Account(int accountID, String username, String email) {
-        this.accountID = accountID;
-        this.username = username;
-        this.email = email;
-    }
+    public Account() {}
 
-    public Account(int accountID, String username, String email, String role, String name, String phoneNumber, String gender, String address) {
-        this.accountID = accountID;
-        this.username = username;
-        this.email = email;
-        this.role = role;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
-        this.address = address;
-    }
-    
+    // Constructor for login validation
     public Account(int accountID, String username, String email, Date createdDate) {
         this.accountID = accountID;
         this.username = username;
@@ -38,39 +23,83 @@ public class Account {
         this.createdDate = createdDate;
     }
 
+    // Full constructor
+    public Account(int accountID, String username, String email, String password, String role, boolean isActive, Date createdDate) {
+        this.accountID = accountID;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.isActive = isActive;
+        this.createdDate = createdDate;
+    }
+
+    public Account(int aInt, String string, String string0, String string1, String string2, String string3, String string4, String string5) {
+    }
+    
+    // Getter and Setter for Profile
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    // Getters and Setters
     public int getAccountID() {
         return accountID;
+    }
+
+    public void setAccountID(int accountID) {
+        this.accountID = accountID;
     }
 
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getRole() {
         return role;
     }
 
-    public String getName() {
-        return name;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public boolean getIsActive() {
+        return isActive;
     }
 
-    public String getGender() {
-        return gender;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
-    public String getAddress() {
-        return address;
-    }
-    
-       public Date getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }

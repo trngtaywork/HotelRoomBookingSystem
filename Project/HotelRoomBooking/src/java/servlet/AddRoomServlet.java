@@ -48,11 +48,11 @@ public class AddRoomServlet extends HttpServlet {
         String image = "";
         if (filePart != null && filePart.getSize() > 0) {
             String fileName = filePart.getSubmittedFileName();
-            List<String> allowedExtensions = Arrays.asList("jpg", "jpeg", "png", "gif");
+            List<String> allowedExtensions = Arrays.asList("jpg", "jpeg", "png");
             String fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
 
             if (!allowedExtensions.contains(fileExtension)) {
-                request.setAttribute("errorMessage", "Only image files (jpg, jpeg, png, gif) are allowed.");
+                request.setAttribute("errorMessage", "Only image files (jpg, jpeg, png) are allowed.");
                 request.getRequestDispatcher("/addRoom.jsp").forward(request, response);
                 return;
             }

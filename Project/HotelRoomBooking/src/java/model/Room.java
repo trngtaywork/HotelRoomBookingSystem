@@ -9,7 +9,7 @@ public class Room {
     private String statusRoom;
     private String typeRoom;
 
-    // Constructor
+    // Constructor, getters, and setters
     public Room(int roomID, String roomName, String description, double price, String image, String statusRoom, String typeRoom) {
         this.roomID = roomID;
         this.roomName = roomName;
@@ -20,7 +20,7 @@ public class Room {
         this.typeRoom = typeRoom;
     }
 
-    // Getters and Setters
+    // Getters and setters
     public int getRoomID() {
         return roomID;
     }

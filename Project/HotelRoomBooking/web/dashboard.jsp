@@ -1,25 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="dao.RoomDAO" %>
-<%@ page import="model.Room" %>
-
+<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="model.Account" %>
 <%
-    String roomIDStr = request.getParameter("roomID");
-    if (roomIDStr == null || roomIDStr.isEmpty()) {
-        response.sendRedirect("roomListForAdmin.jsp");
-        return;
-    }
-
-    int roomID = Integer.parseInt(roomIDStr);
-    RoomDAO roomDAO = new RoomDAO();
-    Room room = roomDAO.getRoomById(roomID);
-
-    if (room == null) {
-        response.sendRedirect("roomListForAdmin.jsp");
+    HttpSession sessionUser = request.getSession(false);
+    Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
+    if (user == null) {
+        response.sendRedirect("login.jsp");
         return;
     }
 %>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -45,7 +35,6 @@
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
 
-
         <style>
             .header-section {
                 position: fixed;
@@ -59,21 +48,37 @@
             body {
                 padding-top: 80px;
             }
-            .btn-custom {
-                height: 70px;
-                width: 140px;
-                border-radius: 5%;
-                background-color: black;
+            .sidebar {
+                left: 0;
+                width: 270px;
+                min-height: calc(100vh - 80px);
+
+                padding-top: 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .sidebar .btn-custom {
+                display: block;
+                width: 90%;
+                text-align: left;
+                padding: 12px 20px;
+                background-color: white;
+                color: black;
+                border: none;
+                font-weight: bold;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+
+            .sidebar .btn-custom:hover {
+                background-color: #dfa974;
                 color: white;
-                border: 1px solid black;
-                padding-left: 5px;
             }
         </style>
-
-        <title>Profile</title>
-        <link rel="stylesheet" href="css/profile.css">
     </head>
-    <body style="background-color: #ffffff;">
+    <body>
         <header class="header-section">
             <div class="menu-item">
                 <div class="container">
@@ -114,46 +119,12 @@
             </div>
         </header>
 
-        <div class="container mt-4 mb-4">
-            <h3>Are you sure you want to delete this room?</h3>
-            <table class="table table-bordered mt-3">
-                <tr>
-                    <th>ID</th>
-                    <td><%= room.getRoomID() %></td>
-                </tr>
-                <tr>
-                    <th>Image</th>
-                    <td>
-                        <img src="<%= request.getContextPath() + room.getImage() %>" alt="Room Image" width="200" height="150">
-                    </td>
-                </tr>
-                <tr>
-                    <th>Room Name</th>
-                    <td><%= room.getRoomName() %></td>
-                </tr>
-                <tr>
-                    <th>Description</th>
-                    <td><%= room.getDescription() %></td>
-                </tr>
-                <tr>
-                    <th>Price</th>
-                    <td><%= room.getPrice() %></td>
-                </tr>
-                <tr>
-                    <th>Status</th>
-                    <td><%= room.getStatusRoom() %></td>
-                </tr>
-                <tr>
-                    <th>Type</th>
-                    <td><%= room.getTypeRoom() %></td>
-                </tr>
-            </table>
-
-            <form action="DeleteRoomServlet" method="post">
-                <input type="hidden" name="roomID" value="<%= room.getRoomID() %>">
-                <button type="submit" class="btn btn-danger">Confirm Delete</button>
-                <a href="roomListForAdmin.jsp" class="btn btn-secondary">Cancel</a>
-            </form>
+        <div class="main-content">
+            <div class="sidebar">
+                <a href="dashboard.jsp" class="btn-custom">Dashboard</a>
+                <a href="userList.jsp" class="btn-custom">User List</a>
+                <a href="roomListForAdmin.jsp" class="btn-custom">Room List</a>
+            </div>
         </div>
 
         <footer class="footer-section">
