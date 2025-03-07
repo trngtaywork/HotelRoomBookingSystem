@@ -14,7 +14,24 @@ public class Account {
     private Profile profile;
 
     public Account() {}
+    
+    public Account(int accountID, String username, String email, String role, boolean isActive, Date createdDate) {
+        this.accountID = accountID;
+        this.username = username;
+        this.email = email;
+        this.role = role;
+        this.isActive = isActive;
+        this.createdDate = createdDate;
+    }
 
+    public Account(String username, String email, String password, Date createdDate, String role, boolean isActive) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.createdDate = createdDate;
+        this.role = role;
+        this.isActive = isActive;
+    }
     // Constructor for login validation
     public Account(int accountID, String username, String email, Date createdDate) {
         this.accountID = accountID;
@@ -35,6 +52,9 @@ public class Account {
     }
 
     public Account(int aInt, String string, String string0, String string1, String string2, String string3, String string4, String string5) {
+    }
+
+    public Account(String username, String email, String password, String role, boolean parseBoolean) {
     }
     
     // Getter and Setter for Profile

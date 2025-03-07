@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import model.Account;
 import model.Profile;
 import utils.DBContext;
@@ -101,17 +103,16 @@ public class AccountDAO {
         }
         return accountList;
     }
-    
+
     public List<Account> getUsersByRole(String role) {
         List<Account> accountList = new ArrayList<>();
         String query = "SELECT * FROM Account";
 
-        // Nếu role không phải "All", lọc theo role
         if (!"All".equals(role)) {
             query += " WHERE Role = ?";
         }
 
-        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+        try ( PreparedStatement stmt = conn.prepareStatement(query)) {
             if (!"All".equals(role)) {
                 stmt.setString(1, role);
             }
@@ -119,13 +120,13 @@ public class AccountDAO {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Account account = new Account(
-                    rs.getInt("AccountID"),
-                    rs.getString("Username"),
-                    rs.getString("Email"),
-                    rs.getString("Password"),
-                    rs.getString("Role"),
-                    rs.getBoolean("IsActive"),
-                    rs.getDate("CreatedDate")
+                        rs.getInt("AccountID"),
+                        rs.getString("Username"),
+                        rs.getString("Email"),
+                        rs.getString("Password"),
+                        rs.getString("Role"),
+                        rs.getBoolean("IsActive"),
+                        rs.getDate("CreatedDate")
                 );
                 accountList.add(account);
             }
@@ -152,28 +153,23 @@ public class AccountDAO {
         String deleteProfileQuery = "DELETE FROM Profile WHERE AccountID = ?";
         String deleteAccountQuery = "DELETE FROM Account WHERE AccountID = ?";
 
-        // Start a transaction
         try {
-            conn.setAutoCommit(false); // Disable auto-commit to begin transaction
+            conn.setAutoCommit(false);
 
-            // Delete from Profile table
             try ( PreparedStatement profileStmt = conn.prepareStatement(deleteProfileQuery)) {
                 profileStmt.setInt(1, accountID);
                 profileStmt.executeUpdate();
             }
 
-            // Delete from Account table
             try ( PreparedStatement accountStmt = conn.prepareStatement(deleteAccountQuery)) {
                 accountStmt.setInt(1, accountID);
                 accountStmt.executeUpdate();
             }
 
-            // Commit transaction
             conn.commit();
             return true;
         } catch (SQLException ex) {
             try {
-                // Rollback in case of error
                 conn.rollback();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -181,7 +177,7 @@ public class AccountDAO {
             ex.printStackTrace();
         } finally {
             try {
-                conn.setAutoCommit(true); // Restore auto-commit
+                conn.setAutoCommit(true);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -189,64 +185,181 @@ public class AccountDAO {
         return false;
     }
 
-    // Method to get account and profile information by accountID
-    public Account getAccountWithProfile(int accountID) {
-        String sql = "SELECT a.AccountID, a.Username, a.Email, a.Password, a.Role, a.IsActive, a.CreatedDate, "
-                + "p.Name, p.PhoneNumber, p.Gender, p.Address "
-                + "FROM Account a "
-                + "LEFT JOIN Profile p ON a.AccountID = p.AccountID "
-                + "WHERE a.AccountID = ?";
-
-        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, accountID);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                Account account = new Account(
-                        rs.getInt("AccountID"),
-                        rs.getString("Username"),
-                        rs.getString("Email"),
-                        rs.getString("Password"),
-                        rs.getString("Role"),
-                        rs.getBoolean("IsActive"),
-                        rs.getDate("CreatedDate")
-                );
-
-                // If Profile information exists, set it to Account object
-                Profile profile = new Profile(
-                        rs.getInt("AccountID"),
-                        rs.getString("Name"),
-                        rs.getString("PhoneNumber"),
-                        rs.getString("Gender"),
-                        rs.getString("Address"),
-                        rs.getInt("AccountID")
-                );
-
-                account.setProfile(profile); // Set Profile to Account object
-                return account;
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-    
-    // Method to add account
     public boolean addAccount(Account account) {
-        String sql = "INSERT INTO Account (Username, Email, Password, CreatedDate, Role, IsActive) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, account.getUsername());
-            stmt.setString(2, account.getEmail());
-            stmt.setString(3, account.getPassword());
-            stmt.setDate(4, account.getCreatedDate());
-            stmt.setString(5, account.getRole());
-            stmt.setBoolean(6, account.getIsActive());
+        String sql = "INSERT INTO Account (AccountID, Username, Email, Password, CreatedDate, Role, IsActive) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, account.getAccountID());
+            stmt.setString(2, account.getUsername());
+            stmt.setString(3, account.getEmail());
+            stmt.setString(4, account.getPassword());
+            stmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+            stmt.setString(6, account.getRole());
+            stmt.setBoolean(7, account.getIsActive());
 
-            int result = stmt.executeUpdate();
-            return result > 0;
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
+
+    public boolean isUsernameTaken(String username) {
+        String sql = "SELECT COUNT(*) FROM Account WHERE Username = ?";
+        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isUsernameExists(String username, int currentAccountID) {
+        String sql = "SELECT COUNT(*) FROM Account WHERE Username = ? AND AccountID <> ?";
+        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setInt(2, currentAccountID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean isAccountIDExists(int accountID) {
+        String sql = "SELECT COUNT(*) FROM Account WHERE AccountID = ?";
+        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, accountID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateUser(int accountID, String username, String email, String password, String role, boolean isActive) {
+        String sql = "UPDATE Account SET Username = ?, Email = ?, Password = ?, Role = ?, IsActive = ? WHERE AccountID = ?";
+        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, email);
+            stmt.setString(3, password);
+            stmt.setString(4, role);
+            stmt.setBoolean(5, isActive);
+            stmt.setInt(6, accountID);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public String getPasswordByAccountID(int accountID) {
+        String sql = "SELECT Password FROM Account WHERE AccountID = ?";
+        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, accountID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("Password");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int generateRandomAccountID() {
+        Random random = new Random();
+        int accountID;
+        boolean exists;
+
+        do {
+            accountID = random.nextInt(900000) + 100000;
+            exists = isAccountIDExists(accountID);
+        } while (exists);
+
+        return accountID;
+    }
+
+    public boolean isUsernameExists(String username) {
+        String sql = "SELECT COUNT(*) FROM Account WHERE Username = ?";
+        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<Account> getUsersFiltered(String role, String status, String username, String sortOrder) {
+        List<Account> accountList = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM Account WHERE 1=1");
+
+        if (!role.equals("All")) {
+            query.append(" AND Role = ?");
+        }
+        if (!status.equals("All")) {
+            query.append(" AND IsActive = ?");
+        }
+        if (!username.isEmpty()) {
+            query.append(" AND Username LIKE ?");
+        }
+
+        query.append(" ORDER BY CreatedDate ").append(sortOrder.equals("asc") ? "ASC" : "DESC");
+
+        try ( Connection conn = new DBContext().connection;  PreparedStatement stmt = conn.prepareStatement(query.toString())) {
+            int paramIndex = 1;
+
+            if (!role.equals("All")) {
+                stmt.setString(paramIndex++, role);
+            }
+            if (!status.equals("All")) {
+                stmt.setBoolean(paramIndex++, status.equals("Active"));
+            }
+            if (!username.isEmpty()) {
+                stmt.setString(paramIndex++, "%" + username + "%");
+            }
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                accountList.add(new Account(
+                        rs.getInt("AccountID"),
+                        rs.getString("Username"),
+                        rs.getString("Email"),
+                        rs.getString("Role"),
+                        rs.getBoolean("IsActive"),
+                        rs.getDate("CreatedDate")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accountList;
+    }
+    
+    public boolean updateUserPassword(int accountID, String newPassword) {
+    String sql = "UPDATE Account SET Password = ? WHERE AccountID = ?";
+    try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, newPassword);
+        stmt.setInt(2, accountID);
+        return stmt.executeUpdate() > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
 
 }

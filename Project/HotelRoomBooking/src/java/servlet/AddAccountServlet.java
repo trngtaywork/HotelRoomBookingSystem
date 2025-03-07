@@ -1,61 +1,98 @@
 package servlet;
 
-import dao.AccountDAO;
-import model.Account;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.util.UUID;
+import java.util.regex.Pattern;
+import java.sql.Timestamp;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import dao.AccountDAO;
+import java.sql.Date;
+import model.Account;
 
 public class AddAccountServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+    private AccountDAO accountDAO;
+
+    public AddAccountServlet() {
+        super();
+        this.accountDAO = new AccountDAO();
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Get form data
         String username = request.getParameter("username").trim();
         String email = request.getParameter("email").trim();
         String password = request.getParameter("password").trim();
         String role = request.getParameter("role");
         String status = request.getParameter("status");
 
-        // Initialize error message variables
-        String errorMessage = null;
-        String successMessage = null;
+        boolean hasError = false;
 
-        // Validate inputs
         if (username.isEmpty()) {
-            errorMessage = "Username is required.";
-        } else if (email.isEmpty() || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            errorMessage = "Please enter a valid email.";
-        } else if (password.isEmpty() || password.length() < 8 || password.contains(" ")) {
-            errorMessage = "Password must be at least 8 characters long and cannot contain spaces.";
+            request.setAttribute("usernameError", "Username is required.");
+            hasError = true;
+        } else if (accountDAO.isUsernameTaken(username)) { 
+            request.setAttribute("usernameError", "Username is already taken.");
+            hasError = true;
         }
 
-        // If there are validation errors, redirect back with error message
-        if (errorMessage != null) {
-            request.setAttribute("errorMessage", errorMessage);
+        if (email.isEmpty()) {
+            request.setAttribute("emailError", "Email is required.");
+            hasError = true;
+        } else if (!isValidEmail(email)) {
+            request.setAttribute("emailError", "Invalid email format.");
+            hasError = true;
+        }
+
+        if (password.isEmpty()) {
+            request.setAttribute("passwordError", "Password is required.");
+            hasError = true;
+        } else if (password.length() < 8) {
+            request.setAttribute("passwordError", "Password must be at least 8 characters long.");
+            hasError = true;
+        }
+
+        if (role == null || role.isEmpty()) {
+            request.setAttribute("roleError", "Role is required.");
+            hasError = true;
+        }
+
+        if (status == null || status.isEmpty()) {
+            request.setAttribute("statusError", "Status is required.");
+            hasError = true;
+        }
+
+        if (hasError) {
             request.getRequestDispatcher("addAccount.jsp").forward(request, response);
-        } else {
-            // If validation passes, insert into the database
-            AccountDAO accountDAO = new AccountDAO();
-            Account newAccount = new Account();
-            newAccount.setUsername(username);
-            newAccount.setEmail(email);
-            newAccount.setPassword(password);
-            newAccount.setRole(role);
-            newAccount.setIsActive(status.equals("1")); // Convert status to boolean (Active = true)
-            newAccount.setCreatedDate(new java.sql.Date(System.currentTimeMillis()));
-
-            boolean success = accountDAO.addAccount(newAccount);
-
-            // Set success or error message
-            if (success) {
-                successMessage = "Account added successfully!";
-                request.setAttribute("successMessage", successMessage);
-                response.sendRedirect("userList.jsp");
-            } else {
-                errorMessage = "An error occurred while adding the account.";
-                request.setAttribute("errorMessage", errorMessage);
-                request.getRequestDispatcher("addAccount.jsp").forward(request, response);
-            }
+            return;
         }
+
+        int accountID = generateRandomID();
+        boolean isActive = Integer.parseInt(status) == 1;
+
+        Account newAccount = new Account(accountID, username, email, password, role, isActive, new Date(System.currentTimeMillis()));
+        boolean success = accountDAO.addAccount(newAccount); 
+
+        if (success) {
+            request.setAttribute("successMessage", "Account added successfully.");
+        } else {
+            request.setAttribute("errorMessage", "Error adding account.");
+        }
+
+        request.getRequestDispatcher("addAccount.jsp").forward(request, response);
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return Pattern.matches(emailRegex, email);
+    }
+
+    private int generateRandomID() {
+        return Math.abs(UUID.randomUUID().hashCode());
     }
 }

@@ -1,23 +1,20 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="dao.AccountDAO" %>
+<%@ page import="jakarta.servlet.http.HttpSession" %>
 <%@ page import="model.Account" %>
+<%@ page import="dao.AccountDAO" %>
+<%@ page import="model.Profile" %>
 
 <%
-    String accountIDStr = request.getParameter("accountID");
-    if (accountIDStr == null || accountIDStr.isEmpty()) {
-        response.sendRedirect("userList.jsp");
+    HttpSession sessionUser = request.getSession(false);
+    Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
+    if (user == null) {
+        response.sendRedirect("login.jsp");
         return;
     }
 
-    int accountID = Integer.parseInt(accountIDStr);
     AccountDAO accountDAO = new AccountDAO();
-    Account account = accountDAO.getAccountById(accountID);
-
-    if (account == null) {
-        response.sendRedirect("userList.jsp");
-        return;
-    }
+    Profile profile = accountDAO.getProfileByAccountId(user.getAccountID());
 %>
 
 <!DOCTYPE html>
@@ -29,8 +26,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+        <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700&display=swap" rel="stylesheet">
+
+        <!-- Css Styles -->
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
         <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
         <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
@@ -41,7 +41,8 @@
         <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
-        
+        <link rel="stylesheet" href="css/profile.css" type="text/css">
+        <title>Edit Profile</title>
         <style>
             .header-section {
                 position: fixed;
@@ -55,17 +56,30 @@
             body {
                 padding-top: 80px;
             }
-            .btn-custom {
-                height: 70px;
-                width: 140px;
-                border-radius: 5%;
-                background-color: black;
-                color: white;
-                border: 1px solid black;
-                padding-left: 5px;
+            .error-message {
+                color: red;
+                font-size: 14px;
+            }
+            .bg-light {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+
+            .box {
+                max-width: 500px;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                background: white;
+                width: 100%;
+            }
+            .error-message {
+                color: red;
+                font-size: 14px;
             }
         </style>
-        <title>Delete User</title>
     </head>
     <body>
         <header class="header-section">
@@ -84,11 +98,11 @@
                                 <nav class="mainmenu">
                                     <ul>
                                         <li><a href="./index.html">Home</a></li>
-                                        <li class="active"><a href="userList.jsp">User List</a></li>
+                                        <li><a href="userList.jsp">User List</a></li>
                                         <li><a href="roomListForAdmin.jsp">Room List</a></li>
                                         <li><a href="serviceList.jsp">Service List</a></li>
                                         <li><a href="dashboard.jsp">Dashboard</a></li>
-                                        <li><a href="profile.jsp">Profile</a></li>
+                                        <li class="active"><a href="profile.jsp">Profile</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -98,40 +112,57 @@
             </div>
         </header>
 
-        <div class="container mt-4 mb-4">
-            <h3>Are you sure you want to delete this user?</h3>
-            <table class="table table-bordered mt-3">
-                <tr>
-                    <th>AccountID</th>
-                    <td><%= account.getAccountID() %></td>
-                </tr>
-                <tr>
-                    <th>Username</th>
-                    <td><%= account.getUsername() %></td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td><%= account.getEmail() %></td>
-                </tr>
-                <tr>
-                    <th>Role</th>
-                    <td><%= account.getRole() %></td>
-                </tr>
-                <tr>
-                    <th>Status</th>
-                    <td><%= account.getIsActive() ? "Active" : "Inactive" %></td>
-                </tr>
-                <tr>
-                    <th>Created Date</th>
-                    <td><%= account.getCreatedDate() %></td>
-                </tr>
-            </table>
+        <div class="bg-light">
+            <div class="box">
+                <h3 class="text-center">Edit Profile</h3>
+                <form action="EditProfileServlet" method="post">
+                    <input type="hidden" name="accountID" value="<%= user.getAccountID() %>">
 
-            <form action="DeleteUserServlet" method="post">
-                <input type="hidden" name="accountID" value="<%= account.getAccountID() %>">
-                <button type="submit" class="btn btn-danger">Confirm Delete</button>
-                <a href="userList.jsp" class="btn btn-secondary">Cancel</a>
-            </form>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" name="name" id="name" class="form-control" value="<%= (profile != null) ? profile.getName() : "" %>" required>
+                        <% if (request.getAttribute("nameError") != null) { %>
+                        <div class="error-message"><%= request.getAttribute("nameError") %></div>
+                        <% } %>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" name="phone" id="phone" class="form-control" value="<%= (profile != null) ? profile.getPhoneNumber() : "" %>" required>
+                        <% if (request.getAttribute("phoneError") != null) { %>
+                        <div class="error-message"><%= request.getAttribute("phoneError") %></div>
+                        <% } %>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Gender</label>
+                        <select name="gender" class="form-control">
+                            <option value="Male" <%= (profile != null && "Male".equals(profile.getGender())) ? "selected" : "" %>>Male</option>
+                            <option value="Female" <%= (profile != null && "Female".equals(profile.getGender())) ? "selected" : "" %>>Female</option>
+                            <option value="Other" <%= (profile != null && "Other".equals(profile.getGender())) ? "selected" : "" %>>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" name="address" id="address" class="form-control" value="<%= (profile != null) ? profile.getAddress() : "" %>" required>
+                        <% if (request.getAttribute("addressError") != null) { %>
+                        <div class="error-message"><%= request.getAttribute("addressError") %></div>
+                        <% } %>
+                    </div>
+
+                    <% if (request.getAttribute("successMessage") != null) { %>
+                    <div class="alert alert-success"><%= request.getAttribute("successMessage") %></div>
+                    <% } %>
+
+                    <% if (request.getAttribute("errorMessage") != null) { %>
+                    <div class="alert alert-danger"><%= request.getAttribute("errorMessage") %></div>
+                    <% } %>
+
+                    <button type="submit" class="btn btn-primary w-100">Update Profile</button>
+                </form>
+                <a href="profile.jsp" class="btn btn-secondary w-100 mt-3">Back to Profile</a>
+            </div>
         </div>
 
         <footer class="footer-section">

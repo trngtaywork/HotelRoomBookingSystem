@@ -1,11 +1,14 @@
 package dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import model.Profile;
 import utils.DBContext;
 
 public class ProfileDAO extends DBContext {
+    
 
     public void Add(Profile p) {
         if (Validate(p)) {
@@ -39,11 +42,11 @@ public class ProfileDAO extends DBContext {
             ResultSet rs1 = st1.executeQuery();
             ResultSet rs2 = st2.executeQuery();
 
-            if (rs1.next()) { 
+            if (rs1.next()) {
                 return false;
             }
 
-            if (!rs2.next()) { 
+            if (!rs2.next()) {
                 return false;
             }
         } catch (Exception ex) {
@@ -61,15 +64,54 @@ public class ProfileDAO extends DBContext {
         try {
             if (rs.next()) {
                 profile = new Profile(rs.getInt("ProfileID"),
-                                      rs.getString("Name"),
-                                      rs.getString("PhoneNumber"),
-                                      rs.getString("Gender"),
-                                      rs.getString("Address"),
-                                      rs.getInt("AccountID"));
+                        rs.getString("Name"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Gender"),
+                        rs.getString("Address"),
+                        rs.getInt("AccountID"));
             }
         } catch (Exception e) {
             System.out.println(e);
         }
         return profile;
     }
+    
+    public boolean updateProfile(Profile profile) {
+    String sql = "UPDATE Profile SET Name = ?, PhoneNumber = ?, Gender = ?, Address = ? WHERE AccountID = ?";
+    try (Connection connection = new DBContext().connection;  PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setString(1, profile.getName());
+        stmt.setString(2, profile.getPhoneNumber());
+        stmt.setString(3, profile.getGender());
+        stmt.setString(4, profile.getAddress());
+        stmt.setInt(5, profile.getAccountID());
+
+        return stmt.executeUpdate() > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    
+    public boolean addProfile(Profile profile) {
+        String sql = "INSERT INTO Profile (Name, PhoneNumber, Gender, Address, AccountID) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection connection = new DBContext().connection;
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+             
+            stmt.setString(1, profile.getName().trim());
+            stmt.setString(2, profile.getPhoneNumber().trim());
+            stmt.setString(3, profile.getGender());
+            stmt.setString(4, profile.getAddress().trim());
+            stmt.setInt(5, profile.getAccountID());
+
+            int rowsInserted = stmt.executeUpdate();
+            return rowsInserted > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
 }

@@ -19,62 +19,29 @@ public class RoomDAO {
         dbContext = new DBContext();
     }
 
-    // Method to check if room name already exists (excluding current room)
-    public boolean isRoomNameExists(String roomName, int currentRoomID) {
-        String query = "SELECT COUNT(*) FROM Room WHERE RoomName = ? AND RoomID != ?";
-        try {
-            PreparedStatement stmt = dbContext.connection.prepareStatement(query);
-            stmt.setString(1, roomName);
-            stmt.setInt(2, currentRoomID);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0; // Room name already exists
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+    public boolean updateRoom(Room room) throws SQLException {
+        String query = "UPDATE Room SET RoomName = ?, Description = ?, Price = ?, Image = ?, StatusRoom = ?, TypeRoom = ? WHERE RoomID = ?";
+
+        try ( PreparedStatement stmt = dbContext.connection.prepareStatement(query)) {
+            stmt.setString(1, room.getRoomName());
+            stmt.setString(2, room.getDescription());
+            stmt.setDouble(3, room.getPrice());
+            stmt.setString(4, room.getImage());
+            stmt.setString(5, room.getStatusRoom());
+            stmt.setString(6, room.getTypeRoom());
+            stmt.setInt(7, room.getRoomID());
+
+            return stmt.executeUpdate() > 0;
         }
-        return false;
     }
 
-    // Method to update room information
-    public boolean updateRoom(Room room) {
-    String query = "UPDATE Room SET RoomName = ?, Description = ?, Price = ?, Image = ?, StatusRoom = ?, TypeRoom = ? WHERE RoomID = ?";
-    boolean isUpdated = false;
-
-    // Sử dụng try-with-resources để tự động đóng PreparedStatement
-    try (PreparedStatement stmt = dbContext.connection.prepareStatement(query)) {
-        // Thiết lập các tham số cho PreparedStatement
-        stmt.setObject(1, room.getRoomName());
-        stmt.setObject(2, room.getDescription());
-        stmt.setObject(3, room.getPrice());
-        stmt.setObject(4, room.getImage());
-        stmt.setObject(5, room.getStatusRoom());
-        stmt.setObject(6, room.getTypeRoom());
-        stmt.setObject(7, room.getRoomID());
-
-        // Thực thi câu lệnh và kiểm tra xem có bao nhiêu bản ghi được cập nhật
-        int rowsAffected = stmt.executeUpdate();
-        if (rowsAffected > 0) {
-            isUpdated = true;  // Nếu có ít nhất 1 bản ghi được cập nhật
-        }
-    } catch (SQLException ex) {
-        ex.printStackTrace();
-    }
-
-    return isUpdated;
-}
-
-
-    // Method to get room by ID
     public Room getRoomById(int roomID) {
-        Room room = null;
         String query = "SELECT * FROM Room WHERE RoomID = ?";
-        try {
-            PreparedStatement stmt = dbContext.connection.prepareStatement(query);
+        try ( PreparedStatement stmt = dbContext.connection.prepareStatement(query)) {
             stmt.setInt(1, roomID);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                room = new Room(
+                return new Room(
                         rs.getInt("RoomID"),
                         rs.getString("RoomName"),
                         rs.getString("Description"),
@@ -84,10 +51,23 @@ public class RoomDAO {
                         rs.getString("TypeRoom")
                 );
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean isRoomNameExists(String roomName, int currentRoomID) {
+        String query = "SELECT COUNT(*) FROM Room WHERE RoomName = ? AND RoomID != ?";
+        try ( PreparedStatement stmt = dbContext.connection.prepareStatement(query)) {
+            stmt.setString(1, roomName);
+            stmt.setInt(2, currentRoomID);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return room;
+        return false;
     }
 
     public boolean isRoomNameExists(String roomName) {
@@ -191,4 +171,6 @@ public class RoomDAO {
         }
         return false;
     }
+
+    
 }

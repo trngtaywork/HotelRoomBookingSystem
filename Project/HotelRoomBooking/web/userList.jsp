@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 <%@ page import="model.Account" %>
 <%@ page import="dao.AccountDAO" %>
@@ -13,16 +12,28 @@
         return;
     }
 
-    // Get the role filter from request parameter (default is "All")
     String roleFilter = request.getParameter("roleFilter");
+    String statusFilter = request.getParameter("statusFilter");
+    String usernameSearch = request.getParameter("usernameSearch");
+    String sortDate = request.getParameter("sortDate");
+
     if (roleFilter == null) {
-        roleFilter = "All"; // Default filter is All
+        roleFilter = "All";
+    }
+    if (statusFilter == null) {
+        statusFilter = "All";
+    }
+    if (usernameSearch == null) {
+        usernameSearch = "";
+    }
+    if (sortDate == null || (!sortDate.equals("asc") && !sortDate.equals("desc"))) {
+        sortDate = "desc";
     }
 
-    // Fetch users based on role filter
     AccountDAO accountDAO = new AccountDAO();
-    List<Account> accountList = accountDAO.getUsersByRole(roleFilter);
+    List<Account> accountList = accountDAO.getUsersFiltered(roleFilter, statusFilter, usernameSearch, sortDate);
 %>
+
 
 <!DOCTYPE html>
 <html>
@@ -33,14 +44,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-        <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700&display=swap" rel="stylesheet">
-
-        <!-- Css Styles -->
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
         <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+        <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+        <link rel="stylesheet" href="css/flaticon.css" type="text/css">
+        <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+        <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+        <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+        <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+        <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
+
+        <title>User List</title>
 
         <style>
             .header-section {
@@ -64,10 +81,6 @@
                 border: 1px solid black;
                 margin: 5px;
             }
-            table th, table td {
-                text-align: center;
-                vertical-align: middle;
-            }
             .btn-custom1 {
                 height: 70px;
                 width: 240px;
@@ -79,12 +92,18 @@
             .btn-custom1:hover {
                 background-color: #dfa974;
             }
+            table th {
+                background-color: #dfa974;
+                text-align: center;
+                color: white;
+            }
+            table td {
+                text-align: center;
+                vertical-align: middle;
+            }
         </style>
-
-        <title>User List</title>
     </head>
     <body>
-        <!-- Header -->
         <header class="header-section">
             <div class="menu-item">
                 <div class="container">
@@ -100,10 +119,12 @@
                             <div class="nav-menu">
                                 <nav class="mainmenu">
                                     <ul>
-                                        <li class="active"><a href="./index.html">Home</a></li>
-                                        <li><a href="userList.jsp">Users</a></li>
-                                        <li><a href="./about-us.html">About Us</a></li>
-                                        <li><a href="./contact.html">Contact</a></li>
+                                        <li><a href="./index.html">Home</a></li>
+                                        <li class="active"><a href="userList.jsp">User List</a></li>
+                                        <li><a href="roomListForAdmin.jsp">Room List</a></li>
+                                        <li><a href="serviceList.jsp">Service List</a></li>
+                                        <li><a href="dashboard.jsp">Dashboard</a></li>
+                                        <li><a href="profile.jsp">Profile</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -113,33 +134,61 @@
             </div>
         </header>
 
-        <!-- Main Content -->
-        <div class="container mt-4 mb-4 p-3">
+        <div class="container">
+            <br> <br>
             <h3>User List</h3>
-            <br>
             <button class="btn-custom1 btn-primary" onclick="window.location.href = 'addAccount.jsp'">Add New Account</button>
-            <!-- Role Filter Form -->
-            <div class="container mt-4 mb-4">
-                <form action="userList.jsp" method="get">
+            <hr>
+
+            <!-- Role and Status Filter -->
+            <form action="userList.jsp" method="get" class="row">
+                <div class="col-md-3">
                     <label for="roleFilter">Filter by Role:</label>
-                    <select name="roleFilter" id="roleFilter" class="form-control" style="width: 200px;" onchange="this.form.submit()">
+                    <select name="roleFilter" id="roleFilter" class="form-control" onchange="this.form.submit()">
                         <option value="All" <%= "All".equals(roleFilter) ? "selected" : "" %>>All</option>
                         <option value="Admin" <%= "Admin".equals(roleFilter) ? "selected" : "" %>>Admin</option>
                         <option value="Customer" <%= "Customer".equals(roleFilter) ? "selected" : "" %>>Customer</option>
                         <option value="Receptionist" <%= "Receptionist".equals(roleFilter) ? "selected" : "" %>>Receptionist</option>
                     </select>
-                </form>
-            </div>
-            <table class="table table-bordered mt-3">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="statusFilter">Filter by Status:</label>
+                    <select name="statusFilter" id="statusFilter" class="form-control" onchange="this.form.submit()">
+                        <option value="All" <%= "All".equals(statusFilter) ? "selected" : "" %>>All</option>
+                        <option value="Active" <%= "Active".equals(statusFilter) ? "selected" : "" %>>Active</option>
+                        <option value="Inactive" <%= "Inactive".equals(statusFilter) ? "selected" : "" %>>Inactive</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="sortDate">Sort by Date:</label>
+                    <select name="sortDate" id="sortDate" class="form-control" onchange="this.form.submit()">
+                        <option value="desc" <%= "desc".equals(sortDate) ? "selected" : "" %>>Newest to Oldest</option>
+                        <option value="asc" <%= "asc".equals(sortDate) ? "selected" : "" %>>Oldest to Newest</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="usernameSearch">Search by Username:</label>
+                    <input type="text" name="usernameSearch" id="usernameSearch" class="form-control" placeholder="Enter username..."
+                           value="<%= usernameSearch %>" onkeyup="if (event.keyCode == 13)
+                                       this.form.submit();">
+                </div>
+            </form>
+
+        </div>
+
+        <div class="container mt-4">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>AccountID</th>
                         <th>Username</th>
                         <th>Email</th>
                         <th>Role</th>
                         <th>Status</th>
                         <th>Created Date</th>
-                        <th>Action</th>
+                        <th style="width: 300px">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -148,7 +197,6 @@
                             for (Account acc : accountList) { 
                     %>
                     <tr>
-                        <td><%= acc.getAccountID() %></td>
                         <td><%= acc.getUsername() %></td>
                         <td><%= acc.getEmail() %></td>
                         <td><%= acc.getRole() %></td>
@@ -156,10 +204,10 @@
                         <td><%= acc.getCreatedDate() %></td>
                         <td>
                             <button class="btn-custom btn-primary" onclick="window.location.href = 'editUser.jsp?accountID=<%= acc.getAccountID() %>'">Edit</button>
-                            <button class="btn-custom btn-danger" onclick="toggleStatus(<%= acc.getAccountID() %>, <%= acc.getIsActive() == true ? "false" : "true" %>)">
+                            <button class="btn-custom btn-warning" onclick="toggleStatus(<%= acc.getAccountID() %>, <%= acc.getIsActive() == true ? "false" : "true" %>)">
                                 <%= acc.getIsActive() == true ? "Deactivate" : "Activate" %>
                             </button>
-                            <button class="btn-custom btn-warning" onclick="window.location.href = 'deleteUser.jsp?accountID=<%= acc.getAccountID() %>'">Delete</button>
+                            <button class="btn-custom btn-danger" onclick="window.location.href = 'deleteUser.jsp?accountID=<%= acc.getAccountID() %>'">Delete</button>
                             <button class="btn-custom btn-info" onclick="window.location.href = 'profileDetails.jsp?accountID=<%= acc.getAccountID() %>'">Profile</button>
                         </td>
                     </tr>
@@ -174,6 +222,7 @@
                         }
                     %>
                 </tbody>
+
             </table>
         </div>
 
@@ -191,28 +240,18 @@
                                 <p>We inspire and reach millions of travelers across 90 local websites</p>
                             </div>
                         </div>
-                        <div class="col-lg-3 offset-lg-1">
-                            <div class="ft-contact">
-                                <h6>Contact Us</h6>
-                                <ul>
-                                    <li>(12) 345 67890</li>
-                                    <li>hotelroombooking@gmail.com</li>
-                                    <li>856 Cordia Extension Apt. 356, Lake, United States</li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </footer>
 
         <script>
-            // Function to toggle user status (Activate/Deactivate)
             function toggleStatus(accountID, isActive) {
                 if (confirm("Are you sure you want to change the status of this user?")) {
                     window.location.href = "UpdateUserStatusServlet?accountID=" + accountID + "&isActive=" + isActive;
                 }
             }
         </script>
+
     </body>
 </html>

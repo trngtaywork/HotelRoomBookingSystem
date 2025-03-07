@@ -99,7 +99,6 @@
                 margin-top: 10px;
             }
 
-            /* Additional style for consistency */
             .formbold-form-input {
                 padding-left: 15px;
             }
@@ -136,10 +135,12 @@
                             <div class="nav-menu">
                                 <nav class="mainmenu">
                                     <ul>
-                                        <li class="active"><a href="./index.html">Home</a></li>
-                                        <li><a href="userList.jsp">Users</a></li>
-                                        <li><a href="./about-us.html">About Us</a></li>
-                                        <li><a href="./contact.html">Contact</a></li>
+                                        <li><a href="./index.html">Home</a></li>
+                                        <li class="active"><a href="userList.jsp">User List</a></li>
+                                        <li><a href="roomListForAdmin.jsp">Room List</a></li>
+                                        <li><a href="serviceList.jsp">Service List</a></li>
+                                        <li><a href="dashboard.jsp">Dashboard</a></li>
+                                        <li><a href="profile.jsp">Profile</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -176,12 +177,9 @@
                         <span class="error-message" id="emailError"><%= request.getAttribute("emailError") != null ? request.getAttribute("emailError") : "" %></span>
                     </div>
 
-                    <div class="formbold-input-group password-container">
+                    <div class="formbold-input-group">
                         <label class="formbold-form-label">Password</label>
                         <input type="password" name="password" id="password" placeholder="Enter password" class="formbold-form-input">
-                        <span class="password-toggle" onclick="togglePassword()">
-                            <i class="fa fa-eye"></i>
-                        </span>
                         <span class="error-message" id="passwordError"><%= request.getAttribute("passwordError") != null ? request.getAttribute("passwordError") : "" %></span>
                     </div>
 
@@ -227,53 +225,5 @@
                 </div>
             </div>
         </footer>
-
-        <script>
-            function validateForm() {
-                let isValid = true;
-
-                function showError(id, message) {
-                    document.getElementById(id).innerText = message;
-                    isValid = false;
-                }
-
-                document.querySelectorAll(".error-message").forEach(e => e.innerText = "");
-
-                let username = document.getElementById("username").value.trim();
-                let email = document.getElementById("email").value.trim();
-                let password = document.getElementById("password").value.trim();
-                let role = document.getElementById("role").value;
-                let status = document.getElementById("status").value;
-
-                if (username === "")
-                    showError("usernameError", "Username is required.");
-                if (email === "")
-                    showError("emailError", "Email is required.");
-                if (password === "" || password.length < 8 || password.includes(" "))
-                    showError("passwordError", "Password must be at least 8 characters long and cannot contain spaces.");
-                if (role === "")
-                    showError("roleError", "Role is required.");
-                if (status === "")
-                    showError("statusError", "Status is required.");
-
-                return isValid;
-            }
-
-            // Function to toggle the password visibility
-            function togglePassword() {
-                const passwordInput = document.getElementById("password");
-                const passwordToggleIcon = document.querySelector(".password-toggle i");
-
-                if (passwordInput.type === "password") {
-                    passwordInput.type = "text";
-                    passwordToggleIcon.classList.remove("fa-eye");
-                    passwordToggleIcon.classList.add("fa-eye-slash");
-                } else {
-                    passwordInput.type = "password";
-                    passwordToggleIcon.classList.remove("fa-eye-slash");
-                    passwordToggleIcon.classList.add("fa-eye");
-                }
-            }
-        </script>
     </body>
 </html>

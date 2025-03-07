@@ -2,6 +2,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 <%@ page import="model.Account" %>
+
 <%
     HttpSession sessionUser = request.getSession(false);
     Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
@@ -10,6 +11,7 @@
         return;
     }
 %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -34,6 +36,8 @@
         <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
+        <link rel="stylesheet" href="css/profile.css" type="text/css">
+
 
         <style>
             .header-section {
@@ -48,35 +52,30 @@
             body {
                 padding-top: 80px;
             }
-            .sidebar {
-                left: 0;
-                width: 270px;
-                min-height: calc(100vh - 80px);
-
-                padding-top: 20px;
+            .error-message {
+                color: red;
+                font-size: 14px;
+            }
+            .bg-light {
                 display: flex;
-                flex-direction: column;
+                justify-content: center;
                 align-items: center;
+                height: 100vh;
             }
 
-            .sidebar .btn-custom {
-                display: block;
-                width: 90%;
-                text-align: left;
-                padding: 12px 20px;
-                background-color: white;
-                color: black;
-                border: none;
-                font-weight: bold;
-                text-decoration: none;
-                transition: all 0.3s ease;
+            .box {
+                max-width: 500px;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                background: white;
+                width: 100%;
             }
-
-            .sidebar .btn-custom:hover {
-                background-color: #dfa974;
-                color: white;
+            .toggle-password {
+                width: 50px;
             }
         </style>
+        <title>Change Password</title>
     </head>
     <body>
         <header class="header-section">
@@ -98,8 +97,8 @@
                                         <li><a href="userList.jsp">User List</a></li>
                                         <li><a href="roomListForAdmin.jsp">Room List</a></li>
                                         <li><a href="serviceList.jsp">Service List</a></li>
-                                        <li class="active"><a href="dashboard.jsp">Dashboard</a></li>
-                                        <li><a href="profile.jsp">Profile</a></li>
+                                        <li><a href="dashboard.jsp">Dashboard</a></li>
+                                        <li class="active"><a href="profile.jsp">Profile</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -109,10 +108,61 @@
             </div>
         </header>
 
-        <div class="main-content">
-            <div class="sidebar">
-                <a href="dashboard.jsp" class="btn-custom">Report</a>
-                <a href="statistics.jsp" class="btn-custom">Statistics</a>
+        <div class="bg-light">
+            <div class="box">
+                <h3 class="text-center">Change Password</h3>
+                <form action="ChangePasswordServlet" method="post">
+                    <div class="mb-3">
+                        <label for="oldPassword" class="form-label">Current Password</label>
+                        <div class="input-group">
+                            <input type="password" name="oldPassword" id="oldPassword" class="form-control" required>
+                            <button class="btn btn-outline-secondary toggle-password" type="button" onclick="togglePassword('oldPassword', 'toggleOldPasswordIcon')">
+                                <i id="toggleOldPasswordIcon" class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                        <% if (request.getAttribute("oldPasswordError") != null) { %>
+                        <div class="error-message"><%= request.getAttribute("oldPasswordError") %></div>
+                        <% } %>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">New Password</label>
+                        <div class="input-group">
+                            <input type="password" name="newPassword" id="newPassword" class="form-control" required>
+                            <button class="btn btn-outline-secondary toggle-password" type="button" onclick="togglePassword('newPassword', 'toggleNewPasswordIcon')">
+                                <i id="toggleNewPasswordIcon" class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                        <% if (request.getAttribute("newPasswordError") != null) { %>
+                        <div class="error-message"><%= request.getAttribute("newPasswordError") %></div>
+                        <% } %>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                        <div class="input-group">
+                            <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" required>
+                            <button class="btn btn-outline-secondary toggle-password" type="button" onclick="togglePassword('confirmPassword', 'toggleConfirmPasswordIcon')">
+                                <i id="toggleConfirmPasswordIcon" class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                        <% if (request.getAttribute("confirmPasswordError") != null) { %>
+                        <div class="error-message"><%= request.getAttribute("confirmPasswordError") %></div>
+                        <% } %>
+                    </div>
+
+
+                    <% if (request.getAttribute("successMessage") != null) { %>
+                    <div class="alert alert-success"><%= request.getAttribute("successMessage") %></div>
+                    <% } %>
+
+                    <% if (request.getAttribute("errorMessage") != null) { %>
+                    <div class="alert alert-danger"><%= request.getAttribute("errorMessage") %></div>
+                    <% } %>
+
+                    <button type="submit" class="btn btn-primary w-100">Change Password</button>
+                </form>
+                <a href="profile.jsp" class="btn btn-secondary w-100 mt-3">Back to Profile</a>
             </div>
         </div>
 
@@ -144,5 +194,23 @@
                 </div>
             </div>
         </footer>
+
+        <script>
+            function togglePassword(inputId, iconId) {
+                var input = document.getElementById(inputId);
+                var icon = document.getElementById(iconId);
+
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.classList.remove("fa-eye");
+                    icon.classList.add("fa-eye-slash");
+                } else {
+                    input.type = "password";
+                    icon.classList.remove("fa-eye-slash");
+                    icon.classList.add("fa-eye");
+                }
+            }
+        </script>
+
     </body>
 </html>

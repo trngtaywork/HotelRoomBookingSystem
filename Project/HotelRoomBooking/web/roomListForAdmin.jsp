@@ -13,7 +13,7 @@
         return;
     }
 
-    // Fetch all rooms
+
     RoomDAO roomDAO = new RoomDAO();
     List<Room> roomList = roomDAO.getAll();
 %>
@@ -63,24 +63,25 @@
                 padding-left: 5px;
             }
             .btn-custom {
-                height: 30px;
+                height: 35px;
                 width: 70px;
+                border-radius: 5%;
                 background-color: black;
                 color: white;
                 border: 1px solid black;
                 padding-left: 5px;
-                text-align: center;
-                vertical-align: middle;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
             }
             .btn-custom1:hover {
                 background-color: #dfa974;
             }
-            .btn-custom:hover {
+            table th {
                 background-color: #dfa974;
+                text-align: center;
+                color: white;
+            }
+            table td {
+                text-align: center;
+                vertical-align: middle;
             }
         </style>
 
@@ -102,17 +103,14 @@
                             <div class="nav-menu">
                                 <nav class="mainmenu">
                                     <ul>
-                                        <li class="active"><a href="./index.html">Home</a></li>
-                                        <li><a href="RoomList">Rooms</a></li>
-                                        <li><a href="./about-us.html">About Us</a></li>
-                                        <li><a href="./pages.html">Pages</a></li>
-                                        <li><a href="./blog.html">News</a></li>
-                                        <li><a href="./contact.html">Contact</a></li>
+                                        <li><a href="./index.html">Home</a></li>
+                                        <li><a href="userList.jsp">User List</a></li>
+                                        <li class="active"><a href="roomListForAdmin.jsp">Room List</a></li>
+                                        <li><a href="serviceList.jsp">Service List</a></li>
+                                        <li><a href="dashboard.jsp">Dashboard</a></li>
+                                        <li><a href="profile.jsp">Profile</a></li>
                                     </ul>
                                 </nav>
-                                <div class="nav-right search-switch">
-                                    <i class="icon_search"></i>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -123,18 +121,53 @@
         <!-- Room List Table -->
         <div class="container mt-4 mb-4 p-3">
             <h3>Room List For Admin</h3>
+
             <button class="btn-custom1 btn-primary" onclick="window.location.href = 'addRoom.jsp'">Add New Room</button>
+            <hr>
+            <form action="RoomListForAdminServlet" method="get" class="row">
+                <div class="col-md-3">
+                    <label for="priceFilter">Price:</label>
+                    <select name="priceFilter" id="priceFilter" class="form-control">
+                        <option value="asc">Low to High</option>
+                        <option value="desc">High to Low</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="statusFilter">Status:</label>
+                    <select name="statusFilter" id="statusFilter" class="form-control">
+                        <option value="all">All</option>
+                        <option value="available">Available</option>
+                        <option value="occupied">Occupied</option>
+                        <option value="maintenance">Maintenance</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="typeFilter">Type:</label>
+                    <select name="typeFilter" id="typeFilter" class="form-control">
+                        <option value="all">All</option>
+                        <option value="single">Single</option>
+                        <option value="double">Double</option>
+                        <option value="suite">Suite</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="roomNameFilter">Room Name:</label>
+                    <input type="text" name="roomNameFilter" id="roomNameFilter" class="form-control" placeholder="Search by name">
+                </div>
+            </form>
             <table class="table table-bordered mt-3">
                 <thead>
                     <tr>
-                        <th style="background-color: #dfa974">ID</th>
-                        <th style="background-color: #dfa974">Image</th>
                         <th style="background-color: #dfa974">Room Name</th>
+                        <th style="background-color: #dfa974">Image</th>
                         <th style="background-color: #dfa974">Description</th>
                         <th style="background-color: #dfa974">Price</th>
                         <th style="background-color: #dfa974">Status Room</th>
                         <th style="background-color: #dfa974">Type Room</th>
-                        <th style="background-color: #dfa974">Action</th>
+                        <th style="background-color: #dfa974; width: 170px">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -143,16 +176,14 @@
                             for (Room room : roomList) { 
                     %>
                     <tr>
-                        <td><%= room.getRoomID() %></td>
-                        <td><img src="<%= request.getContextPath() + room.getImage() %>" width="100" height="100"></td>
                         <td><%= room.getRoomName() %></td>
+                        <td><img src="<%= request.getContextPath() + room.getImage() %>" width="150" height="100"></td>                       
                         <td><%= room.getDescription() %></td>
                         <td><%= room.getPrice() %></td>
                         <td><%= room.getStatusRoom() %></td>
                         <td><%= room.getTypeRoom() %></td>
                         <td>
-                            <button class="btn-custom btn-danger" onclick="window.location.href='editRoom.jsp?roomID=<%= room.getRoomID() %>'">Edit</button>
-                            <br>
+                            <button class="btn-custom btn-info" onclick="window.location.href = 'editRoom.jsp?roomID=<%= room.getRoomID() %>'">Edit</button>
                             <button class="btn-custom btn-danger" onclick="window.location.href = 'deleteRoom.jsp?roomID=<%= room.getRoomID() %>'">Delete</button>
                         </td>
                     </tr>
