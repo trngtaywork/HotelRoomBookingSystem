@@ -12,6 +12,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import dao.*;
+import java.text.SimpleDateFormat;
+import java.time.format.*;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import model.*;
 
@@ -19,14 +23,15 @@ import model.*;
  *
  * @author My PC
  */
-@WebServlet(name = "BookingList", urlPatterns = {"/BookingList"})
-public class BookingList extends HttpServlet {
+@WebServlet(name = "BookingListAdmin", urlPatterns = {"/BookingListAdmin"})
+public class BookingListAdmin extends HttpServlet {
+
     BookingDAO bookingDao = new BookingDAO();
     BookingRoomDAO bookingRoomDao = new BookingRoomDAO();
     AccountDAO accountDao = new AccountDAO();
     ProfileDAO profileDAO = new ProfileDAO();
     RoomDAO roomDAO = new RoomDAO();
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,35 +43,19 @@ public class BookingList extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //temp implement
         List<Booking> bookingList = bookingDao.GetBookingList();
         List<Profile> profileList = profileDAO.GetProfileList();
         List<Account> accountList = accountDao.GetAccountList();
         List<Room> roomList = roomDAO.GetRoomList();
         List<BookingRoom> bookingRoomList = bookingRoomDao.GetBookingRoomList();
+        
         request.setAttribute("bookingRoomList", bookingRoomList);
         request.setAttribute("bookingList", bookingList);
         request.setAttribute("profileList", profileList);
         request.setAttribute("accountList", accountList);
         request.setAttribute("roomList", roomList);
 
-        request.getRequestDispatcher("BookingList.jsp").forward(request, response);
-        
-        /*
-        Booking target = new Booking();
-        target.setProfileID(session.getProfileID());//
-        List<Booking> bookingList = bookingDao.SearchBooking(target);
-        List<Profile> profileList = profileDAO.GetProfileList();
-        List<Account> accountList = accountDao.GetAccountList();
-        List<Room> roomList = roomDAO.GetRoomList();
-        
-        request.setAttribute("bookingList", bookingList);
-        request.setAttribute("bookingList", profileList);
-        request.setAttribute("bookingList", accountList);
-        request.setAttribute("roomList", roomList);
-
-        request.getRequestDispatcher("BookingList.jsp").forward(request, response);
-        */
+        request.getRequestDispatcher("BookingListAdmin.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -95,7 +84,50 @@ public class BookingList extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //default
+        List<Profile> profileList = profileDAO.GetProfileList();
+        List<Account> accountList = accountDao.GetAccountList();
+        List<Room> roomList = roomDAO.GetRoomList();
+        List<BookingRoom> bookingRoomList = bookingRoomDao.GetBookingRoomList();
+
+        request.setAttribute("profileList", profileList);
+        request.setAttribute("accountList", accountList);
+        request.setAttribute("roomList", roomList);
+        request.setAttribute("bookingRoomList", bookingRoomList);
+        
+        String searchString = request.getParameter("searchString");
+        String field = request.getParameter("fieldList");
+        Date fromDate = null;
+        Date toDate = null;
+
+        List<Booking> searchResult = new ArrayList<Booking>();
+        
+        try {
+            if (/*request.getParameter("anyDate") == null &&*/ !request.getParameter("fromDate").equals("") && !request.getParameter("toDate").equals("")) {
+                fromDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("fromDate"));
+                toDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("toDate"));
+                
+                //check date input
+                if(toDate.before(fromDate)){
+                    request.setAttribute("error", "Invalid Date");
+                    request.getRequestDispatcher("BookingListAdmin.jsp").forward(request, response);
+                }
+                
+                searchResult = bookingDao.SearchBooking(field, searchString, fromDate, toDate);
+            }
+            else/* (request.getParameter("anyDate") != null)*/{
+                searchResult = bookingDao.SearchBooking(field, searchString);
+            }
+            //else{
+              //  searchResult = bookingDao.GetBookingList();
+            //}
+            
+            request.setAttribute("bookingList", searchResult);
+            request.getRequestDispatcher("BookingListAdmin.jsp").forward(request, response);
+            
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+        }
     }
 
     /**

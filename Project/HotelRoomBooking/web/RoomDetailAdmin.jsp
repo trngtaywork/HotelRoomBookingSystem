@@ -6,11 +6,23 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.*" %>
+
+<%--
+<%
+    HttpSession sessionUser = request.getSession(false);
+    Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
+    if (user == null) {
+        response.sendRedirect("index.jsp");
+        return;
+    }
+%>
+--%>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Room Detail</title>
+        <title>Room Detail Admin</title>
 
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">

@@ -23,7 +23,7 @@ public class DBContext {
     public DBContext() {
         try {
             //String url = "jdbc:sqlserver://localhost\\NGUYENVIETCUONG:1433;databaseName=HotelRoomBooking;encrypt=true;trustServerCertificate=true";
-            String url = "jdbc:sqlserver://localhost\\NGUYENVIETCUONG:1433;databaseName=HotelRoomBooking;trustServerCertificate=true";
+            String url = "jdbc:sqlserver://localhost\\NGUYENVIETCUONG:1433;databaseName=HRBS;trustServerCertificate=true";
             String username = "admin";
             String password = "admin";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

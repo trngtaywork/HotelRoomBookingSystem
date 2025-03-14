@@ -14,28 +14,25 @@ public class Profile {
     private String Name;
     private String PhoneNumber;
     private String Gender;
-    private String Role;
     private String Address;
     private int AccountID;
 
     public Profile() {
     }
 
-    public Profile(int ProfileID, String Name, String PhoneNumber, String Gender, String Role, String Address, int AccountID) {
+    public Profile(int ProfileID, String Name, String PhoneNumber, String Gender, String Address, int AccountID) {
         this.ProfileID = ProfileID;
         this.Name = Name;
         this.PhoneNumber = PhoneNumber;
         this.Gender = Gender;
-        this.Role = Role;
         this.Address = Address;
         this.AccountID = AccountID;
     }
 
-    public Profile(String Name, String PhoneNumber, String Gender, String Role, String Address, int AccountID) {
+    public Profile(String Name, String PhoneNumber, String Gender, String Address, int AccountID) {
         this.Name = Name;
         this.PhoneNumber = PhoneNumber;
         this.Gender = Gender;
-        this.Role = Role;
         this.Address = Address;
         this.AccountID = AccountID;
     }
@@ -70,14 +67,6 @@ public class Profile {
 
     public void setGender(String Gender) {
         this.Gender = Gender;
-    }
-
-    public String getRole() {
-        return Role;
-    }
-
-    public void setRole(String Role) {
-        this.Role = Role;
     }
 
     public String getAddress() {

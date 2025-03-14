@@ -41,6 +41,10 @@ public class BookingRoomDAO extends DBContext{
         try {
             ResultSet rs = getData(sql);
 
+            if(rs == null){
+                return null;
+            }
+            
             while (rs.next()) {
                 BookingRoom br = new BookingRoom();
                 br.setBookingRoomID(rs.getInt("BookingRoomID"));
@@ -59,15 +63,19 @@ public class BookingRoomDAO extends DBContext{
         return bookingRooms;
     }
     
-    public List<BookingRoom> SearchBookingRoom(int bookingID, int roomID)
+    public List<BookingRoom> SearchBookingRooms(int bookingID, int roomID)
     {
-        String sql = "SELECT [BookingRoomID], [BookingID], [RoomID], [Quantity], [StartTime], [EndTime] FROM [dbo].[BookingRoom] WHERE [BookingID] = " + bookingID + " AND [RoomID] = " + roomID;
+        String sql = "SELECT [BookingRoomID], [BookingID], [RoomID], [Quantity], [StartTime], [EndTime] FROM [dbo].[BookingRoom] WHERE [BookingID] = '" + bookingID + "' AND [RoomID] = '" + roomID + "'";
         
         List<BookingRoom> bookingRooms = new ArrayList<>();
         
         try {
             ResultSet rs = getData(sql);
 
+            if(rs == null){
+                return null;
+            }
+            
             while (rs.next()) {
                 BookingRoom br = new BookingRoom();
                 br.setBookingRoomID(rs.getInt("BookingRoomID"));
@@ -84,5 +92,34 @@ public class BookingRoomDAO extends DBContext{
         }
 
         return bookingRooms;
+    }
+    
+    public BookingRoom SearchBookingRoom(int bookingID, int roomID)
+    {
+        String sql = "SELECT [BookingRoomID], [BookingID], [RoomID], [Quantity], [StartTime], [EndTime] FROM [dbo].[BookingRoom] WHERE [BookingID] = '" + bookingID + "' AND [RoomID] = '" + roomID + "'";
+        
+        try {
+            ResultSet rs = getData(sql);
+
+            if(rs == null){
+                return null;
+            }
+            
+            if (rs.next()) {
+                BookingRoom br = new BookingRoom();
+                br.setBookingRoomID(rs.getInt("BookingRoomID"));
+                br.setBookingID(rs.getInt("BookingID"));
+                br.setRoomID(rs.getInt("RoomID"));
+                br.setQuantity(rs.getInt("Quantity"));
+                br.setStartTime(rs.getDate("StartTime"));
+                br.setEndTime(rs.getDate("EndTime"));
+                
+                return br;
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return null;
     }
 }

@@ -18,11 +18,14 @@ import model.*;
  *
  * @author My PC
  */
-@WebServlet(name = "BookingDetail", urlPatterns = {"/BookingDetail"})
-public class BookingDetail extends HttpServlet {
+@WebServlet(name = "BookingDetailAdmin", urlPatterns = {"/BookingDetailAdmin"})
+public class BookingDetailAdmin extends HttpServlet {
     BookingDAO bookingDAO = new BookingDAO();
     BookingRoomDAO bookingRoomDAO = new BookingRoomDAO();
     RoomDAO roomDAO = new RoomDAO();
+    AccountDAO accountDAO = new AccountDAO();
+    ProfileDAO profileDAO = new ProfileDAO();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,21 +40,34 @@ public class BookingDetail extends HttpServlet {
         var bookingID = request.getParameter("bookingID");
 
         if (bookingID == null || bookingID.length() == 0) {
-            request.getRequestDispatcher("BookingList").forward(request, response);
+            request.getRequestDispatcher("BookingListAdmin").forward(request, response);
         } else {
             Booking booking = bookingDAO.SearchBooking(Integer.parseInt(bookingID));
             var roomId = booking.getRoomID();
+            var profileId = booking.getProfileID();
             if(roomId <= 0){
-                request.getRequestDispatcher("BookingList").forward(request, response);
+                request.getRequestDispatcher("BookingListAdmin").forward(request, response);
+            }
+            if(profileId <= 0){
+                request.getRequestDispatcher("BookingListAdmin").forward(request, response);
             }
             
             Room room = roomDAO.SearchRoomByID(roomId);
-            BookingRoom bookingRoom = bookingRoomDAO.SearchBookingRoom(booking.getBookingID(), roomId);
+            Profile profile = profileDAO.SearchProfileById(profileId);
+            Account account = accountDAO.SearchAccount(profile.getAccountID());
+            BookingRoom bookingRoom = bookingRoomDAO.SearchBookingRoom(booking.getBookingID(), room.getRoomID());
+            
+            if(room == null || profile == null || account == null){
+                request.getRequestDispatcher("BookingListAdmin").forward(request, response);
+            }
             
             request.setAttribute("room", room);
             request.setAttribute("booking", booking);
             request.setAttribute("bookingRoom", bookingRoom);
-            request.getRequestDispatcher("BookingDetail.jsp").forward(request, response);
+            request.setAttribute("profile", profile);
+            request.setAttribute("account", account);
+            
+            request.getRequestDispatcher("BookingDetailAdmin.jsp").forward(request, response);
         }
     }
 

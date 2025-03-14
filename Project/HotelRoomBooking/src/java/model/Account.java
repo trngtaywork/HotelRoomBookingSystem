@@ -18,23 +18,30 @@ public class Account {
     private String Email;
     private String Password;
     private Date CreatedDate;
+    private String Role;
+    private boolean IsActive;
 
     public Account() {
-    }
 
-    public Account(int AccountID, String Username, String Email, String Password, Date CreatedDate) {
+    }
+    
+    public Account(int AccountID, String Username, String Email, String Password, Date CreatedDate, String Role, boolean IsActive) {
         this.AccountID = AccountID;
         this.Username = Username;
         this.Email = Email;
         this.Password = Password;
         this.CreatedDate = CreatedDate;
+        this.Role = Role;
+        this.IsActive = IsActive;
     }
 
-    public Account(String Username, String Email, String Password, Date CreatedDate) {
+    public Account(String Username, String Email, String Password, Date CreatedDate, String Role, boolean IsActive) {
         this.Username = Username;
         this.Email = Email;
         this.Password = Password;
         this.CreatedDate = CreatedDate;
+        this.Role = Role;
+        this.IsActive = IsActive;
     }
 
     public int getAccountID() {
@@ -77,4 +84,21 @@ public class Account {
         this.CreatedDate = CreatedDate;
     }
 
+    public String getRole() {
+        return Role;
+    }
+
+    public void setRole(String Role) {
+        this.Role = Role;
+    }
+
+    public boolean getIsActive() {
+        return IsActive;
+    }
+
+    public void setIsActive(boolean IsActive) {
+        this.IsActive = IsActive;
+    }
+
+    
 }

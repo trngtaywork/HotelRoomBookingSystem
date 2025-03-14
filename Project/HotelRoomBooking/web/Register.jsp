@@ -55,7 +55,7 @@
                 width:100%;
                 margin:auto;
                 max-width:525px;
-                min-height:670px;
+                min-height: 1000px;
                 position:relative;
                 background:url(https://raw.githubusercontent.com/khadkamhn/day-01-login-form/master/img/bg.jpg) no-repeat center;
                 box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19);
@@ -259,6 +259,10 @@
                 <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
                 <div class="login-form">
                     <div class="sign-in-htm">
+                        <c:if test="${requestScope.error != null || !requestScope.error.isBlank()}">
+                            <label style="color: red">${requestScope.error}</label>
+                        </c:if>
+
                         <div class="group">
                             <label for="user" class="label">Username</label>
                             <input id="user" type="text" class="input">
@@ -281,17 +285,17 @@
                     </div>
                     <form method="post" action="Register">
                         <div class="sign-up-htm">
-                            <c:if test="${requestScope.error != null || requestScope.error.isBlank()}">
+                            <c:if test="${requestScope.error != null || !requestScope.error.isBlank()}">
                                 <label style="color: red">${requestScope.error}</label>
                             </c:if>
-                            
+
                             <div class="group">
                                 <label for="user" class="label">Username</label>
                                 <input id="user" name="username" type="text" class="input">
                             </div>
                             <div class="group">
                                 <label for="pass" class="label">Email Address</label>
-                                <input id="pass" name="email" type="text" class="input">
+                                <input id="email" name="email" type="text" class="input">
                             </div>
                             <div class="group">
                                 <label for="pass" class="label">Password</label>
@@ -300,7 +304,7 @@
 
                             <div class="group">
                                 <label for="fullname" class="label">Full Name</label>
-                                <input id="fullname" name="fullname" type="text" class="input">
+                                <input id="fullname" name="fullName" type="text" class="input">
                             </div>
                             <div class="group">
                                 <label for="phone" class="label">Phone Number</label>
@@ -315,7 +319,7 @@
                                 <label for="address" class="label">Address</label>
                                 <input id="address" name="address" type="text" class="input">
                             </div>
-                            
+
                             <div class="group">
                                 <input type="submit" class="button" value="Sign Up">
                             </div>

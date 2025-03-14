@@ -33,6 +33,10 @@ public class RoomDAO extends DBContext {
         try {
             ResultSet rs = getData(sql);
 
+            if(rs == null){
+                return null;
+            }
+            
             while (rs.next()) {
                 Room r = new Room();
                 r.setRoomID(rs.getInt("RoomID"));
@@ -63,12 +67,15 @@ public class RoomDAO extends DBContext {
                      ,[Image]
                      ,[Status]
                      ,[Type]
-                     FROM [dbo].[Room] WHERE [RoomID] = """ + RoomID;
+                     FROM [dbo].[Room] WHERE [RoomID] = '""" + RoomID + "'";
 
         try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
+            ResultSet rs = getData(sql);
 
+            if(rs == null){
+                return null;
+            }
+            
             if (rs.next()) {
                 Room r = new Room();
 

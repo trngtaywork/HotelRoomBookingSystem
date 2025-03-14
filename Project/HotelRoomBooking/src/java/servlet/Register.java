@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 import model.*;
 
 /**
@@ -36,7 +37,7 @@ public class Register extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("Register.jsp").forward(request, response);//Chang to login
+        request.getRequestDispatcher("Register.jsp").forward(request, response);//Change to login
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -65,35 +66,60 @@ public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("error", null);
+        
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         Date temp = new Date();
         java.sql.Date createdDate = new java.sql.Date(temp.getTime());//get current date
+        String role = "Customer";
+        boolean isActive = true;
 
         String fullName = request.getParameter("fullName");
         String phone = request.getParameter("phoneNumber");
         String gender = request.getParameter("gender");
-        String role = request.getParameter("role");
         String address = request.getParameter("address");
         
-        if(checkInputEmpty(username, email, password, fullName, phone, gender, role, address)){
-            request.setAttribute("error", "Invalid input");
+        if(checkInputEmpty(username, email, password, fullName, phone, gender, address)){
+            request.setAttribute("error", "Invalid Register input");
             request.getRequestDispatcher("Register.jsp").forward(request, response);
+            return;
         }
         
-        Account account = new Account(username, email, password, createdDate);
+        
+        Account account = new Account(username, email, password, createdDate, role, isActive);
         //Profile profile = new Profile();
 
         if(accountDAO.ValidateInput(account))//validate
         {
             accountDAO.Add(account);
-            Account added = accountDAO.SearchAccount(account.getUsername(), account.getEmail(), account.getPassword());
+            Account added = accountDAO.SearchAccount(username, email, password);
             
-            profileDAO.Add(new Profile(fullName, phone, gender, role, address, added.getAccountID()));
+            if(added == null){
+                request.setAttribute("error", "Failed to insert Account");
+                request.getRequestDispatcher("Register.jsp").forward(request, response);
+                return;
+            }
+            
+            Profile newProfile = new Profile(fullName, phone, gender, address, added.getAccountID());
+            profileDAO.Add(newProfile);
+            
+            //test
+            newProfile.setProfileID(-1);
+            List<Profile> addedProfile = profileDAO.SearchProfile(newProfile);
+            if(addedProfile.isEmpty()){
+                accountDAO.Delete(added.getAccountID());
+                request.setAttribute("error", "Failed to insert profile || " + added.getAccountID());
+                request.getRequestDispatcher("Register.jsp").forward(request, response);
+                return;
+            }
+            //end test
         }
         else{
+            request.setAttribute("error", "Failed to validate input");
             request.getRequestDispatcher("Register.jsp").forward(request, response);
+            return;
         }
         request.getRequestDispatcher("RoomList").forward(request, response);
         //account added but not profile
@@ -136,7 +162,7 @@ public class Register extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private boolean checkInputEmpty(String username, String email, String password, String fullName, String phone, String gender, String role, String address){
-        return username.isBlank() || email.isBlank() || password.isBlank() || fullName.isBlank() || phone.isBlank() || !phone.matches("[0-9]+") || gender.isBlank() || role.isBlank() || address.isBlank();
+    private boolean checkInputEmpty(String username, String email, String password, String fullName, String phone, String gender, String address){
+        return username.isBlank() || email.isBlank() || password.isBlank() || fullName.isBlank() || phone.isBlank() || !phone.matches("[0-9]+") || gender.isBlank() || address.isBlank();
     }
 }

@@ -7,11 +7,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.*" %>
+
+<%--
+<%
+    HttpSession sessionUser = request.getSession(false);
+    Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
+    if (user == null) {
+        response.sendRedirect("index.jsp");
+        return;
+    }
+%>
+--%>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Room List</title>
+        <title>Room List Admin</title>
 
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
@@ -49,7 +61,6 @@
 
         <section class="rooms-section spad">
             <div class="container">
-
                 <c:choose>
                     <c:when test="${requestScope.roomList.size() == 0}">
                         <label class="h2">Room List is Empty</label>
@@ -83,7 +94,6 @@
                         </div>
                     </c:otherwise>
                 </c:choose>
-
             </div>
         </section>
 
