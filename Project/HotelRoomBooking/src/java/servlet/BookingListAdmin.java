@@ -31,6 +31,8 @@ public class BookingListAdmin extends HttpServlet {
     AccountDAO accountDao = new AccountDAO();
     ProfileDAO profileDAO = new ProfileDAO();
     RoomDAO roomDAO = new RoomDAO();
+    BookingServiceDAO bookingServiceDAO = new BookingServiceDAO();
+    ServiceDAO serviceDAO = new ServiceDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,12 +50,16 @@ public class BookingListAdmin extends HttpServlet {
         List<Account> accountList = accountDao.GetAccountList();
         List<Room> roomList = roomDAO.GetRoomList();
         List<BookingRoom> bookingRoomList = bookingRoomDao.GetBookingRoomList();
+        List<BookingService> bookingServiceList = bookingServiceDAO.GetBookingServiceList();
+        List<Service> serviceList = serviceDAO.GetServiceList();
         
         request.setAttribute("bookingRoomList", bookingRoomList);
         request.setAttribute("bookingList", bookingList);
         request.setAttribute("profileList", profileList);
         request.setAttribute("accountList", accountList);
         request.setAttribute("roomList", roomList);
+        request.setAttribute("bookingServiceList", bookingServiceList);
+        request.setAttribute("serviceList", serviceList);
 
         request.getRequestDispatcher("BookingListAdmin.jsp").forward(request, response);
     }

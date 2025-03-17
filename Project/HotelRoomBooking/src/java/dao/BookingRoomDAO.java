@@ -26,12 +26,57 @@ public class BookingRoomDAO extends DBContext{
                 st.setInt(2, bookingRoom.getRoomID());
                 st.setInt(3, bookingRoom.getQuantity());
                 st.setDate(4, bookingRoom.getStartTime());
-                st.setDate(4, bookingRoom.getEndTime());
+                st.setDate(5, bookingRoom.getEndTime());
 
                 st.executeUpdate();
             } catch (Exception e) {
                 System.out.println(e.toString());
             }
+    }
+    
+    public void Update(BookingRoom bookingRoom) {
+        String SQL = "UPDATE [dbo].[BookingRoom] SET [Quantity] = ?, [StartTime] = ?, [EndTime] = ? "
+                + "WHERE [BookingID] = ? AND [RoomID] = ?";
+        
+        try {
+            PreparedStatement st = connection.prepareStatement(SQL);
+            st.setInt(1, bookingRoom.getQuantity());
+            st.setDate(2, bookingRoom.getStartTime());
+            st.setDate(3, bookingRoom.getEndTime());
+            st.setInt(4, bookingRoom.getBookingID());
+            st.setInt(5, bookingRoom.getRoomID());
+            
+            st.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+    
+    public void Delete(int bookingID, int roomID) {
+        String SQL = "DELETE FROM [dbo].[BookingRoom] WHERE [BookingID] = ? AND [RoomID] = ?";
+        
+        try {
+            PreparedStatement st = connection.prepareStatement(SQL);
+            st.setInt(1, bookingID);
+            st.setInt(2, roomID);
+            
+            st.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+    
+    public void Delete(int bookingRoomID) {
+        String SQL = "DELETE FROM [dbo].[BookingRoom] WHERE [BookingRoomID = ?";
+        
+        try {
+            PreparedStatement st = connection.prepareStatement(SQL);
+            st.setInt(1, bookingRoomID);
+            
+            st.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
     
     public List<BookingRoom> GetBookingRoomList(){

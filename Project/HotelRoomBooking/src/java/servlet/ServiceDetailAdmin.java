@@ -4,6 +4,7 @@
  */
 package servlet;
 
+import dao.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,21 +12,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import dao.*;
-import java.util.List;
 import model.*;
-
 /**
  *
  * @author My PC
  */
-@WebServlet(name = "BookingList", urlPatterns = {"/BookingList"})
-public class BookingList extends HttpServlet {
-    BookingDAO bookingDao = new BookingDAO();
-    BookingRoomDAO bookingRoomDao = new BookingRoomDAO();
-    AccountDAO accountDao = new AccountDAO();
+@WebServlet(name = "ServiceDetailAdmin", urlPatterns = {"/ServiceDetailAdmin"})
+public class ServiceDetailAdmin extends HttpServlet {
+    BookingDAO bookingDAO = new BookingDAO();
+    BookingServiceDAO bookingServiceDAO = new BookingServiceDAO();
+    ServiceDAO serviceDAO = new ServiceDAO();
+    AccountDAO accountDAO = new AccountDAO();
     ProfileDAO profileDAO = new ProfileDAO();
-    RoomDAO roomDAO = new RoomDAO();
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,36 +36,13 @@ public class BookingList extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //temp implement
-        List<Booking> bookingList = bookingDao.GetBookingList();
-        List<Profile> profileList = profileDAO.GetProfileList();
-        List<Account> accountList = accountDao.GetAccountList();
-        List<Room> roomList = roomDAO.GetRoomList();
-        List<BookingRoom> bookingRoomList = bookingRoomDao.GetBookingRoomList();
+        int serviceID = Integer.parseInt(request.getParameter("serviceID"));
         
-        request.setAttribute("bookingRoomList", bookingRoomList);
-        request.setAttribute("bookingList", bookingList);
-        request.setAttribute("profileList", profileList);
-        request.setAttribute("accountList", accountList);
-        request.setAttribute("roomList", roomList);
+        Service service = serviceDAO.SearchServiceByID(serviceID);
+        
+        request.setAttribute("service", service);
 
-        request.getRequestDispatcher("BookingList.jsp").forward(request, response);
-        
-        /*
-        Booking target = new Booking();
-        target.setProfileID(session.getProfileID());//
-        List<Booking> bookingList = bookingDao.SearchBooking(target);
-        List<Profile> profileList = profileDAO.GetProfileList();
-        List<Account> accountList = accountDao.GetAccountList();
-        List<Room> roomList = roomDAO.GetRoomList();
-        
-        request.setAttribute("bookingList", bookingList);
-        request.setAttribute("bookingList", profileList);
-        request.setAttribute("bookingList", accountList);
-        request.setAttribute("roomList", roomList);
-
-        request.getRequestDispatcher("BookingList.jsp").forward(request, response);
-        */
+        request.getRequestDispatcher("ServiceDetailAdmin.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

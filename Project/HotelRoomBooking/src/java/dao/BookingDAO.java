@@ -35,6 +35,33 @@ public class BookingDAO extends DBContext {//add merge?
             System.out.println(e.toString());
         }
     }
+    
+    public void Update(Booking booking) {
+        String SQL = "UPDATE [dbo].[Booking] SET ProfileID = ?, RoomID = ?, BookingDate = ?, TotalAmount = ?, Status = ? WHERE BookingID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(SQL);
+            st.setInt(1, booking.getProfileID());
+            st.setInt(2, booking.getRoomID());
+            st.setDate(3, booking.getBookingDate());
+            st.setFloat(4, booking.getTotalAmount());
+            st.setString(5, booking.getStatus());
+            st.setInt(6, booking.getBookingID());
+            st.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    public void Delete(int bookingID) {
+        String SQL = "DELETE FROM [dbo].[Booking] WHERE BookingID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(SQL);
+            st.setInt(1, bookingID);
+            st.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
 
     public List<Booking> GetBookingList() {
         String sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE 1 = 1";
@@ -294,6 +321,8 @@ public class BookingDAO extends DBContext {//add merge?
 
         return null;
     }
+    
+    
 
     private boolean IsNullOrEmpty(String s) {
         return s.trim().length() == 0 || s.equals(null) || s.equals("");

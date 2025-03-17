@@ -42,55 +42,47 @@
         <link rel="stylesheet" href="css/style.css" type="text/css">
     </head>
     <body>
-        <%--<%var roomList = request.getAttribute("roomList");%>--%>
         <header>
             <jsp:include page="header.html"></jsp:include>
             </header>
-        <%--
-    <c:forEach items="${requestScope.roomList}" var="r">
-        Room Name: <p>${r.getRoomName()}</p><br>
-        Description: <P>${r.getDescription()}</P><br>
-        Price <P>${r.getPrice()}</P><br>
-        Image: <P>${r.getImage()}</P><br>
-        Type: <P>${r.getTypeID()}</P><br>
-        Status: <P>${r.getStatusID()}</P><br>
-        <a href="RoomDetail?roomID=${r.getRoomID()}">Details</a><br>
-        <br>
-    </c:forEach>
-        --%>
 
-        <section class="rooms-section spad">
-            <div class="container">
+            <section class="rooms-section spad">
+                <div class="container">
                 <c:choose>
                     <c:when test="${requestScope.roomList.size() == 0}">
                         <label class="h2">Room List is Empty</label>
                     </c:when>    
                     <c:otherwise>
-                        <div class="row">
-                            <c:forEach items="${requestScope.roomList}" var="r">
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="room-item">
-                                        <img src="${r.getImage()}" alt="">
-                                        <div class="ri-text">
-                                            <h4>${r.getRoomName()}</h4>
-                                            <h3>${r.getPrice()}$<span>/Pernight</span></h3>
-                                            <table>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="r-o">Type:</td>
-                                                        <td>${r.getType()}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="r-o">Status:</td>
-                                                        <td>${r.getStatus()}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <a href="RoomDetail?roomID=${r.getRoomID()}" class="primary-btn link">More Details</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:forEach>
+                        <div class="container mt-4">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Room ID</th>
+                                        <th>Room Name</th>
+                                        <th>Price</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th style="width: 300px">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${requestScope.roomList}" var="r">
+                                        <tr>
+                                            <td>${r.getRoomID()}</td>
+                                            <td>${r.getRoomName()}</td>
+                                            <td>${r.getPrice()}</td>
+                                            <td>${r.getType()}</td>
+                                            <td>${r.getStatus()}</td>
+                                            <td>
+                                                <button class="btn-custom btn-primary" onclick="window.location.href = 'editUser.jsp?accountID=<%= acc.getAccountID() %>'">Edit</button>
+                                                <button class="btn-custom btn-danger" onclick="window.location.href = 'deleteUser.jsp?accountID=<%= acc.getAccountID() %>'">Delete</button>
+                                                <button class="btn-custom btn-info" onclick="window.location.href = 'profileDetails.jsp?accountID=<%= acc.getAccountID() %>'">Profile</button>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+
+                            </table>
                         </div>
                     </c:otherwise>
                 </c:choose>

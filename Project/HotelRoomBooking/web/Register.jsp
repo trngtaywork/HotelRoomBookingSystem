@@ -301,7 +301,7 @@
                                 <label for="pass" class="label">Password</label>
                                 <input id="pass" name="password" type="password" class="input" data-type="password">
                             </div>
-
+                            <hr>
                             <div class="group">
                                 <label for="fullname" class="label">Full Name</label>
                                 <input id="fullname" name="fullName" type="text" class="input">

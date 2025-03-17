@@ -11,22 +11,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import dao.*;
-import java.util.List;
 import model.*;
+import dao.*;
 
 /**
  *
  * @author My PC
  */
-@WebServlet(name = "BookingList", urlPatterns = {"/BookingList"})
-public class BookingList extends HttpServlet {
-    BookingDAO bookingDao = new BookingDAO();
-    BookingRoomDAO bookingRoomDao = new BookingRoomDAO();
-    AccountDAO accountDao = new AccountDAO();
-    ProfileDAO profileDAO = new ProfileDAO();
-    RoomDAO roomDAO = new RoomDAO();
-    
+@WebServlet(name = "DeleteService", urlPatterns = {"/DeleteService"})
+public class DeleteService extends HttpServlet {
+    ServiceDAO serviceDAO = new ServiceDAO();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,36 +32,12 @@ public class BookingList extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //temp implement
-        List<Booking> bookingList = bookingDao.GetBookingList();
-        List<Profile> profileList = profileDAO.GetProfileList();
-        List<Account> accountList = accountDao.GetAccountList();
-        List<Room> roomList = roomDAO.GetRoomList();
-        List<BookingRoom> bookingRoomList = bookingRoomDao.GetBookingRoomList();
+        int serviceID = Integer.parseInt(request.getParameter("serviceID"));
         
-        request.setAttribute("bookingRoomList", bookingRoomList);
-        request.setAttribute("bookingList", bookingList);
-        request.setAttribute("profileList", profileList);
-        request.setAttribute("accountList", accountList);
-        request.setAttribute("roomList", roomList);
-
-        request.getRequestDispatcher("BookingList.jsp").forward(request, response);
+        Service service = serviceDAO.SearchServiceByID(serviceID);
         
-        /*
-        Booking target = new Booking();
-        target.setProfileID(session.getProfileID());//
-        List<Booking> bookingList = bookingDao.SearchBooking(target);
-        List<Profile> profileList = profileDAO.GetProfileList();
-        List<Account> accountList = accountDao.GetAccountList();
-        List<Room> roomList = roomDAO.GetRoomList();
-        
-        request.setAttribute("bookingList", bookingList);
-        request.setAttribute("bookingList", profileList);
-        request.setAttribute("bookingList", accountList);
-        request.setAttribute("roomList", roomList);
-
-        request.getRequestDispatcher("BookingList.jsp").forward(request, response);
-        */
+        request.setAttribute("service", service);
+        request.getRequestDispatcher("ServiceDetail.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -96,7 +66,15 @@ public class BookingList extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        int serviceID = Integer.parseInt(request.getParameter("serviceID"));
+
+        boolean isDeleted = serviceDAO.Delete(serviceID);
+
+        if (isDeleted) {
+            response.sendRedirect("ServiceListAdmin");
+        } else {
+            response.getWriter().println("Error deleting service");
+        }
     }
 
     /**

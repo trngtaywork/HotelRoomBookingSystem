@@ -16,6 +16,54 @@ import utils.DBContext;
  * @author My PC
  */
 public class BookingServiceDAO extends DBContext{
+    public void Add(BookingService bookingService) {
+        String sql = "INSERT INTO [dbo].[BookingService] ([ServiceID], [BookingID], [Amount], [StartTime], [EndTime]) VALUES (?, ?, ?, ?, ?)";
+        
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, bookingService.getServiceID());
+            st.setInt(2, bookingService.getBookingID());
+            st.setInt(3, bookingService.getAmount());
+            st.setDate(4, bookingService.getStartTime());
+            st.setDate(5, bookingService.getEndTime());
+            
+            st.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+    
+    public void Update(BookingService bookingService) {
+        String sql = "UPDATE [dbo].[BookingService] SET [Amount] = ?, [StartTime] = ?, [EndTime] = ? WHERE [ServiceID] = ? AND [BookingID] = ?";
+        
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, bookingService.getAmount());
+            st.setDate(2, bookingService.getStartTime());
+            st.setDate(3, bookingService.getEndTime());
+            st.setInt(4, bookingService.getServiceID());
+            st.setInt(5, bookingService.getBookingID());
+            
+            st.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+    
+    public void Delete(int bookingID, int serviceID) {
+        String sql = "DELETE FROM [dbo].[BookingService] WHERE [BookingID] = ? AND [ServiceID] = ?";
+        
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, bookingID);
+            st.setInt(2, serviceID);
+            
+            st.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+    
     public List<BookingService> GetBookingServiceList(){
         String sql = "SELECT [BookingServiceID], [ServiceID], [BookingID], [Amount], [StartTime], [EndTime] FROM [dbo].[BookingService] WHERE 1 = 1";
         List<BookingService> bookingServices = new ArrayList<>();
@@ -79,6 +127,36 @@ public class BookingServiceDAO extends DBContext{
     public BookingService SearchBookingService(int bookingID, int serviceID)
     {
         String sql = "SELECT [BookingServiceID], [ServiceID], [BookingID], [Amount], [StartTime], [EndTime] FROM [dbo].[BookingService] WHERE [BookingID] = '" + bookingID + "' AND [ServiceID] = '" + serviceID + "'";
+        
+        
+        try {
+            ResultSet rs = getData(sql);
+
+            if(rs == null){
+                return null;
+            }
+            
+            if(rs.next()) {
+                BookingService bs = new BookingService();
+                bs.setBookingServiceID(rs.getInt("BookingServiceID"));
+                bs.setServiceID(rs.getInt("ServiceID"));
+                bs.setBookingID(rs.getInt("BookingID"));
+                bs.setAmount(rs.getInt("Amount"));
+                bs.setStartTime(rs.getDate("StartTime"));
+                bs.setEndTime(rs.getDate("EndTime"));
+                
+                return bs;
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return null;
+    }
+    
+    public BookingService SearchBookingService(int bookingServiceID)
+    {
+        String sql = "SELECT [BookingServiceID], [ServiceID], [BookingID], [Amount], [StartTime], [EndTime] FROM [dbo].[BookingService] WHERE [BookingService] = '" + bookingServiceID + "'";
         
         
         try {
