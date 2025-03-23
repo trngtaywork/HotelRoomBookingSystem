@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import dao.*;
+import jakarta.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.time.format.*;
 import java.util.ArrayList;
@@ -45,6 +46,13 @@ public class BookingListAdmin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sessionUser = request.getSession(false);
+        Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        
         List<Booking> bookingList = bookingDao.GetBookingList();
         List<Profile> profileList = profileDAO.GetProfileList();
         List<Account> accountList = accountDao.GetAccountList();

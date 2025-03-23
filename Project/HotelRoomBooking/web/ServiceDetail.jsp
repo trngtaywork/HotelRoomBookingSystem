@@ -45,7 +45,7 @@
                                 <div class="rd-title">
                                     <h3><%=s.getServiceName()%></h3>
                                     <div class="rdt-right">
-                                        <a href="#">Order Now</a>
+                                        <a href="AddBookingService?serviceID=<%=s.getServiceID()%>">Order Now</a>
                                     </div>
                                 </div>
                                 <h2><%=s.getPrice()%>$</h2>
@@ -54,6 +54,10 @@
                                         <tr>
                                             <td class="r-o">Status:</td>
                                             <td><%=s.getStatus()%></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="r-o">Type:</td>
+                                            <td><%=s.getType()%></td>
                                         </tr>
                                     </tbody>
                                 </table>

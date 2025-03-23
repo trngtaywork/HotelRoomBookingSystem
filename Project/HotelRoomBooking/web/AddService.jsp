@@ -34,7 +34,7 @@
             <jsp:include page="headerAdmin.jsp"></jsp:include>
         </header>
         
-        <div class="formbold-main-wrapper">
+        <div class="formbold-main-wrapper" style="align-self: center">
             <div class="formbold-form-wrapper">
                 <h2>Add Service</h2>
                 <% if (request.getAttribute("successMessage") != null) { %>
@@ -51,7 +51,7 @@
                 <form id="addServiceForm" action="AddService" method="post" enctype="multipart/form-data">
                     <div class="formbold-input-group">
                         <label class="formbold-form-label">Service Name</label>
-                        <input type="text" name="serviceName" id="serviceName" placeholder="Enter service name" class="formbold-form-input">
+                        <input type="text" name="serviceName" id="serviceName" placeholder="Enter service name">
                     </div>
 
                     <div class="formbold-input-group">
@@ -68,8 +68,13 @@
                         <label class="formbold-form-label">Status</label>
                         <select name="status" id="status" class="formbold-form-select">
                             <option value="available" >Available</option>
-                            <option value="notAvailable" >Occupied</option>
+                            <option value="unavailable" >Unavailable</option>
                         </select>
+                    </div>
+                    
+                    <div class="formbold-input-group">
+                        <label class="formbold-form-label">Type</label>
+                        <input type="text" name="type" id="type" placeholder="Enter service type" class="formbold-form-input">
                     </div>
 
                     <div class="formbold-input-group">

@@ -1,38 +1,17 @@
-<%-- 
-    Document   : BookingList
-    Created on : Mar 1, 2025, 9:52:37 AM
-    Author     : My PC
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.*" %>
-
-<%--
-<%
-    HttpSession sessionUser = request.getSession(false);
-    Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
-    if (user == null) {
-        response.sendRedirect("index.jsp");
-        return;
-    }
-%>
---%>
-
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Booking List Admin</title>
-
-        <meta charset="UTF-8">
-        <meta name="description" content="Sona Template">
-        <meta name="keywords" content="Sona, unica, creative, html">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+        <title>JSP Page</title>
+        
+        <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700&display=swap" rel="stylesheet">
+
+        <!-- Css Styles -->
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
         <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
         <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
@@ -43,8 +22,7 @@
         <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
-        <link rel="stylesheet" href="css/room.css" type="text/css">
-
+        
         <style>
             .header-section {
                 position: fixed;
@@ -116,17 +94,18 @@
                     </div>
                 </c:if>
             </div>
+            <%--
             <form action="BookingListAdmin" method="post">
                 <table class="table table-borderless">
                     <tr>
                         <td>From</td>
                         <td>To</td>
-                        <td><%--Any Date--%></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td><input type="date" name="fromDate"/></td>
                         <td><input type="date" name="toDate"/></td>
-                        <td><%--<input type="checkbox" name="anyDate">--%></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>Search Field</td>
@@ -150,6 +129,7 @@
                     </tr>
                 </table>
             </form>
+            --%>
         </div>
         <div>
             <c:choose>

@@ -26,6 +26,7 @@ public class ServiceDAO extends DBContext {
                      ,[Price]
                      ,[Image]
                      ,[Status]
+                     ,[Type]
                      FROM [dbo].[Service] WHERE 1 = 1""";
         List<Service> Services = new ArrayList<>();
 
@@ -46,7 +47,8 @@ public class ServiceDAO extends DBContext {
                 String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
                 s.setImage(imageTemp.isBlank() ? "" : imageTemp);////
                 s.setStatus(rs.getString("Status"));
-
+                s.setType(rs.getString("Type"));
+                
                 Services.add(s);
             }
         } catch (Exception ex) {
@@ -64,6 +66,7 @@ public class ServiceDAO extends DBContext {
                      ,[Price]
                      ,[Image]
                      ,[Status]
+                     ,[Type]
                      FROM [dbo].[Service] WHERE [ServiceID] = '""" + ServiceID + "'";
 
         try {
@@ -83,7 +86,8 @@ public class ServiceDAO extends DBContext {
                 String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
                 s.setImage(imageTemp.isBlank() ? "" : imageTemp);////
                 s.setStatus(rs.getString("Status"));
-
+                s.setType(rs.getString("Type"));
+                
                 return s;
             } else {
                 return null;
@@ -99,6 +103,12 @@ public class ServiceDAO extends DBContext {
         String sql;
         List<Service> Services = new ArrayList<>();
         
+        if(sort == null && ServiceName == null && ServiceStatus == null){//??
+            sort = "";
+            ServiceName = "";
+            ServiceStatus = "";
+        }
+        
         switch(sort){
             case "asc":
                 sql = """
@@ -108,6 +118,7 @@ public class ServiceDAO extends DBContext {
                      ,[Price]
                      ,[Image]
                      ,[Status]
+                     ,[Type]
                      FROM [dbo].[Service] WHERE [ServiceName] LIKE '%""" + ServiceName + "%' AND [Status] LIKE '%" + ServiceStatus + "%' ORDER BY [PRICE]";
                 break;
             case "desc":
@@ -118,6 +129,7 @@ public class ServiceDAO extends DBContext {
                      ,[Price]
                      ,[Image]
                      ,[Status]
+                     ,[Type]
                      FROM [dbo].[Service] WHERE [ServiceName] LIKE '%""" + ServiceName + "%' AND [Status] LIKE '%" + ServiceStatus + "%' ORDER BY [PRICE] DESC";
                 break;
             default:
@@ -128,6 +140,7 @@ public class ServiceDAO extends DBContext {
                      ,[Price]
                      ,[Image]
                      ,[Status]
+                     ,[Type]
                      FROM [dbo].[Service] WHERE [ServiceName] LIKE '%""" + ServiceName + "%' AND [Status] LIKE '%" + ServiceStatus + "%'";
                 break;
         }
@@ -149,7 +162,8 @@ public class ServiceDAO extends DBContext {
                 String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
                 s.setImage(imageTemp.isBlank() ? "" : imageTemp);////
                 s.setStatus(rs.getString("Status"));
-
+                s.setType(rs.getString("Type"));
+                
                 Services.add(s);
             }
         } catch (Exception ex) {
@@ -167,6 +181,7 @@ public class ServiceDAO extends DBContext {
                      ,[Price]
                      ,[Image]
                      ,[Status]
+                     ,[Type]
                      FROM [dbo].[Service] WHERE [ServiceName] = '""" + ServiceName + "'";
 
         try {
@@ -190,22 +205,22 @@ public class ServiceDAO extends DBContext {
     
     public void Add(Service s) {
         String sql = "INSERT INTO [dbo].[Service]\n"
-                + "           ([ServiceID]\n"
-                + "           ,[ServiceName]\n"
+                + "           ([ServiceName]\n"
                 + "           ,[Description]\n"
                 + "           ,[Price]\n"
                 + "           ,[Image]\n"
                 + "           ,[Status]\n"
+                + "           ,[Type])\n"
                 + "     VALUES\n"
                 + "           (?,?,?,?,?,?)";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setInt(1, s.getServiceID());
-            pre.setString(2, s.getServiceName());
-            pre.setString(3, s.getDescription());
-            pre.setFloat(4, s.getPrice());
-            pre.setString(5, s.getImage());
-            pre.setString(6, s.getStatus());
+            pre.setString(1, s.getServiceName());
+            pre.setString(2, s.getDescription());
+            pre.setFloat(3, s.getPrice());
+            pre.setString(4, s.getImage());
+            pre.setString(5, s.getStatus());
+            pre.setString(6, s.getType());
             
             ResultSet rs = pre.executeQuery();
         } catch (SQLException e) {
@@ -214,7 +229,7 @@ public class ServiceDAO extends DBContext {
     }
     
     public boolean Update(Service s) {
-        String sql = "UPDATE [dbo].[Service] SET [ServiceName] = ?, [Description] = ?, [Price] = ?, [Image] = ?, [Status] = ? WHERE [ServiceID] = ?";
+        String sql = "UPDATE [dbo].[Service] SET [ServiceName] = ?, [Description] = ?, [Price] = ?, [Image] = ?, [Status] = ?, [Type] = ? WHERE [ServiceID] = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, s.getServiceName());
@@ -222,7 +237,8 @@ public class ServiceDAO extends DBContext {
             pre.setFloat(3, s.getPrice());
             pre.setString(4, s.getImage());
             pre.setString(5, s.getStatus());
-            pre.setInt(6, s.getServiceID());
+            pre.setString(6, s.getType());
+            pre.setInt(7, s.getServiceID());
             pre.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

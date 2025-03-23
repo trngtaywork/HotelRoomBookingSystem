@@ -64,6 +64,11 @@
 
             <section class="rooms-section spad">
                 <div class="container">
+
+                <% if (request.getAttribute("errorMessage") != null) { %>
+                <span class="text-danger"><%= request.getAttribute("errorMessage") %></span>
+                <% } %>
+
                 <c:choose>
                     <c:when test="${requestScope.serviceList.size() == 0}">
                         <label class="h2 centered">Service List is Empty</label>
@@ -77,6 +82,7 @@
                                         <th>Service Name</th>
                                         <th>Price</th>
                                         <th>Status</th>
+                                        <th>Type</th>
                                         <th style="width: 300px">Action</th>
                                     </tr>
                                 </thead>
@@ -87,10 +93,11 @@
                                             <td>${s.getServiceName()}</td>
                                             <td>${s.getPrice()}</td>
                                             <td>${s.getStatus()}</td>
+                                            <td>${s.getType()}</td>
                                             <td>
-                                                <button class="btn-custom btn-primary" onclick="window.location.href = 'EditService?serviceID=${s.getServiceID()}'">Edit</button>
-                                                <button class="btn-custom btn-danger" onclick="window.location.href = 'DeleteService?serviceID=${s.getServiceID()}'">Delete</button>
-                                                <button class="btn-custom btn-info" onclick="window.location.href = 'ServiceDetailAdmin?serviceID=${s.getServiceID()}'">Further Detail</button>
+                                                <a class="btn-custom btn-primary" href = "EditService?serviceID=${s.getServiceID()}" >Edit</a>
+                                                <a class="btn-custom btn-danger" href="DeleteService?serviceID=${s.getServiceID()}">Delete</a>
+                                                <a class="btn-custom btn-info" href="ServiceDetailAdmin?serviceID=${s.getServiceID()}">Further Detail</a>
                                             </td>
                                         </tr>
                                     </c:forEach>

@@ -40,8 +40,12 @@
             <h3>Service Details</h3>
             <table class="table table-bordered mt-3">
                 <tr>
-                    <th>Image</th>
+                    <th>Image Path</th>
                     <td><%=s.getImage()%></td>
+                </tr>
+                <tr>
+                    <th>Image</th>
+                    <td><img src="<%=s.getImage()%>" alt=""/></td>
                 </tr>
                 <tr>
                     <th>Service ID</th>
@@ -62,6 +66,10 @@
                 <tr>
                     <th>Status</th>
                     <td><%=s.getStatus()%></td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td><%=s.getType()%></td>
                 </tr>
             </table>
 

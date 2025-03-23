@@ -43,7 +43,7 @@
                     <span class="text-danger"><%= request.getAttribute("errorMessage") %></span>
             <% } %>
             
-            <form action="EditRoom" method="post" enctype="multipart/form-data">
+            <form action="EditService" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="serviceID" value="<%=s.getServiceID()%>">
 
                 <div class="form-group">
@@ -70,6 +70,12 @@
                         <option value="notAvailable" >Occupied</option>
                     </select>
                 </div>
+                
+                <div class="form-group">
+                    <label for="status">Type</label>
+                    <input type="text" name="type" id="type" class="form-control" 
+                           value="<%= s.getType() %>" required>
+                </div>
 
                 <div class="form-group">
                     <label for="serviceImage">Service Image (Optional)</label>
@@ -79,11 +85,12 @@
                 <div class="form-group">
                     <label for="serviceImage">Current Image</label>
                     <br>
-                    <img src="<%= request.getContextPath() + s.getImage() %>" alt="" width="200" height="150">
+                    <img src="<%= s.getImage() %>" alt="" width="200" height="150">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Update Service</button>
-                <button type="button" class="btn btn-danger" onclick="window.location.href = 'ServiceListAdmin'">Cancel</button>
+                <%--<button type="button" class="btn btn-danger" onclick="href = 'ServiceListAdmin'">Cancel</button>--%>
+                <a class="btn btn-danger" href="ServiceListAdmin">Cancel</a>
             </form>
         </div>
 

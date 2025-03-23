@@ -15,19 +15,19 @@ import jakarta.servlet.http.HttpSession;
 import model.*;
 import dao.*;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author My PC
  */
-@WebServlet(name = "AddBooking", urlPatterns = {"/AddBooking"})
-public class AddBooking extends HttpServlet {
+@WebServlet(name = "AddBookingService", urlPatterns = {"/AddBookingService"})
+public class AddBookingService extends HttpServlet {
 
-    BookingDAO bookingDAO = new BookingDAO();
+    ServiceDAO serviceDAO = new ServiceDAO();
     RoomDAO roomDAO = new RoomDAO();
-    BookingRoomDAO bookingRoomDAO = new BookingRoomDAO();
+    BookingDAO bookingDAO = new BookingDAO();
+    BookingServiceDAO bookingServiceDAO = new BookingServiceDAO();
     ProfileDAO profileDAO = new ProfileDAO();
 
     /**
@@ -47,16 +47,23 @@ public class AddBooking extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
-
-        int roomID = Integer.parseInt(request.getParameter("roomID"));
-        Room room = roomDAO.SearchRoomByID(roomID);
-        if (room == null) {
-            response.sendRedirect("RoomList");
+        
+        int serviceID = Integer.parseInt(request.getParameter("serviceID"));
+        Service service = serviceDAO.SearchServiceByID(serviceID);
+        if (service == null) {
+            response.sendRedirect("ServiceList");
             return;
         }
 
-        request.setAttribute("room", room);
-        request.getRequestDispatcher("BookingRoomOrder.jsp").forward(request, response);
+        Profile profile = profileDAO.SearchProfileByAccountId(user.getAccountID());
+
+        List<Booking> bookingList = bookingDAO.SearchBooking("ProfileID", String.valueOf(profile.getProfileID()));
+        List<Room> roomList = roomDAO.GetRoomList();
+
+        request.setAttribute("service", service);
+        request.setAttribute("bookingList", bookingList);
+        request.setAttribute("roomList", roomList);
+        request.getRequestDispatcher("BookingServiceOrder.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -86,45 +93,40 @@ public class AddBooking extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            response.setContentType("text/html;charset=UTF-8");
             HttpSession sessionUser = request.getSession(false);
             Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
             if (user == null) {
-                //response.sendRedirect("NullUser");
-                response.sendRedirect("RoomList");
+                response.sendRedirect("ServiceList");
                 return;
             }
 
-            Profile profile = profileDAO.SearchProfileByAccountId(user.getAccountID());
-            if (profile == null) {
-                //response.sendRedirect("nullProfile");
-                response.sendRedirect("RoomList");
+            int serviceID = Integer.parseInt(request.getParameter("serviceID"));
+
+            Service service = serviceDAO.SearchServiceByID(serviceID);
+            if (service == null) {
+                response.sendRedirect("ServiceList");
                 return;
             }
 
-            int roomID = Integer.parseInt(request.getParameter("roomID"));
-            Room room = roomDAO.SearchRoomByID(roomID);
-            if (room == null) {
-                //response.sendRedirect("nullRoom");
-                response.sendRedirect("RoomList");
+            int bookingID = Integer.parseInt(request.getParameter("forBooking"));
+            Booking booking = bookingDAO.SearchBooking(bookingID);
+            if (booking == null) {
+                response.sendRedirect("ServiceList");
                 return;
             }
 
-            java.util.Date temp = new java.util.Date();
-            java.sql.Date currentDate = new java.sql.Date(temp.getTime());//get current date
-
-            String quantityStr = request.getParameter("quantity").trim();
-            String startTimeStr = request.getParameter("startTime").trim();
-            String endTimeStr = request.getParameter("endTime").trim();
+            String amountStr = request.getParameter("amount");
+            String startTimeStr = request.getParameter("startTime");
+            String endTimeStr = request.getParameter("endTime");
             String totalAmountStr = request.getParameter("totalAmount");
 
-            if (isNullOrEmpty(quantityStr) || isNullOrEmpty(startTimeStr) || isNullOrEmpty(endTimeStr)) {
-                //response.sendRedirect("nullInput");
-                response.sendRedirect("RoomList");
+            if (isNullOrEmpty(amountStr) || isNullOrEmpty(startTimeStr) || isNullOrEmpty(endTimeStr)) {
+                response.sendRedirect("ServiceList");
                 return;
             }
 
-            int quantity = Integer.parseInt(quantityStr);
-
+            int amount = Integer.parseInt(amountStr);
             float totalAmount = Float.parseFloat(totalAmountStr);
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -134,28 +136,26 @@ public class AddBooking extends HttpServlet {
 
             java.sql.Date startTimeSQL = new java.sql.Date(startTime.getTime());
             java.sql.Date endTimeSQL = new java.sql.Date(endTime.getTime());
-
-            //if (startTimeSQL.before(currentDate) || endTimeSQL.before(startTimeSQL) || endTimeSQL.before(startTimeSQL))
+            
             if (endTimeSQL.before(startTimeSQL))
             {
                 //response.sendRedirect("datetimeError");
-                response.sendRedirect("RoomList");
+                response.sendRedirect("ServiceList");
                 return;
             }
+            
+            BookingService bookingService = new BookingService(serviceID, booking.getBookingID(), amount, startTimeSQL, endTimeSQL);
 
-            Booking booking = new Booking(profile.getProfileID(), roomID, currentDate, totalAmount, "Booked");
+            bookingServiceDAO.Add(bookingService);
 
-            bookingDAO.Add(booking);
+            Booking bookingToUpdate = bookingDAO.SearchBooking(bookingID);
+            bookingToUpdate.setTotalAmount(bookingToUpdate.getTotalAmount() + totalAmount);
 
-            BookingRoom bookingRoom = new BookingRoom(bookingDAO.lastBookingID(), roomID, quantity, startTimeSQL, endTimeSQL);
-
-            bookingRoomDAO.Add(bookingRoom);
+            bookingDAO.Update(bookingToUpdate);
 
             request.getRequestDispatcher("BookingList").forward(request, response);
         } catch (Exception ex) {
             System.out.println(ex.toString());
-            //response.sendRedirect("exception");//exception error
-            request.getRequestDispatcher("RoomList").forward(request, response);
         }
     }
 

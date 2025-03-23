@@ -59,7 +59,7 @@
                                 <div class="rd-title">
                                     <h3><%=r.getRoomName()%></h3>
                                     <div class="rdt-right">
-                                        <a href="#">Booking Now</a>
+                                        <a href="AddBooking?roomID=<%=r.getRoomID()%>">Booking Now</a>
                                     </div>
                                 </div>
                                 <h2><%=r.getPrice()%>$<span>/Pernight</span></h2>

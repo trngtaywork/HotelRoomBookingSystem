@@ -6,6 +6,7 @@ package dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,7 @@ public class BookingDAO extends DBContext {//add merge?
             st.setInt(2, booking.getRoomID());
             st.setDate(3, booking.getBookingDate());
             st.setFloat(4, booking.getTotalAmount());
-            st.setString(4, booking.getStatus());
+            st.setString(5, booking.getStatus());
 
             st.executeUpdate();
         } catch (Exception e) {
@@ -124,6 +125,38 @@ public class BookingDAO extends DBContext {//add merge?
         try {
             ResultSet rs = getData(sql);
 
+            if(rs == null){
+                return null;
+            }
+            
+            while (rs.next()) {
+                Booking b = new Booking();
+                b.setBookingID(rs.getInt("BookingID"));
+                b.setProfileID(rs.getInt("ProfileID"));
+                b.setRoomID(rs.getInt("RoomID"));
+                b.setBookingDate(rs.getDate("BookingDate"));
+                b.setTotalAmount(rs.getFloat("TotalAmount"));
+                b.setStatus(rs.getString("Status"));
+
+                bookings.add(b);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return bookings;
+    }
+    
+    public List<Booking> SearchBookingsByProfileID(int profileID) {
+        String sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE "
+                            + "[Booking].[ProfileID] = " + profileID;
+
+        List<Booking> bookings = new ArrayList<>();
+
+        try {
+            
+            ResultSet rs = getData(sql);
+            
             if(rs == null){
                 return null;
             }
@@ -322,7 +355,20 @@ public class BookingDAO extends DBContext {//add merge?
         return null;
     }
     
-    
+    public int lastBookingID() {
+        String sql = "SELECT TOP 1 [BookingID]\n"
+                + "FROM [dbo].[Booking]\n"
+                + "ORDER BY [BookingID] DESC";
+        int n = 0;
+        try {
+            ResultSet rs = getData(sql);
+            if (rs.next()) {
+                n = rs.getInt("BookingID");
+            }
+        } catch (SQLException e) {
+        }
+        return n;
+    }
 
     private boolean IsNullOrEmpty(String s) {
         return s.trim().length() == 0 || s.equals(null) || s.equals("");

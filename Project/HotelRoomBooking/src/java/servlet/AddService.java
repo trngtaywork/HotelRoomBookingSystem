@@ -14,20 +14,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import dao.*;
 import model.*;
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.io.File;
 
 /**
  *
  * @author My PC
  */
+@MultipartConfig
 @WebServlet(name = "AddService", urlPatterns = {"/AddService"})
 public class AddService extends HttpServlet {
+
     ServiceDAO serviceDAO = new ServiceDAO();
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,7 +41,7 @@ public class AddService extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doPost(request, response);
+        request.getRequestDispatcher("AddService.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -68,32 +70,37 @@ public class AddService extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String serviceName = request.getParameter("serviceName").trim();
-        String description = request.getParameter("description").trim();
-        String priceStr = request.getParameter("price").trim();
+        String serviceName = request.getParameter("serviceName");//is null -> why???????
+        String description = request.getParameter("description");//is null -> why???????
+        String priceStr = request.getParameter("price");//is null -> why???????
         String status = request.getParameter("status");
+        String type = request.getParameter("type");
         Part filePart = request.getPart("serviceImage");
-        
+
+        serviceName = serviceName.trim();
+        description = description.trim();
+        priceStr = priceStr.trim();
+
         // Validate and process the price
         float price = 0;
         try {
             price = Float.parseFloat(priceStr);
             if (price <= 0) {
                 request.setAttribute("errorMessage", "Price must be greater than 0.");
-                request.getRequestDispatcher("/AddService.jsp").forward(request, response);
+                request.getRequestDispatcher("AddService.jsp").forward(request, response);
                 return;
             }
         } catch (NumberFormatException e) {
             request.setAttribute("errorMessage", "Invalid price value.");
-            request.getRequestDispatcher("/AddService.jsp").forward(request, response);
+            request.getRequestDispatcher("AddService.jsp").forward(request, response);
             return;
         }
-        
+
         // Validate Service Name
         boolean isServiceNameExists = serviceDAO.SearchIfServiceExistByName(serviceName);
         if (isServiceNameExists) {
             request.setAttribute("errorMessage", "Service name already exists. Please choose a different name.");
-            request.getRequestDispatcher("/AddService.jsp").forward(request, response);
+            request.getRequestDispatcher("AddService.jsp").forward(request, response);
             return;
         }
 
@@ -106,21 +113,24 @@ public class AddService extends HttpServlet {
 
             if (!allowedExtensions.contains(fileExtension)) {
                 request.setAttribute("errorMessage", "Only image files (jpg, jpeg, png) are allowed.");
-                request.getRequestDispatcher("/AddService.jsp").forward(request, response);
+                request.getRequestDispatcher("AddService.jsp").forward(request, response);
                 return;
             }
 
             // Save the image
-            String path = getServletContext().getRealPath("/uploads");
-            fileName = UUID.randomUUID().toString() + "_" + fileName;
+            String path = getServletContext().getRealPath("/") + "../web/img/service";
+            File directory = new File(path);
+            if (!directory.exists()) {
+                directory.mkdirs(); // Ensure the directory exists
+            }
             filePart.write(path + "/" + fileName);
-            image = "/uploads/" + fileName;
+            image = "/img/service/" + fileName;
         }
 
         // Create Service object
-        Service service = new Service(serviceName, description, price, image, status);
+        Service service = new Service(serviceName, description, price, image, status, type);
 
-        // Add the room to the database
+        // Add the service to the database
         serviceDAO.Add(service);
         //boolean isAdded = serviceDAO.;
 
@@ -130,10 +140,9 @@ public class AddService extends HttpServlet {
         } else {
             request.setAttribute("errorMessage", "Failed to add room.");
         }
-        */
-
+         */
         // Forward back to addRoom.jsp
-        request.getRequestDispatcher("/DddService.jsp").forward(request, response);
+        request.getRequestDispatcher("ServiceListAdmin").forward(request, response);
     }
 
     /**

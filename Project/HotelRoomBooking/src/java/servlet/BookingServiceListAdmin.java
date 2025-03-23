@@ -4,7 +4,13 @@
  */
 package servlet;
 
-import dao.*;
+import dao.AccountDAO;
+import dao.BookingDAO;
+import dao.BookingRoomDAO;
+import dao.BookingServiceDAO;
+import dao.ProfileDAO;
+import dao.RoomDAO;
+import dao.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,19 +19,28 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.*;
+import java.util.List;
+import model.Account;
+import model.Booking;
+import model.BookingRoom;
+import model.BookingService;
+import model.Profile;
+import model.Room;
+import model.Service;
 
 /**
  *
  * @author My PC
  */
-@WebServlet(name = "BookingDetail", urlPatterns = {"/BookingDetail"})
-public class BookingDetail extends HttpServlet {
-
-    BookingDAO bookingDAO = new BookingDAO();
-    BookingRoomDAO bookingRoomDAO = new BookingRoomDAO();
+@WebServlet(name = "BookingServiceListAdmin", urlPatterns = {"/BookingServiceListAdmin"})
+public class BookingServiceListAdmin extends HttpServlet {
+BookingDAO bookingDao = new BookingDAO();
+    BookingRoomDAO bookingRoomDao = new BookingRoomDAO();
+    AccountDAO accountDao = new AccountDAO();
+    ProfileDAO profileDAO = new ProfileDAO();
     RoomDAO roomDAO = new RoomDAO();
-
+    BookingServiceDAO bookingServiceDAO = new BookingServiceDAO();
+    ServiceDAO serviceDAO = new ServiceDAO();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,27 +58,24 @@ public class BookingDetail extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
+        
+        List<Booking> bookingList = bookingDao.GetBookingList();
+        List<Profile> profileList = profileDAO.GetProfileList();
+        List<Account> accountList = accountDao.GetAccountList();
+        List<Room> roomList = roomDAO.GetRoomList();
+        List<BookingRoom> bookingRoomList = bookingRoomDao.GetBookingRoomList();
+        List<BookingService> bookingServiceList = bookingServiceDAO.GetBookingServiceList();
+        List<Service> serviceList = serviceDAO.GetServiceList();
+        
+        request.setAttribute("bookingRoomList", bookingRoomList);
+        request.setAttribute("bookingList", bookingList);
+        request.setAttribute("profileList", profileList);
+        request.setAttribute("accountList", accountList);
+        request.setAttribute("roomList", roomList);
+        request.setAttribute("bookingServiceList", bookingServiceList);
+        request.setAttribute("serviceList", serviceList);
 
-        var bookingID = request.getParameter("bookingID");
-
-        //Add user check
-        if (bookingID == null || bookingID.length() == 0) {
-            request.getRequestDispatcher("BookingList").forward(request, response);
-        } else {
-            Booking booking = bookingDAO.SearchBooking(Integer.parseInt(bookingID));
-            var roomId = booking.getRoomID();
-            if (roomId <= 0) {
-                request.getRequestDispatcher("BookingList").forward(request, response);
-            }
-
-            Room room = roomDAO.SearchRoomByID(roomId);
-            BookingRoom bookingRoom = bookingRoomDAO.SearchBookingRoom(booking.getBookingID(), roomId);
-
-            request.setAttribute("room", room);
-            request.setAttribute("booking", booking);
-            request.setAttribute("bookingRoom", bookingRoom);
-            request.getRequestDispatcher("BookingDetail.jsp").forward(request, response);
-        }
+        request.getRequestDispatcher("BookingServiceListAdmin.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

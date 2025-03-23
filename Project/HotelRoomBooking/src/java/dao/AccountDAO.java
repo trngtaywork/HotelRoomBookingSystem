@@ -17,7 +17,21 @@ import utils.EncryptKey;
  * @author My PC
  */
 public class AccountDAO extends DBContext {
-
+    public Account validateLogin(String username, String password) {
+        String sql = "SELECT * FROM [dbo].[Account] WHERE [Username] = ? AND [Password] = ?";
+        try ( PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Account(rs.getInt("AccountID"), rs.getString("Username"), rs.getString("Email"), rs.getDate("CreatedDate"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public List<Account> GetAccountList() {
         String sql = "SELECT [AccountID], [Username], [Email], [Password], [CreatedDate], [Role], [IsActive] FROM Account WHERE 1 = 1";
         List<Account> Accounts = new ArrayList<>();

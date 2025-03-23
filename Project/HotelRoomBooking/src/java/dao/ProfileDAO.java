@@ -128,6 +128,34 @@ public class ProfileDAO extends DBContext {
         return null;
     }
     
+    public Profile SearchProfileByAccountId(int accountID) {
+        String sql = "SELECT * FROM [dbo].[Profile] WHERE 1 = 1 AND [AccountID] = '" + accountID + "'";
+        
+        try {
+            ResultSet rs = getData(sql);
+
+            if(rs == null){
+                return null;
+            }
+            
+            if (rs.next()) {
+                Profile p = new Profile();
+                p.setProfileID(rs.getInt("ProfileID"));
+                p.setName(rs.getString("Name"));
+                p.setPhoneNumber(rs.getString("PhoneNumber"));
+                p.setGender(rs.getString("Gender"));
+                p.setAddress(rs.getString("Address"));
+                p.setAccountID(rs.getInt("AccountID"));
+
+                return p;
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return null;
+    }
+    
     public void Add(Profile p) {
         if (/*Validate(p)*/ true) {//????????????
             String SQL = "INSERT INTO [dbo].[Profile]([Name], [PhoneNumber], [Gender], [Address], [AccountID]) "

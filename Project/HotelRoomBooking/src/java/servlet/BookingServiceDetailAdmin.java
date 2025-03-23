@@ -19,13 +19,15 @@ import model.*;
  *
  * @author My PC
  */
-@WebServlet(name = "BookingDetail", urlPatterns = {"/BookingDetail"})
-public class BookingDetail extends HttpServlet {
-
+@WebServlet(name = "BookingServiceDetailAdmin", urlPatterns = {"/BookingServiceDetailAdmin"})
+public class BookingServiceDetailAdmin extends HttpServlet {
     BookingDAO bookingDAO = new BookingDAO();
     BookingRoomDAO bookingRoomDAO = new BookingRoomDAO();
     RoomDAO roomDAO = new RoomDAO();
-
+    BookingServiceDAO bookingServiceDAO = new BookingServiceDAO();
+    ServiceDAO serviceDAO = new ServiceDAO();
+    AccountDAO accountDAO = new AccountDAO();
+    ProfileDAO profileDAO = new ProfileDAO();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,26 +45,36 @@ public class BookingDetail extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
+        
+        var bookingServiceID = request.getParameter("bookingServiceID");
 
-        var bookingID = request.getParameter("bookingID");
-
-        //Add user check
-        if (bookingID == null || bookingID.length() == 0) {
-            request.getRequestDispatcher("BookingList").forward(request, response);
+        if (bookingServiceID == null || bookingServiceID.length() == 0) {
+            request.getRequestDispatcher("BookingServiceListAdmin").forward(request, response);
         } else {
-            Booking booking = bookingDAO.SearchBooking(Integer.parseInt(bookingID));
-            var roomId = booking.getRoomID();
-            if (roomId <= 0) {
-                request.getRequestDispatcher("BookingList").forward(request, response);
+            BookingService bookingService = bookingServiceDAO.SearchBookingService(Integer.parseInt(bookingServiceID));
+            var serviceID = bookingService.getServiceID();
+            var bookingID = bookingService.getBookingID();
+            
+            if(serviceID <= 0 || bookingID <= 0){
+                request.getRequestDispatcher("BookingServiceListAdmin").forward(request, response);
             }
-
-            Room room = roomDAO.SearchRoomByID(roomId);
-            BookingRoom bookingRoom = bookingRoomDAO.SearchBookingRoom(booking.getBookingID(), roomId);
-
-            request.setAttribute("room", room);
+            
+            Booking booking = bookingDAO.SearchBooking(bookingID);
+            Service service = serviceDAO.SearchServiceByID(serviceID);
+            Profile profile = profileDAO.SearchProfileById(booking.getProfileID());
+            Account account = accountDAO.SearchAccount(profile.getAccountID());
+            
+            if(service == null || booking == null || profile == null || account == null){
+                request.getRequestDispatcher("BookingListAdmin").forward(request, response);
+            }
+            
+            request.setAttribute("service", service);
             request.setAttribute("booking", booking);
-            request.setAttribute("bookingRoom", bookingRoom);
-            request.getRequestDispatcher("BookingDetail.jsp").forward(request, response);
+            request.setAttribute("bookingService", bookingService);
+            request.setAttribute("profile", profile);
+            request.setAttribute("account", account);
+            
+            request.getRequestDispatcher("BookingServiceDetailAdmin.jsp").forward(request, response);
         }
     }
 

@@ -37,7 +37,7 @@ public class DeleteService extends HttpServlet {
         Service service = serviceDAO.SearchServiceByID(serviceID);
         
         request.setAttribute("service", service);
-        request.getRequestDispatcher("ServiceDetail.jsp").forward(request, response);
+        request.getRequestDispatcher("DeleteService.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

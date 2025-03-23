@@ -46,7 +46,7 @@
                 <tr>
                     <th>Image</th>
                     <td>
-                        <img src="<%= request.getContextPath() + s.getImage() %>" alt="Service Image" width="200" height="150">
+                        <img src="<%= s.getImage() %>" alt="Service Image" width="200" height="150">
                     </td>
                 </tr>
                 <tr>
@@ -65,12 +65,16 @@
                     <th>Status</th>
                     <td><%=s.getStatus()%></td>
                 </tr>
+                <tr>
+                    <th>Type</th>
+                    <td><%=s.getType()%></td>
+                </tr>
             </table>
 
             <form action="DeleteService" method="post">
                 <input type="hidden" name="serviceID" value="<%=s.getServiceID()%>">
                 <button type="submit" class="btn btn-danger">Confirm Delete</button>
-                <a href="serviceListAdmin" class="btn btn-secondary">Cancel</a>
+                <a href="ServiceListAdmin" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
         

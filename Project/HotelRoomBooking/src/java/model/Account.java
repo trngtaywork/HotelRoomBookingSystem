@@ -43,6 +43,13 @@ public class Account {
         this.Role = Role;
         this.IsActive = IsActive;
     }
+    
+    public Account(int AccountID, String Username, String Email, Date CreatedDate) {
+        this.AccountID = AccountID;
+        this.Username = Username;
+        this.Email = Email;
+        this.CreatedDate = CreatedDate;
+    }
 
     public int getAccountID() {
         return AccountID;

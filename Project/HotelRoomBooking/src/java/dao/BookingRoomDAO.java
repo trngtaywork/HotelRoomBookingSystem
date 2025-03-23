@@ -35,16 +35,17 @@ public class BookingRoomDAO extends DBContext{
     }
     
     public void Update(BookingRoom bookingRoom) {
-        String SQL = "UPDATE [dbo].[BookingRoom] SET [Quantity] = ?, [StartTime] = ?, [EndTime] = ? "
-                + "WHERE [BookingID] = ? AND [RoomID] = ?";
+        String SQL = "UPDATE [dbo].[BookingRoom] SET [BookingID] = ?, [RoomID] = ?, [Quantity] = ?, [StartTime] = ?, [EndTime] = ? "
+                + "WHERE [BookingRoomID] = ?";
         
         try {
             PreparedStatement st = connection.prepareStatement(SQL);
-            st.setInt(1, bookingRoom.getQuantity());
-            st.setDate(2, bookingRoom.getStartTime());
-            st.setDate(3, bookingRoom.getEndTime());
-            st.setInt(4, bookingRoom.getBookingID());
-            st.setInt(5, bookingRoom.getRoomID());
+            st.setInt(1, bookingRoom.getBookingID());
+            st.setInt(2, bookingRoom.getRoomID());
+            st.setInt(3, bookingRoom.getQuantity());
+            st.setDate(4, bookingRoom.getStartTime());
+            st.setDate(5, bookingRoom.getEndTime());
+            st.setInt(6, bookingRoom.getBookingRoomID());
             
             st.executeUpdate();
         } catch (Exception e) {

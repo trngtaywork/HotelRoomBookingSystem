@@ -56,6 +56,10 @@
                                                         <td class="r-o">Status:</td>
                                                         <td>${s.getStatus()}</td>
                                                     </tr>
+                                                    <tr>
+                                                        <td class="r-o">Type:</td>
+                                                        <td>${s.getType()}</td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                             <a href="ServiceDetail?serviceID=${s.getServiceID()}" class="primary-btn link">More Details</a>

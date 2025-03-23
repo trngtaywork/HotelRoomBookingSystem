@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import dao.*;
 import model.*;
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ import java.io.File;
  *
  * @author My PC
  */
+@MultipartConfig
 @WebServlet(name = "EditService", urlPatterns = {"/EditService"})
 public class EditService extends HttpServlet {
     ServiceDAO serviceDAO = new ServiceDAO();
@@ -77,9 +79,10 @@ public class EditService extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String serviceIDStr = request.getParameter("serviceID");
+        
         if (serviceIDStr == null || serviceIDStr.isEmpty()) {
-            request.setAttribute("errorMessage", "Service ID is missing.");
-            request.getRequestDispatcher("/EditService.jsp").forward(request, response);
+            request.setAttribute("errorMessage", "Edit Error: Service ID is missing.");
+            request.getRequestDispatcher("ServiceListAdmin").forward(request, response);
             return;
         }
 
@@ -87,8 +90,8 @@ public class EditService extends HttpServlet {
         try {
             serviceID = Integer.parseInt(serviceIDStr);
         } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Invalid Service ID.");
-            request.getRequestDispatcher("/EditRoom?roomID=" + serviceIDStr).forward(request, response);
+            request.setAttribute("errorMessage", "Edit Error: Invalid Service ID.");
+            request.getRequestDispatcher("ServiceListAdmin").forward(request, response);
             return;
         }
 
@@ -96,14 +99,12 @@ public class EditService extends HttpServlet {
         String description = request.getParameter("description").trim();
         String priceStr = request.getParameter("price").trim();
         String status = request.getParameter("status");
+        String type = request.getParameter("type").trim();
 
         boolean hasError = false;
 
         if (serviceName.isEmpty()) {
-            request.setAttribute("errorMessage", "Service Name is required.");
-            hasError = true;
-        } else if (serviceDAO.SearchIfServiceExistByName(serviceName)) {
-            request.setAttribute("errorMessage", "Service Name already exists.");
+            request.setAttribute("errorMessage", "Edit Error: Service Name is required.");
             hasError = true;
         }
 
@@ -111,23 +112,23 @@ public class EditService extends HttpServlet {
         try {
             price = Float.parseFloat(priceStr);
             if (price <= 0) {
-                request.setAttribute("errorMessage", "Price must be greater than 0.");
+                request.setAttribute("errorMessage", "Edit Error: Price must be greater than 0.");
                 hasError = true;
             }
         } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Invalid price value.");
+            request.setAttribute("errorMessage", "Edit Error: Invalid price value.");
             hasError = true;
         }
 
         if (hasError) {
-            request.getRequestDispatcher("/EditService?serviceID=" + serviceID).forward(request, response);
+            request.getRequestDispatcher("ServiceListAdmin").forward(request, response);
             return;
         }
 
         Service existingService = serviceDAO.SearchServiceByID(serviceID);
         if (existingService == null) {
-            request.setAttribute("errorMessage", "Service not found.");
-            request.getRequestDispatcher("/ServiceListAdmin").forward(request, response);
+            request.setAttribute("errorMessage", "Edit Error: Service not found.");
+            request.getRequestDispatcher("ServiceListAdmin").forward(request, response);
             return;
         }
 
@@ -136,28 +137,28 @@ public class EditService extends HttpServlet {
 
         if (filePart != null && filePart.getSize() > 0) {
             String fileName = extractFileName(filePart);
-            String uploadDir = getServletContext().getRealPath("") + File.separator + "images";
+            String uploadDir = getServletContext().getRealPath("/") + "../web/img/service";
             File uploadFolder = new File(uploadDir);
             if (!uploadFolder.exists()) {
                 uploadFolder.mkdir();
             }
             filePart.write(uploadDir + File.separator + fileName);
-            imagePath = "/images/" + fileName;
+            imagePath = "/img/serivce/" + fileName;
         }
 
-        Service updatedService = new Service(serviceID, serviceName, description, price, imagePath, status);
+        Service updatedService = new Service(serviceID, serviceName, description, price, imagePath, status, type);
         try {
             boolean isUpdated = serviceDAO.Update(updatedService);
             if (isUpdated) {
                 response.sendRedirect("ServiceListAdmin");
             } else {
-                request.setAttribute("errorMessage", "Failed to update service.");
-                request.getRequestDispatcher("/EditService?serviceID=" + serviceID).forward(request, response);
+                request.setAttribute("errorMessage", "Edit Error: Failed to update service.");
+                request.getRequestDispatcher("ServiceListAdmin").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Database error: " + e.getMessage());
-            request.getRequestDispatcher("/EditService?serviceID=" + serviceID).forward(request, response);
+            request.setAttribute("errorMessage", "Edit Error: Database error: " + e.getMessage());
+            request.getRequestDispatcher("ServiceListAdmin").forward(request, response);
         }
     }
 
