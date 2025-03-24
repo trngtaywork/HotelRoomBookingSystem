@@ -29,7 +29,6 @@ public class Feedback {
         this.Rating = Rating;
         this.Date = Date;
     }
-    
     public Feedback(int ProfileID, int RoomID, String Comment, int Rating, Date Date) {
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
@@ -85,6 +84,4 @@ public class Feedback {
     public void setDate(Date Date) {
         this.Date = Date;
     }
-    
-    
 }

@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Image;
+
 public class Room {
     private int roomID;
     private String roomName;
@@ -18,6 +20,21 @@ public class Room {
         this.image = image;
         this.statusRoom = statusRoom;
         this.typeRoom = typeRoom;
+    }
+  
+    public Room() {
+    }
+
+
+    public Room(String roomName, String description, double price, String image, String statusRoom, String type) {
+
+        this.roomName = roomName;
+        this.description = description;
+        this.price = price;
+        this.image = image;
+        this.statusRoom = status;
+        this.type = type;
+
     }
 
     // Getters and setters
@@ -76,4 +93,5 @@ public class Room {
     public void setTypeRoom(String typeRoom) {
         this.typeRoom = typeRoom;
     }
+
 }

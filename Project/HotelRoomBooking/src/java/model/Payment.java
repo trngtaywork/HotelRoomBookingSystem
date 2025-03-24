@@ -29,7 +29,6 @@ public class Payment {
         this.PaymentDate = PaymentDate;
         this.PaymentMethod = PaymentMethod;
     }
-    
     public Payment(int BookingID, int StatusID, float Amount, Date PaymentDate, String PaymentMethod) {
         this.BookingID = BookingID;
         this.StatusID = StatusID;
@@ -85,6 +84,4 @@ public class Payment {
     public void setPaymentMethod(String PaymentMethod) {
         this.PaymentMethod = PaymentMethod;
     }
-    
-    
 }

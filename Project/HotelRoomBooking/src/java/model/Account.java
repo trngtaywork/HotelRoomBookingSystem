@@ -1,3 +1,4 @@
+
 package model;
 
 import java.sql.Date;
@@ -32,7 +33,6 @@ public class Account {
         this.role = role;
         this.isActive = isActive;
     }
-    // Constructor for login validation
     public Account(int accountID, String username, String email, Date createdDate) {
         this.accountID = accountID;
         this.username = username;
@@ -40,7 +40,6 @@ public class Account {
         this.createdDate = createdDate;
     }
 
-    // Full constructor
     public Account(int accountID, String username, String email, String password, String role, boolean isActive, Date createdDate) {
         this.accountID = accountID;
         this.username = username;
@@ -49,6 +48,16 @@ public class Account {
         this.role = role;
         this.isActive = isActive;
         this.createdDate = createdDate;
+    }
+  
+      public Account(int accountID, String username, String email, String password, Date createdDate, String role, boolean isActive) {
+        this.accountID = accountID;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.createdDate = createdDate;
+        this.role = role;
+        this.isActive = isActive;
     }
 
     public Account(int aInt, String string, String string0, String string1, String string2, String string3, String string4, String string5) {
@@ -122,4 +131,6 @@ public class Account {
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
+   
+
 }

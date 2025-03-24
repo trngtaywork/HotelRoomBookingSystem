@@ -17,27 +17,60 @@ public class Profile {
         this.accountID = accountID;
     }
 
+  public Profile(String name, String phoneNumber, String gender, String address, int accountID) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.address = address;
+        this.accountID = accountID;
+    }
+
     public int getProfileID() {
-        return profileID;
+        return ProfileID;
+    }
+
+    public void setProfileID(int ProfileID) {
+        this.ProfileID = ProfileID;
     }
 
     public String getName() {
-        return name;
+        return Name;
+    }
+
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return PhoneNumber;
+    }
+
+    public void setPhoneNumber(String PhoneNumber) {
+        this.PhoneNumber = PhoneNumber;
     }
 
     public String getGender() {
-        return gender;
+        return Gender;
+    }
+
+    public void setGender(String Gender) {
+        this.Gender = Gender;
     }
 
     public String getAddress() {
-        return address;
+        return Address;
+    }
+
+    public void setAddress(String Address) {
+        this.Address = Address;
     }
 
     public int getAccountID() {
-        return accountID;
+        return AccountID;
     }
+
+    public void setAccountID(int AccountID) {
+        this.AccountID = AccountID;
+    }
+
 }

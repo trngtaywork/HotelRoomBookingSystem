@@ -36,7 +36,6 @@ public class DBContext {
         }
         return rs;
     }
-
     public static void main(String[] args) {
         new DBContext();
     }
