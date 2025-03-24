@@ -17,24 +17,23 @@ import java.util.logging.Logger;
  * @author My PC
  */
 public class DBContext {
-    public Connection connection = null;
-    public DBContext()
-    {
-        try
-        {
 
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=HotelRoomBooking;trustServerCertificate=true";
-            String username = "sa";
-            String password = "12345678";
+    protected Connection connection = null;
+
+    public DBContext() {
+        try {
+            //String url = "jdbc:sqlserver://localhost\\NGUYENVIETCUONG:1433;databaseName=HotelRoomBooking;encrypt=true;trustServerCertificate=true";
+            String url = "jdbc:sqlserver://localhost\\NGUYENVIETCUONG:1433;databaseName=HRBS;trustServerCertificate=true";
+            String username = "admin";
+            String password = "admin";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, username, password);
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             System.out.println(ex);
         }
     }
-    
+
+
     public ResultSet getData(String sqlQuery) {
         ResultSet rs = null;
         Statement statement;
@@ -46,7 +45,7 @@ public class DBContext {
         }
         return rs;
     }
-    
+  
     public static void main(String[] args) {
         new DBContext();
     }

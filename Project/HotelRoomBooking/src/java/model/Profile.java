@@ -1,49 +1,89 @@
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package model;
 
+/**
+ *
+ * @author My PC
+ */
 public class Profile {
-    private int profileID;
-    private String name;
-    private String phoneNumber;
-    private String gender;
-    private String role;
-    private String address;
-    private int accountID;
 
-    public Profile(int profileID, String name, String phoneNumber, String gender, String role, String address, int accountID) {
-        this.profileID = profileID;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
-        this.role = role;
-        this.address = address;
-        this.accountID = accountID;
+    private int ProfileID;
+    private String Name;
+    private String PhoneNumber;
+    private String Gender;
+    private String Address;
+    private int AccountID;
+
+    public Profile() {
+    }
+
+    public Profile(int ProfileID, String Name, String PhoneNumber, String Gender, String Address, int AccountID) {
+        this.ProfileID = ProfileID;
+        this.Name = Name;
+        this.PhoneNumber = PhoneNumber;
+        this.Gender = Gender;
+        this.Address = Address;
+        this.AccountID = AccountID;
+    }
+
+    public Profile(String Name, String PhoneNumber, String Gender, String Address, int AccountID) {
+        this.Name = Name;
+        this.PhoneNumber = PhoneNumber;
+        this.Gender = Gender;
+        this.Address = Address;
+        this.AccountID = AccountID;
     }
 
     public int getProfileID() {
-        return profileID;
+        return ProfileID;
+    }
+
+    public void setProfileID(int ProfileID) {
+        this.ProfileID = ProfileID;
     }
 
     public String getName() {
-        return name;
+        return Name;
+    }
+
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return PhoneNumber;
+    }
+
+    public void setPhoneNumber(String PhoneNumber) {
+        this.PhoneNumber = PhoneNumber;
     }
 
     public String getGender() {
-        return gender;
+        return Gender;
     }
 
-    public String getRole() {
-        return role;
+    public void setGender(String Gender) {
+        this.Gender = Gender;
     }
 
     public String getAddress() {
-        return address;
+        return Address;
+    }
+
+    public void setAddress(String Address) {
+        this.Address = Address;
     }
 
     public int getAccountID() {
-        return accountID;
+        return AccountID;
     }
+
+    public void setAccountID(int AccountID) {
+        this.AccountID = AccountID;
+    }
+
 }

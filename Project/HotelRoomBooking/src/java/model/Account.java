@@ -1,76 +1,112 @@
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package model;
 
+//import java.util.Date;
 import java.sql.Date;
 
+/**
+ *
+ * @author My PC
+ */
 public class Account {
 
-    private int accountID;
-    private String username;
-    private String email;
-    private String role;
-    private String name;
-    private String phoneNumber;
-    private String gender;
-    private String address;
-    private Date createdDate;
+    private int AccountID;
+    private String Username;
+    private String Email;
+    private String Password;
+    private Date CreatedDate;
+    private String Role;
+    private boolean IsActive;
 
-    public Account(int accountID, String username, String email) {
-        this.accountID = accountID;
-        this.username = username;
-        this.email = email;
-    }
+    public Account() {
 
-    public Account(int accountID, String username, String email, String role, String name, String phoneNumber, String gender, String address) {
-        this.accountID = accountID;
-        this.username = username;
-        this.email = email;
-        this.role = role;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
-        this.address = address;
     }
     
-    public Account(int accountID, String username, String email, Date createdDate) {
-        this.accountID = accountID;
-        this.username = username;
-        this.email = email;
-        this.createdDate = createdDate;
+    public Account(int AccountID, String Username, String Email, String Password, Date CreatedDate, String Role, boolean IsActive) {
+        this.AccountID = AccountID;
+        this.Username = Username;
+        this.Email = Email;
+        this.Password = Password;
+        this.CreatedDate = CreatedDate;
+        this.Role = Role;
+        this.IsActive = IsActive;
+    }
+
+    public Account(String Username, String Email, String Password, Date CreatedDate, String Role, boolean IsActive) {
+        this.Username = Username;
+        this.Email = Email;
+        this.Password = Password;
+        this.CreatedDate = CreatedDate;
+        this.Role = Role;
+        this.IsActive = IsActive;
+    }
+    
+    public Account(int AccountID, String Username, String Email, Date CreatedDate) {
+        this.AccountID = AccountID;
+        this.Username = Username;
+        this.Email = Email;
+        this.CreatedDate = CreatedDate;
     }
 
     public int getAccountID() {
-        return accountID;
+        return AccountID;
+    }
+
+    public void setAccountID(int AccountID) {
+        this.AccountID = AccountID;
     }
 
     public String getUsername() {
-        return username;
+        return Username;
+    }
+
+    public void setUsername(String Username) {
+        this.Username = Username;
     }
 
     public String getEmail() {
-        return email;
+        return Email;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String Password) {
+        this.Password = Password;
+    }
+
+    public Date getCreatedDate() {
+        return CreatedDate;
+    }
+
+    public void setCreatedDate(Date CreatedDate) {
+        this.CreatedDate = CreatedDate;
     }
 
     public String getRole() {
-        return role;
+        return Role;
     }
 
-    public String getName() {
-        return name;
+    public void setRole(String Role) {
+        this.Role = Role;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public boolean getIsActive() {
+        return IsActive;
     }
 
-    public String getGender() {
-        return gender;
+    public void setIsActive(boolean IsActive) {
+        this.IsActive = IsActive;
     }
 
-    public String getAddress() {
-        return address;
-    }
     
-       public Date getCreatedDate() {
-        return createdDate;
-    }
 }

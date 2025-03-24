@@ -11,31 +11,37 @@ import java.sql.Date;
  * @author My PC
  */
 public class Booking {
+
     private int BookingID;
     private int ProfileID;
     private int RoomID;
     private Date BookingDate;
     private float TotalAmount;
-    private int StatusID;
+
+    private String Status;
+
 
     public Booking() {
     }
 
-    public Booking(int BookingID, int ProfileID, int RoomID, Date BookingDate, float TotalAmount, int StatusID) {
+    public Booking(int BookingID, int ProfileID, int RoomID, Date BookingDate, float TotalAmount, String Status) {
+
         this.BookingID = BookingID;
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
         this.BookingDate = BookingDate;
         this.TotalAmount = TotalAmount;
-        this.StatusID = StatusID;
+        this.Status = Status;
     }
-    
-    public Booking(int ProfileID, int RoomID, Date BookingDate, float TotalAmount, int StatusID) {
+
+    public Booking(int ProfileID, int RoomID, Date BookingDate, float TotalAmount, String Status) {
+
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
         this.BookingDate = BookingDate;
         this.TotalAmount = TotalAmount;
-        this.StatusID = StatusID;
+        this.Status = Status;
+
     }
 
     public int getBookingID() {
@@ -78,13 +84,11 @@ public class Booking {
         this.TotalAmount = TotalAmount;
     }
 
-    public int getStatusID() {
-        return StatusID;
+    public String getStatus() {
+        return Status;
     }
 
-    public void setStatusID(int StatusID) {
-        this.StatusID = StatusID;
+    public void setStatus(String Status) {
+        this.Status = Status;
     }
-    
-    
 }
