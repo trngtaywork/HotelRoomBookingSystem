@@ -29,7 +29,6 @@ public class BookingRoom {
         this.StartTime = StartTime;
         this.EndTime = EndTime;
     }
-
     public BookingRoom(int BookingID, int RoomID, int Quantity, Date StartTime, Date EndTime) {
         this.BookingID = BookingID;
         this.RoomID = RoomID;

@@ -1,22 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.sql.SQLException;
+import model.Profile;
+import utils.DBContext;
 import java.util.ArrayList;
 import java.util.List;
-
 import model.*;
-import utils.DBContext;
-
-/**
- *
- * @author My PC
- */
 
 public class ProfileDAO extends DBContext {
     public List<Profile> GetProfileList() {
@@ -165,14 +157,12 @@ public class ProfileDAO extends DBContext {
                     + "VALUES (?, ?, ?, ?, ?)";
 
             try {
-
                 PreparedStatement st = connection.prepareStatement(SQL);
                 st.setString(1, p.getName());
                 st.setString(2, p.getPhoneNumber());
                 st.setString(3, p.getGender());
                 st.setString(4, p.getAddress());
                 st.setInt(5, p.getAccountID());
-
                 st.executeUpdate();
             } catch (Exception e) {
                 System.out.println(e.toString());
@@ -208,8 +198,64 @@ public class ProfileDAO extends DBContext {
         } catch (Exception ex) {
             System.out.println(ex);
         }
-
-
         return true;
+    }
+
+    public Profile getProfileByAccountId(int accountId) {
+        Profile profile = null;
+        String sql = "SELECT * FROM [dbo].[Profile] WHERE AccountID = " + accountId;
+
+        ResultSet rs = getData(sql);
+        try {
+            if (rs.next()) {
+                profile = new Profile(rs.getInt("ProfileID"),
+                        rs.getString("Name"),
+                        rs.getString("PhoneNumber"),
+                        rs.getString("Gender"),
+                        rs.getString("Address"),
+                        rs.getInt("AccountID"));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return profile;
+    }
+    
+    public boolean updateProfile(Profile profile) {
+    String sql = "UPDATE Profile SET Name = ?, PhoneNumber = ?, Gender = ?, Address = ? WHERE AccountID = ?";
+    try (Connection connection = new DBContext().connection;  PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setString(1, profile.getName());
+        stmt.setString(2, profile.getPhoneNumber());
+        stmt.setString(3, profile.getGender());
+        stmt.setString(4, profile.getAddress());
+        stmt.setInt(5, profile.getAccountID());
+
+        return stmt.executeUpdate() > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+    
+    public boolean addProfile(Profile profile) {
+        String sql = "INSERT INTO Profile (Name, PhoneNumber, Gender, Address, AccountID) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection connection = new DBContext().connection;
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+             
+            stmt.setString(1, profile.getName().trim());
+            stmt.setString(2, profile.getPhoneNumber().trim());
+            stmt.setString(3, profile.getGender());
+            stmt.setString(4, profile.getAddress().trim());
+            stmt.setInt(5, profile.getAccountID());
+
+            int rowsInserted = stmt.executeUpdate();
+            return rowsInserted > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

@@ -8,6 +8,53 @@
         <servlet-name>ProfileServlet</servlet-name>
         <servlet-class>servlet.ProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddRoomServlet</servlet-name>
+        <servlet-class>servlet.AddRoomServlet</servlet-class>
+        <multipart-config>
+            <max-file-size>10485760</max-file-size>
+            <!-- 10 MB -->
+            <max-request-size>20971520</max-request-size>
+            <!-- 20 MB -->
+            <file-size-threshold>0</file-size-threshold>
+        </multipart-config>
+    </servlet>
+    <servlet>
+        <servlet-name>EditRoomServlet</servlet-name>
+        <servlet-class>servlet.EditRoomServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteRoomServlet</servlet-name>
+        <servlet-class>servlet.DeleteRoomServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RoomListForAdminServlet</servlet-name>
+        <servlet-class>servlet.RoomListForAdminServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateUserStatusServlet</servlet-name>
+        <servlet-class>servlet.UpdateUserStatusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <servlet-class>servlet.DeleteUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddAccountServlet</servlet-name>
+        <servlet-class>servlet.AddAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditUserServlet</servlet-name>
+        <servlet-class>servlet.EditUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <servlet-class>servlet.ChangePasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditProfileServlet</servlet-name>
+        <servlet-class>servlet.EditProfileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -15,6 +62,46 @@
     <servlet-mapping>
         <servlet-name>ProfileServlet</servlet-name>
         <url-pattern>/ProfileServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddRoomServlet</servlet-name>
+        <url-pattern>/AddRoomServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditRoomServlet</servlet-name>
+        <url-pattern>/EditRoomServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteRoomServlet</servlet-name>
+        <url-pattern>/DeleteRoomServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RoomListForAdminServlet</servlet-name>
+        <url-pattern>/RoomListForAdminServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUserStatusServlet</servlet-name>
+        <url-pattern>/UpdateUserStatusServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <url-pattern>/DeleteUserServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddAccountServlet</servlet-name>
+        <url-pattern>/AddAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditUserServlet</servlet-name>
+        <url-pattern>/EditUserServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <url-pattern>/ChangePasswordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditProfileServlet</servlet-name>
+        <url-pattern>/EditProfileServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

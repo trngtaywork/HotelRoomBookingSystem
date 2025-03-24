@@ -34,6 +34,7 @@
         <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
+        <link rel="stylesheet" href="css/profile.css" type="text/css">
 
 
         <style>
@@ -49,12 +50,32 @@
             body {
                 padding-top: 80px;
             }
+            .btn-custom {
+                height: 60px;
+                width: 100px;
+                border-radius: 5%;
+                background-color: black;
+                color: white;
+                border: 1px solid black;
+                padding-left: 5px;
+                margin: 3px;
+            }
+            .d-flex {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-custom {
+                width: 80%;
+                margin-bottom: 10px; 
+            }
+
         </style>
 
         <title>Profile</title>
-        <link rel="stylesheet" href="css/profile.css">
     </head>
-    <body>
+    <body style="background: white">
         <header class="header-section">
             <div class="menu-item">
                 <div class="container">
@@ -70,24 +91,14 @@
                             <div class="nav-menu">
                                 <nav class="mainmenu">
                                     <ul>
-                                        <li class="active"><a href="./index.html">Home</a></li>
-                                        <li><a href="RoomList">Rooms</a></li>
-                                        <li><a href="./about-us.html">About Us</a></li>
-                                        <li><a href="./pages.html">Pages</a>
-                                            <ul class="dropdown">
-                                                <li><a href="./room-details.html">Room Details</a></li>
-                                                <li><a href="./blog-details.html">Blog Details</a></li>
-                                                <li><a href="#">Family Room</a></li>
-                                                <li><a href="#">Premium Room</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="./blog.html">News</a></li>
-                                        <li><a href="./contact.html">Contact</a></li>
+                                        <li><a href="./index.html">Home</a></li>
+                                        <li><a href="userList.jsp">User List</a></li>
+                                        <li><a href="roomListForAdmin.jsp">Room List</a></li>
+                                        <li><a href="serviceList.jsp">Service List</a></li>
+                                        <li><a href="dashboard.jsp">Dashboard</a></li>
+                                        <li class="active"><a href="profile.jsp">Profile</a></li>
                                     </ul>
                                 </nav>
-                                <div class="nav-right search-switch">
-                                    <i class="icon_search"></i>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -95,54 +106,55 @@
             </div>
         </header>
 
-        <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
-    <div class="card p-4 shadow-lg">
-        <div class="profile-header text-center">
-            <img src="img/default-avatar.png" class="rounded-circle profile-img" width="120">
-            <h3 class="mt-3"><%= user.getUsername() %></h3>
-            <p class="text-muted">Email: <%= user.getEmail() %></p>
+        <div class="container mt-4 mb-4 p-3 d-flex justify-content-center" style="height: 90vh">
+            <div class="card p-4">
+                <div class="image d-flex flex-column justify-content-center align-items-center">
+                    <h4 class="mt-3"><%= user.getUsername() %></h4>
+                    <table class="table table-bordered mt-3">
+                        <tr>
+                            <th>Email</th>
+                            <td><%= user.getEmail() %></td>
+                        </tr>
+                        <%
+                            dao.AccountDAO accountDAO = new dao.AccountDAO();
+                            model.Profile profile = accountDAO.getProfileByAccountId(user.getAccountID());
+                            if (profile != null) {
+                        %>
+                        <tr>
+                            <th>Full Name</th>
+                            <td><%= profile.getName() %></td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td><%= profile.getPhoneNumber() %></td>
+                        </tr>
+                        <tr>
+                            <th>Gender</th>
+                            <td><%= profile.getGender() %></td>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td><%= profile.getAddress() %></td>
+                        </tr>
+                        <% } else { %>
+                        <tr>
+                            <td colspan="2" class="text-danger text-center">Profile information not available.</td>
+                        </tr>
+                        <% } %>
+                        <tr>
+                            <th>Account Created Date</th>
+                            <td><%= user.getCreatedDate() %></td>
+                        </tr>
+                    </table>
+                    <div class="d-flex mt-2">
+                        <button class="btn-custom btn-primary me-3 px-4 py-2" onclick="window.location.href = 'editProfile.jsp'">Edit Profile</button>
+                        <button class="btn-custom btn-warning px-4 py-2" onclick="window.location.href = 'changePassword.jsp'">Change Password</button>
+                        <button class="btn-custom btn-danger px-4 py-2" onclick="window.location.href = 'logout.jsp'">Sign Out</button>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <!-- Bảng thông tin người dùng -->
-        <div class="profile-details mt-4">
-            <table class="table table-striped">
-                <tbody>
-                    <tr>
-                        <th scope="row">Full Name</th>
-                        <td><%= profile != null ? profile.getName() : "N/A" %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Phone</th>
-                        <td><%= profile != null ? profile.getPhoneNumber() : "N/A" %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Gender</th>
-                        <td><%= profile != null ? profile.getGender() : "N/A" %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Role</th>
-                        <td><%= profile != null ? profile.getRole() : "N/A" %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Address</th>
-                        <td><%= profile != null ? profile.getAddress() : "N/A" %></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Account Created Date</th>
-                        <td><%= user.getCreatedDate() %></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Nút Edit Profile -->
-        <div class="text-center mt-3">
-            <button class="btn btn-primary btn-lg">Edit Profile</button>
-        </div>
-    </div>
-</div>
-
-        
+  
         <footer class="footer-section">
             <div class="container">
                 <div class="footer-text">
