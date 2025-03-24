@@ -6,8 +6,10 @@ package dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import model.*;
 import utils.DBContext;
 
@@ -15,6 +17,7 @@ import utils.DBContext;
  *
  * @author My PC
  */
+
 public class ProfileDAO extends DBContext {
     public List<Profile> GetProfileList() {
         String sql = "SELECT * FROM [dbo].[Profile] WHERE 1 = 1";
@@ -162,6 +165,7 @@ public class ProfileDAO extends DBContext {
                     + "VALUES (?, ?, ?, ?, ?)";
 
             try {
+
                 PreparedStatement st = connection.prepareStatement(SQL);
                 st.setString(1, p.getName());
                 st.setString(2, p.getPhoneNumber());
@@ -175,7 +179,6 @@ public class ProfileDAO extends DBContext {
             }
         }
     }
-
     private boolean Validate(Profile p) {
         String sql1 = "SELECT * FROM [dbo].[Profile] WHERE AccountID = '" + p.getAccountID() + "'";
         String sql2 = "SELECT * FROM [dbo].[Account] WHERE AccountID = '" + p.getAccountID() + "'";
@@ -205,6 +208,7 @@ public class ProfileDAO extends DBContext {
         } catch (Exception ex) {
             System.out.println(ex);
         }
+
 
         return true;
     }

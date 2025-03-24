@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -20,11 +21,14 @@ public class AccountDAO extends DBContext {
     public Account validateLogin(String username, String password) {
         String sql = "SELECT * FROM [dbo].[Account] WHERE [Username] = ? AND [Password] = ?";
         try ( PreparedStatement stmt = connection.prepareStatement(sql)) {
+
             stmt.setString(1, username);
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
+
                 return new Account(rs.getInt("AccountID"), rs.getString("Username"), rs.getString("Email"), rs.getDate("CreatedDate"));
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -253,5 +257,6 @@ public class AccountDAO extends DBContext {
 
     private boolean IsNullOrEmpty(String s) {
         return s.trim().length() == 0 || s.equals(null) || s.equals("");
+
     }
 }

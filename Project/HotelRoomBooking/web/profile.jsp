@@ -2,7 +2,14 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 <%@ page import="model.Account" %>
-
+<%
+    HttpSession sessionUser = request.getSession(false);
+    Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
+    if (user == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,8 +26,15 @@
         <!-- Css Styles -->
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
         <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+        <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+        <link rel="stylesheet" href="css/flaticon.css" type="text/css">
+        <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+        <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+        <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
+        <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+        <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
-        <link rel="stylesheet" href="css/room.css">
+
 
         <style>
             .header-section {
@@ -35,25 +49,10 @@
             body {
                 padding-top: 80px;
             }
-
-            .tab {
-                font-size: 25px; 
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-
-            .tab:hover {
-                color: white;
-                border-radius: 5px;
-            }
-
-            .sign-in, .sign-up {
-                transform: scale(1.5); 
-            }
         </style>
 
-        <title>Login</title>
-        <link rel="stylesheet" href="css/login.css">
+        <title>Profile</title>
+        <link rel="stylesheet" href="css/profile.css">
     </head>
     <body>
         <header class="header-section">
@@ -96,45 +95,54 @@
             </div>
         </header>
 
-        <div class="login-wrap" style="margin-top: 0">
-            <div class="login-html">
-                <input id="tab-1" type="radio" name="tab" class="sign-in" checked >
-                <label style="padding-right: 15px" for="tab-1" class="tab">Sign In</label>
-                <input id="tab-2" type="radio" name="tab" class="sign-up">
-                <label for="tab-2" class="tab" onclick="window.location.href = 'Register.jsp'">Sign Up</label>
-
-                <div class="login-form">
-                    <!-- Form Login -->
-                    <form action="login" method="post">
-                        <div class="sign-in-htm">
-                            <div class="group">
-                                <label for="username" class="label">Username</label>
-                                <input id="username" name="username" type="text" class="input" required>
-                            </div>
-                            <div class="group">
-                                <label for="password" class="label">Password</label>
-                                <input id="password" name="password" type="password" class="input" data-type="password" required>
-                            </div>
-                            <div class="group">
-                                <input type="submit" class="button" value="Sign In">
-                            </div>
-                            <br>
-                            <div class="error-message" style="color:red; text-align:center;">
-                                <% if (request.getAttribute("error") != null) { %>
-                                <%= request.getAttribute("error") %>
-                                <% } %>
-                            </div>
-                            <div class="hr"></div>
-                            <div class="foot-lnk">
-                                <a href="resetpassword.jsp">Forgot Password?</a>
-                            </div>
-
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+    <div class="card p-4 shadow-lg">
+        <div class="profile-header text-center">
+            <img src="img/default-avatar.png" class="rounded-circle profile-img" width="120">
+            <h3 class="mt-3"><%= user.getUsername() %></h3>
+            <p class="text-muted">Email: <%= user.getEmail() %></p>
         </div>
 
+        <!-- Bảng thông tin người dùng -->
+        <div class="profile-details mt-4">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th scope="row">Full Name</th>
+                        <td><%= profile != null ? profile.getName() : "N/A" %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Phone</th>
+                        <td><%= profile != null ? profile.getPhoneNumber() : "N/A" %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Gender</th>
+                        <td><%= profile != null ? profile.getGender() : "N/A" %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Role</th>
+                        <td><%= profile != null ? profile.getRole() : "N/A" %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Address</th>
+                        <td><%= profile != null ? profile.getAddress() : "N/A" %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Account Created Date</th>
+                        <td><%= user.getCreatedDate() %></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Nút Edit Profile -->
+        <div class="text-center mt-3">
+            <button class="btn btn-primary btn-lg">Edit Profile</button>
+        </div>
+    </div>
+</div>
+
+        
         <footer class="footer-section">
             <div class="container">
                 <div class="footer-text">

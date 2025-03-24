@@ -17,29 +17,37 @@ public class Service {
     private String Description;
     private float Price;
     private String Image;
+
     private String Status;
     private String Type;
+
 
     public Service() {
     }
 
+
     public Service(int ServiceID, String ServiceName, String Description, float Price, String Image, String Status, String Type) {
+
         this.ServiceID = ServiceID;
         this.ServiceName = ServiceName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
+
         this.Status = Status;
         this.Type = Type;
     }
 
     public Service(String ServiceName, String Description, float Price, String Image, String Status, String Type) {
+
         this.ServiceName = ServiceName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
+
         this.Status = Status;
         this.Type = Type;
+
     }
 
     public int getServiceID() {

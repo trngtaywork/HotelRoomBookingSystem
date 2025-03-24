@@ -40,6 +40,7 @@
     </target>
     <target name="-deploy-ant" if="deploy.ant.enabled" depends="-init,-check-credentials">
         <echo message="Deploying ${deploy.ant.archive} to ${Context(path)}"/>
+
         <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask">
             <classpath>
                 <pathelement path="${tomcat.home}/lib/catalina-ant.jar"/>
@@ -55,6 +56,7 @@
     </target>
     <target name="-undeploy-ant" if="deploy.ant.enabled" depends="-init,-check-credentials">
         <echo message="Undeploying ${Context(path)}"/>
+
         <taskdef name="undeploy"  classname="org.apache.catalina.ant.UndeployTask">
             <classpath>
                 <pathelement path="${tomcat.home}/lib/catalina-ant.jar"/>
@@ -64,6 +66,7 @@
             </classpath>
         </taskdef>
         <undeploy url="${tomcat.url}/manager/text" username="${tomcat.username}" 
+
                   password="${tomcat.password}" path="${Context(path)}"/>
     </target>
 </project>

@@ -33,6 +33,7 @@ public class DBContext {
         }
     }
 
+
     public ResultSet getData(String sqlQuery) {
         ResultSet rs = null;
         Statement statement;
@@ -44,7 +45,7 @@ public class DBContext {
         }
         return rs;
     }
-
+  
     public static void main(String[] args) {
         new DBContext();
     }

@@ -86,5 +86,4 @@ public class BookingService {
     public void setEndTime(Date EndTime) {
         this.EndTime = EndTime;
     }
-
 }

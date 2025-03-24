@@ -17,12 +17,15 @@ public class Booking {
     private int RoomID;
     private Date BookingDate;
     private float TotalAmount;
+
     private String Status;
+
 
     public Booking() {
     }
 
     public Booking(int BookingID, int ProfileID, int RoomID, Date BookingDate, float TotalAmount, String Status) {
+
         this.BookingID = BookingID;
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
@@ -32,11 +35,13 @@ public class Booking {
     }
 
     public Booking(int ProfileID, int RoomID, Date BookingDate, float TotalAmount, String Status) {
+
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
         this.BookingDate = BookingDate;
         this.TotalAmount = TotalAmount;
         this.Status = Status;
+
     }
 
     public int getBookingID() {
@@ -86,5 +91,4 @@ public class Booking {
     public void setStatus(String Status) {
         this.Status = Status;
     }
-
 }

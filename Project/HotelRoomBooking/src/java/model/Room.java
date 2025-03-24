@@ -24,22 +24,26 @@ public class Room {
     }
 
     public Room(int RoomID, String RoomName, String Description, double Price, String Image, String Status, String Type) {
+
         this.RoomID = RoomID;
         this.RoomName = RoomName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
+
         this.Status = Status;
         this.Type = Type;
     }
 
     public Room(String RoomName, String Description, double Price, String Image, String Status, String Type) {
+
         this.RoomName = RoomName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
         this.Status = Status;
         this.Type = Type;
+
     }
 
     public int getRoomID() {
