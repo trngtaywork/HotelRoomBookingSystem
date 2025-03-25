@@ -63,6 +63,7 @@ public class BookingServiceDetailAdmin extends HttpServlet {
             Service service = serviceDAO.SearchServiceByID(serviceID);
             Profile profile = profileDAO.SearchProfileById(booking.getProfileID());
             Account account = accountDAO.SearchAccount(profile.getAccountID());
+            Room room = roomDAO.SearchRoomByID(booking.getRoomID());
             
             if(service == null || booking == null || profile == null || account == null){
                 request.getRequestDispatcher("BookingListAdmin").forward(request, response);
@@ -73,6 +74,7 @@ public class BookingServiceDetailAdmin extends HttpServlet {
             request.setAttribute("bookingService", bookingService);
             request.setAttribute("profile", profile);
             request.setAttribute("account", account);
+            request.setAttribute("room", room);
             
             request.getRequestDispatcher("BookingServiceDetailAdmin.jsp").forward(request, response);
         }

@@ -203,7 +203,7 @@
                                         <td>${b.getBookingDate()}</td>
                                         <td>${b.getTotalAmount()}</td>
                                         <td>${b.getStatus()}</td>
-                                        <td><a href="" class="link">Room Detail</a></td>
+                                        <td><a href="RoomDetailAdmin?roomID=${b.getRoomID()}" class="link">Room Detail</a></td>
                                         <td><a href="" class="link">Service Detail</a></td>
                                         <td><a href="BookingDetailAdmin?bookingID=${b.getBookingID()}" class="link">More Details</a></td>
                                     </tr>

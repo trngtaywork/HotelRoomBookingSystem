@@ -29,9 +29,10 @@
 
         <%Booking b = (Booking)request.getAttribute("booking");%>
         <%Room r = (Room)request.getAttribute("room");%>
+        <%Service s = (Service)request.getAttribute("service");%>
         <%Account a = (Account)request.getAttribute("account");%>
         <%Profile p = (Profile)request.getAttribute("profile");%>
-        <%BookingRoom br = (BookingRoom)request.getAttribute("bookingRoom");%>
+        <%BookingService bs = (BookingService)request.getAttribute("bookingService");%>
 <%--
         <div class="container">
             BookingID: <P><%=b.getBookingID()%></P><br>
@@ -105,22 +106,22 @@
                                             <td><%=b.getBookingDate()%></td>
                                         </tr>
                                         <tr>
+                                            <td>Service ID:</td>
+                                            <td><%=s.getServiceID()%></td>
+                                            <td></td>
+                                            <td>Service Name:</td>
+                                            <td><%=s.getServiceName()%></td>
+                                        </tr>
+                                        <tr>
                                             <td>Start Time:</td>
-                                            <td><%=br.getStartTime()%></td>
+                                            <td><%=bs.getStartTime()%></td>
                                             <td></td>
                                             <td>End Time:</td>
-                                            <td><%=br.getEndTime()%></td>
+                                            <td><%=bs.getEndTime()%></td>
                                         </tr>
                                         <tr>
-                                            <td>Quantity:</td>
-                                            <td><%=br.getQuantity()%></td>
-                                            <td></td>
-                                            <td>Total Amount:</td>
-                                            <td><%=b.getTotalAmount()%></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Status:</td>
-                                            <td><%=b.getStatus()%></td>
+                                            <td>Amount:</td>
+                                            <td><%=bs.getAmount()%></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>

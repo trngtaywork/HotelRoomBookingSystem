@@ -24,6 +24,8 @@ public class BookingServiceDetail extends HttpServlet {
     BookingDAO bookingDAO = new BookingDAO();
     BookingServiceDAO bookingServiceDAO = new BookingServiceDAO();
     ServiceDAO serviceDAO = new ServiceDAO();
+    RoomDAO roomDAO = new RoomDAO();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -57,8 +59,10 @@ public class BookingServiceDetail extends HttpServlet {
 
             Service service = serviceDAO.SearchServiceByID(serviceId);
             Booking booking = bookingDAO.SearchBooking(bookingID);
+            Room room = roomDAO.SearchRoomByID(booking.getRoomID());
 
             request.setAttribute("service", service);
+            request.setAttribute("room", room);
             request.setAttribute("booking", booking);
             request.setAttribute("bookingService", bookingService);
             request.getRequestDispatcher("BookingServiceDetail.jsp").forward(request, response);

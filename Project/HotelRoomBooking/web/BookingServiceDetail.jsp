@@ -28,8 +28,9 @@
             </header>
 
         <%Booking b = (Booking)request.getAttribute("booking");%>
+        <%Service s = (Service)request.getAttribute("service");%>
         <%Room r = (Room)request.getAttribute("room");%>
-        <%BookingRoom br = (BookingRoom)request.getAttribute("bookingRoom");%>
+        <%BookingService bs = (BookingService)request.getAttribute("bookingService");%>
 
 <%--
         <table>
@@ -65,25 +66,18 @@
                                             <td><%=b.getBookingDate()%></td>
                                         </tr>
                                         <tr>
+                                            <td>Service Name:</td>
+                                            <td><%=s.getServiceName()%></td>
+                                            <td></td>
+                                            <td>Amount:</td>
+                                            <td><%=bs.getAmount()%></td>
+                                        </tr>
+                                        <tr>
                                             <td>Start Time:</td>
-                                            <td><%=br.getStartTime()%></td>
+                                            <td><%=bs.getStartTime()%></td>
                                             <td></td>
                                             <td>End Time:</td>
-                                            <td><%=br.getEndTime()%></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Quantity:</td>
-                                            <td><%=br.getQuantity()%></td>
-                                            <td></td>
-                                            <td>Total Amount:</td>
-                                            <td><%=b.getTotalAmount()%></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Status:</td>
-                                            <td><%=b.getStatus()%></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td><%=bs.getEndTime()%></td>
                                         </tr>
                                     </tbody>
                                 </table>

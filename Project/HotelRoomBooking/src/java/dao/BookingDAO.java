@@ -204,7 +204,7 @@ public class BookingDAO extends DBContext {//add merge?
                             + "[Booking].[ProfileID] LIKE '%" + target + "%'";
                     break;
                 case "Name":
-                    sql = "SELECT [BookingID], [Booking].[ProfileID], [Booking].[RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] INNER JOIN [Profile] ON [Booking].[ProfileID] = [Profile].[ProfileID] WHERE "
+                    sql = "SELECT [BookingID], [Booking].[ProfileID], [Booking].[RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] INNER JOIN [dbo].[Profile] ON [Booking].[ProfileID] = [Profile].[ProfileID] WHERE "
                             + "[Profile].[Name] LIKE '%" + target + "%'";
                     break;
                 case "RoomID":
@@ -212,7 +212,7 @@ public class BookingDAO extends DBContext {//add merge?
                             + "[Booking].[RoomID] LIKE '%" + target + "%'";
                     break;
                 case "RoomName":
-                    sql = "SELECT [BookingID], [Booking].[ProfileID], [Booking].[RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] INNER JOIN [Room] ON [Booking].[RoomID] = [Room].[RoomID] WHERE "
+                    sql = "SELECT [BookingID], [Booking].[ProfileID], [Booking].[RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] INNER JOIN [dbo].[Room] ON [Booking].[RoomID] = [Room].[RoomID] WHERE "
                             + "[Room].[RoomName] LIKE '%" + target + "%'";
                     break;
                 case "Status":
