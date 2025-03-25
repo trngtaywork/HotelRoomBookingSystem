@@ -37,18 +37,6 @@
 
         <%Room r = (Room)request.getAttribute("room");%>
 
-        <%--
-        Room Name: <P><%=r.getRoomName()%></P><br>
-        Description: <P><%=r.getDescription()%></P><br>
-        Price <P><%=r.getPrice()%></P><br>
-        Image: <P><%=r.getImage()%></P><br>
-        Type: <P><%=r.getTypeID()%></P><br>
-        Status: <P><%=r.getStatusID()%></P><br>
-        <br>
-        <a href="RoomList">Return</a><br>
-        <br>
-        --%>
-
         <section class="room-details-section spad">
             <div class="container">
                 <div class="row">
@@ -67,11 +55,11 @@
                                     <tbody>
                                         <tr>
                                             <td class="r-o">Type:</td>
-                                            <td><%=r.getType()%></td>
+                                            <td><%=r.getTypeRoom()%></td>
                                         </tr>
                                         <tr>
                                             <td class="r-o">Status:</td>
-                                            <td><%=r.getStatus()%></td>
+                                            <td><%=r.getStatusRoom()%></td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -54,11 +54,11 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="r-o">Status:</td>
-                                                        <td>${s.getStatus()}</td>
+                                                        <td>${s.getStatusService()}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="r-o">Type:</td>
-                                                        <td>${s.getType()}</td>
+                                                        <td>${s.getTypeService()}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

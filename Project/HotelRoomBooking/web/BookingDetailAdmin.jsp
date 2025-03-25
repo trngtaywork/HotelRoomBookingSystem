@@ -48,26 +48,7 @@
         <%Account a = (Account)request.getAttribute("account");%>
         <%Profile p = (Profile)request.getAttribute("profile");%>
         <%BookingRoom br = (BookingRoom)request.getAttribute("bookingRoom");%>
-<%--
-        <div class="container">
-            BookingID: <P><%=b.getBookingID()%></P><br>
-            RoomID <P><%=b.getRoomID()%></P><br>
-            RoomName <p><%=r.getRoomName()%></p>
-            BookingDate <P><%=b.getBookingDate()%></P><br>
-            TotalAmount <P><%=b.getTotalAmount()%></P><br>
-            Status: <P><%=b.getStatus()%></P><br>
-            <br>
-            Customer Username <p><%=a.getUsername()%></p><br>
-            Customer name <p><%=p.getName()%></p><br>
-            Gender <p><%=p.getGender()%></p><br>
-            Email <p><%=a.getEmail()%></p><br>
-            Phone Number <p><%=p.getPhoneNumber()%></p><br>
-            Address <p><%=p.getAddress()%></p><br>
-            <br>
-            <a class="link" href="BookingListAdmin">Return</a><br>
-            <br>
-        </div>
---%>
+
         <section class="room-details-section spad">
             <div class="container">
                 <div class="row">
@@ -136,7 +117,7 @@
                                         </tr>
                                         <tr>
                                             <td>Status:</td>
-                                            <td><%=b.getStatus()%></td>
+                                            <td><%=b.getStatusBooking()%></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>

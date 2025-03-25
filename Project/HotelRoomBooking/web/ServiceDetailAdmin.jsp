@@ -64,12 +64,12 @@
                     <td><%=s.getPrice()%></td>
                 </tr>
                 <tr>
-                    <th>Status</th>
-                    <td><%=s.getStatus()%></td>
+                    <th>StatusService</th>
+                    <td><%=s.getStatusService()%></td>
                 </tr>
                 <tr>
-                    <th>Type</th>
-                    <td><%=s.getType()%></td>
+                    <th>TypeService</th>
+                    <td><%=s.getTypeService()%></td>
                 </tr>
             </table>
 

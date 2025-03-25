@@ -27,86 +27,8 @@
         <header>
             <jsp:include page="header.html"></jsp:include>
             </header>
-            <--ver1-->>
+
             <div>
-
-            <c:choose>
-                <c:when test="${requestScope.bookingList.size() == 0}">
-                    <div class="container">
-                        <label class="h2">Booking Service List is Empty</label>
-                    </div>
-                </c:when>    
-                <c:otherwise>
-                    <div class="container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Room</th>
-                                    <th>Booking Date</th>
-                                    <th>Service</th>
-                                    <th>Amount</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach items="${requestScope.bookingList}" var="b">
-                                    <tr>
-                                        <c:forEach items="${requestScope.roomList}" var="r">
-                                            <c:if test="${b.getRoomID() == r.getRoomID()}">
-                                                <td>${r.getRoomName()}</td>
-                                            </c:if>
-                                        </c:forEach>
-                                        <td>${b.getBookingDate()}</td>
-                                        <c:forEach items="${requestScope.bookingServiceList}" var="bs">
-                                            <c:if test="${bs.getBookingID() == b.getBookingID()}">
-                                                <c:forEach items="${requestScope.serviceList}" var="s">
-                                                    <c:if test="${bs.getServiceID() == s.getServiceID()}">
-                                                        <c:set var="serviceName" value="${s.getServiceName()}" />
-                                                    </c:if>
-                                                </c:forEach>
-                                            </c:if>
-                                        </c:forEach>
-                                        <td>${serviceName}</td>
-
-                                        <c:forEach items="${requestScope.bookingServiceList}" var="bs">
-                                            <c:if test="${bs.getBookingID() == b.getBookingID()}">
-                                                <c:set var="amount" value="${bs.getAmount()}" />
-                                            </c:if>
-                                        </c:forEach>
-                                        <td>${amount}</td>
-
-                                        <c:forEach items="${requestScope.bookingServiceList}" var="bs">
-                                            <c:if test="${bs.getBookingID() == b.getBookingID()}">
-                                                <c:set var="bookingServiceID" value="${bs.getBookingServiceID()}" />
-                                            </c:if>
-                                        </c:forEach>
-                                        <td><a class="link" href="BookingServiceDetail?bookingServiceID=${bookingServiceID}">More Details</a></td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
-                </c:otherwise>
-            </c:choose>
-
-
-        </div>
-        <%--
-                <c:forEach items="${requestScope.bookingList}" var="b">
-                    <div>
-                        <p>${b.getBookingID()}</p>
-                        <p>${b.getProfileID()}</p>
-                        <p>${b.getRoomID()}</p>
-                        <p>${b.getBookingDate()}</p>
-                        <p>${b.getTotalAmount()}</p>
-                        <p>${b.getStatus()}</p>
-                        <p><a href="BookingDetail?bookingID=${b.getBookingID()}">More Details</a></p>
-                        <p></p>
-                    </div>
-                </c:forEach>
-        --%>
-
-        <div>
 
             <c:choose>
                 <c:when test="${requestScope.bookingList.size() == 0}">

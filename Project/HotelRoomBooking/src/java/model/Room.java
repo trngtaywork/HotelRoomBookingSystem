@@ -17,29 +17,29 @@ public class Room {
     private String Description;
     private double Price;
     private String Image;
-    private String Status;
-    private String Type;
+    private String StatusRoom;
+    private String TypeRoom;
 
     public Room() {
     }
 
-    public Room(int RoomID, String RoomName, String Description, double Price, String Image, String Status, String Type) {
+    public Room(int RoomID, String RoomName, String Description, double Price, String Image, String StatusRoom, String TypeRoom) {
         this.RoomID = RoomID;
         this.RoomName = RoomName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
-        this.Status = Status;
-        this.Type = Type;
+        this.StatusRoom = StatusRoom;
+        this.TypeRoom = TypeRoom;
     }
 
-    public Room(String RoomName, String Description, double Price, String Image, String Status, String Type) {
+    public Room(String RoomName, String Description, double Price, String Image, String StatusRoom, String TypeRoom) {
         this.RoomName = RoomName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
-        this.Status = Status;
-        this.Type = Type;
+        this.StatusRoom = StatusRoom;
+        this.TypeRoom = TypeRoom;
     }
 
     public int getRoomID() {
@@ -82,20 +82,20 @@ public class Room {
         this.Image = Image;
     }
 
-    public String getStatus() {
-        return Status;
+    public String getStatusRoom() {
+        return StatusRoom;
     }
 
-    public void setStatus(String Status) {
-        this.Status = Status;
+    public void setStatusRoom(String StatusRoom) {
+        this.StatusRoom = StatusRoom;
     }
 
-    public String getType() {
-        return Type;
+    public String getTypeRoom() {
+        return TypeRoom;
     }
 
-    public void setType(String Type) {
-        this.Type = Type;
+    public void setTypeRoom(String TypeRoom) {
+        this.TypeRoom = TypeRoom;
     }
 
 }

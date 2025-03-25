@@ -32,24 +32,6 @@
         <%Room r = (Room)request.getAttribute("room");%>
         <%BookingService bs = (BookingService)request.getAttribute("bookingService");%>
 
-<%--
-        <table>
-            <tr>
-                <td><img src="<%=r.getImage()%>" alt=""/></td>
-                <td>
-                    BookingID: <P><%=b.getBookingID()%></P><br>
-                    RoomID <P><%=b.getRoomID()%></P><br>
-                    BookingDate <P><%=b.getBookingDate()%></P><br>
-                    TotalAmount <P><%=b.getTotalAmount()%></P><br>
-                    Status: <P><%=b.getStatus()%></P><br>
-                </td>
-            </tr>
-        </table>
-
-        <br>
-        <a class="link" href="BookingList">Return</a><br>
-        <br>
---%>
         <section class="room-details-section spad">
             <div class="container">
                 <div class="row">

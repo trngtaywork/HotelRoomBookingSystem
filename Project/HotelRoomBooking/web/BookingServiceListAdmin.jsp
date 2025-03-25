@@ -71,21 +71,7 @@
         <header>
             <jsp:include page="header.html"></jsp:include>
             </header>
-        <%--
-        <c:forEach items="${requestScope.bookingList}" var="b">
-                    <div>
-                        <p>${b.getBookingID()}</p>
-                        <p>${b.getProfileID()}</p>
-                        <p>${b.getRoomID()}</p>
-                        <p>${b.getBookingDate()}</p>
-                        <p>${b.getTotalAmount()}</p>
-                        <p>${b.getStatus()}</p>
-                        <p><a href="BookingDetail?bookingID=${b.getBookingID()}">More Details</a></p>
-                        <p></p>
-                    </div>
-                </c:forEach>
-        --%>
-
+        
         <div class="container">
             <div>
                 <c:if test="${requestScope.error != null || !requestScope.error.isBlank()}">
@@ -218,7 +204,7 @@
                                         </c:forEach>
                                         <c:forEach items="${requestScope.bookingList}" var="b">
                                             <c:if test="${bs.getBookingID() == b.getBookingID()}">
-                                                <td>${b.getStatus()}</td>
+                                                <td>${b.getStatusBooking()}</td>
                                             </c:if>
                                         </c:forEach>
                                         <td><a href="BookingServiceDetailAdmin?bookingServiceID=${bs.getBookingServiceID()}" class="link">More Details</a></td>

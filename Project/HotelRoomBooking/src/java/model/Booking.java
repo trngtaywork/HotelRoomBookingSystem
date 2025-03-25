@@ -17,26 +17,26 @@ public class Booking {
     private int RoomID;
     private Date BookingDate;
     private float TotalAmount;
-    private String Status;
+    private String StatusBooking;
 
     public Booking() {
     }
 
-    public Booking(int BookingID, int ProfileID, int RoomID, Date BookingDate, float TotalAmount, String Status) {
+    public Booking(int BookingID, int ProfileID, int RoomID, Date BookingDate, float TotalAmount, String StatusBooking) {
         this.BookingID = BookingID;
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
         this.BookingDate = BookingDate;
         this.TotalAmount = TotalAmount;
-        this.Status = Status;
+        this.StatusBooking = StatusBooking;
     }
 
-    public Booking(int ProfileID, int RoomID, Date BookingDate, float TotalAmount, String Status) {
+    public Booking(int ProfileID, int RoomID, Date BookingDate, float TotalAmount, String StatusBooking) {
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
         this.BookingDate = BookingDate;
         this.TotalAmount = TotalAmount;
-        this.Status = Status;
+        this.StatusBooking = StatusBooking;
     }
 
     public int getBookingID() {
@@ -79,12 +79,12 @@ public class Booking {
         this.TotalAmount = TotalAmount;
     }
 
-    public String getStatus() {
-        return Status;
+    public String getStatusBooking() {
+        return StatusBooking;
     }
 
-    public void setStatus(String Status) {
-        this.Status = Status;
+    public void setStatusBooking(String StatusBooking) {
+        this.StatusBooking = StatusBooking;
     }
 
 }

@@ -20,7 +20,7 @@ import utils.DBContext;
 public class BookingDAO extends DBContext {//add merge?
 
     public void Add(Booking booking) {
-        String SQL = "INSERT INTO [dbo].[Booking]([ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status]) "
+        String SQL = "INSERT INTO [dbo].[Booking]([ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking]) "
                 + "VALUES (?, ?, ?, ?, ?)";
 
         try {
@@ -29,23 +29,23 @@ public class BookingDAO extends DBContext {//add merge?
             st.setInt(2, booking.getRoomID());
             st.setDate(3, booking.getBookingDate());
             st.setFloat(4, booking.getTotalAmount());
-            st.setString(5, booking.getStatus());
+            st.setString(5, booking.getStatusBooking());
 
             st.executeUpdate();
         } catch (Exception e) {
             System.out.println(e.toString());
         }
     }
-    
+
     public void Update(Booking booking) {
-        String SQL = "UPDATE [dbo].[Booking] SET ProfileID = ?, RoomID = ?, BookingDate = ?, TotalAmount = ?, Status = ? WHERE BookingID = ?";
+        String SQL = "UPDATE [dbo].[Booking] SET ProfileID = ?, RoomID = ?, BookingDate = ?, TotalAmount = ?, StatusBooking = ? WHERE BookingID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(SQL);
             st.setInt(1, booking.getProfileID());
             st.setInt(2, booking.getRoomID());
             st.setDate(3, booking.getBookingDate());
             st.setFloat(4, booking.getTotalAmount());
-            st.setString(5, booking.getStatus());
+            st.setString(5, booking.getStatusBooking());
             st.setInt(6, booking.getBookingID());
             st.executeUpdate();
         } catch (Exception e) {
@@ -65,16 +65,16 @@ public class BookingDAO extends DBContext {//add merge?
     }
 
     public List<Booking> GetBookingList() {
-        String sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE 1 = 1";
+        String sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE 1 = 1";
         List<Booking> bookings = new ArrayList<>();
 
         try {
             ResultSet rs = getData(sql);
 
-            if(rs == null){
+            if (rs == null) {
                 return null;
             }
-            
+
             while (rs.next()) {
                 Booking b = new Booking();
                 b.setBookingID(rs.getInt("BookingID"));
@@ -82,7 +82,7 @@ public class BookingDAO extends DBContext {//add merge?
                 b.setRoomID(rs.getInt("RoomID"));
                 b.setBookingDate(rs.getDate("BookingDate"));
                 b.setTotalAmount(rs.getFloat("TotalAmount"));
-                b.setStatus(rs.getString("Status"));
+                b.setStatusBooking(rs.getString("StatusBooking"));
 
                 bookings.add(b);
             }
@@ -95,7 +95,7 @@ public class BookingDAO extends DBContext {//add merge?
 
     public List<Booking> SearchBookings(Booking target)//struct?: if var != null => + "AND X = X" in sql
     {
-        String sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE 1 = 1";
+        String sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE 1 = 1";
 
         if (target.getBookingID() > 0)//??
         {
@@ -116,8 +116,8 @@ public class BookingDAO extends DBContext {//add merge?
         {
             sql += " AND [TotalAmount] = '" + target.getTotalAmount() + "'";
         }
-        if (!target.getStatus().isBlank()) {
-            sql += " AND [Status] = '" + target.getStatus() + "'";
+        if (!target.getStatusBooking().isBlank()) {
+            sql += " AND [StatusBooking] = '" + target.getStatusBooking() + "'";
         }
 
         List<Booking> bookings = new ArrayList<>();
@@ -125,10 +125,10 @@ public class BookingDAO extends DBContext {//add merge?
         try {
             ResultSet rs = getData(sql);
 
-            if(rs == null){
+            if (rs == null) {
                 return null;
             }
-            
+
             while (rs.next()) {
                 Booking b = new Booking();
                 b.setBookingID(rs.getInt("BookingID"));
@@ -136,7 +136,7 @@ public class BookingDAO extends DBContext {//add merge?
                 b.setRoomID(rs.getInt("RoomID"));
                 b.setBookingDate(rs.getDate("BookingDate"));
                 b.setTotalAmount(rs.getFloat("TotalAmount"));
-                b.setStatus(rs.getString("Status"));
+                b.setStatusBooking(rs.getString("StatusBooking"));
 
                 bookings.add(b);
             }
@@ -146,21 +146,21 @@ public class BookingDAO extends DBContext {//add merge?
 
         return bookings;
     }
-    
+
     public List<Booking> SearchBookingsByProfileID(int profileID) {
-        String sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE "
-                            + "[Booking].[ProfileID] = " + profileID;
+        String sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE "
+                + "[Booking].[ProfileID] = " + profileID;
 
         List<Booking> bookings = new ArrayList<>();
 
         try {
-            
+
             ResultSet rs = getData(sql);
-            
-            if(rs == null){
+
+            if (rs == null) {
                 return null;
             }
-            
+
             while (rs.next()) {
                 Booking b = new Booking();
                 b.setBookingID(rs.getInt("BookingID"));
@@ -168,7 +168,7 @@ public class BookingDAO extends DBContext {//add merge?
                 b.setRoomID(rs.getInt("RoomID"));
                 b.setBookingDate(rs.getDate("BookingDate"));
                 b.setTotalAmount(rs.getFloat("TotalAmount"));
-                b.setStatus(rs.getString("Status"));
+                b.setStatusBooking(rs.getString("StatusBookng"));
 
                 bookings.add(b);
             }
@@ -191,49 +191,49 @@ public class BookingDAO extends DBContext {//add merge?
         try {
             switch (field) {
                 case "any":
-                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE "
+                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE "
                             + "[BookingID] LIKE '%" + target + "%' OR "
                             + "[ProfileID] LIKE '%" + target + "%' OR "
                             + "[RoomID] LIKE '%" + target + "%' OR "
                             + "[BookingDate] LIKE '%" + target + "%' OR "
                             + "[TotalAmount] LIKE '%" + target + "%' OR "
-                            + "[Status] LIKE '%" + target + "%'";
+                            + "[StatusBooking] LIKE '%" + target + "%'";
                     break;
                 case "ProfileID":
-                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE "
+                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE "
                             + "[Booking].[ProfileID] LIKE '%" + target + "%'";
                     break;
                 case "Name":
-                    sql = "SELECT [BookingID], [Booking].[ProfileID], [Booking].[RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] INNER JOIN [dbo].[Profile] ON [Booking].[ProfileID] = [Profile].[ProfileID] WHERE "
+                    sql = "SELECT [BookingID], [Booking].[ProfileID], [Booking].[RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] INNER JOIN [dbo].[Profile] ON [Booking].[ProfileID] = [Profile].[ProfileID] WHERE "
                             + "[Profile].[Name] LIKE '%" + target + "%'";
                     break;
                 case "RoomID":
-                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE "
+                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE "
                             + "[Booking].[RoomID] LIKE '%" + target + "%'";
                     break;
                 case "RoomName":
-                    sql = "SELECT [BookingID], [Booking].[ProfileID], [Booking].[RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] INNER JOIN [dbo].[Room] ON [Booking].[RoomID] = [Room].[RoomID] WHERE "
+                    sql = "SELECT [BookingID], [Booking].[ProfileID], [Booking].[RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] INNER JOIN [dbo].[Room] ON [Booking].[RoomID] = [Room].[RoomID] WHERE "
                             + "[Room].[RoomName] LIKE '%" + target + "%'";
                     break;
-                case "Status":
-                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE "
-                            + "[Booking].[Status] LIKE '%" + target + "%'";
+                case "StatusBooking":
+                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE "
+                            + "[Booking].[StatusBooking] LIKE '%" + target + "%'";
                     break;
                 case "TotalAmount":
-                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE "
+                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE "
                             + "[Booking].[TotalAmount] LIKE '%" + target + "%'";
                     break;
                 default:
-                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE 1 = 1";
+                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE 1 = 1";
                     break;
             }
 
             ResultSet rs = getData(sql);
-            
-            if(rs == null){
+
+            if (rs == null) {
                 return null;
             }
-            
+
             while (rs.next()) {
                 Booking b = new Booking();
                 b.setBookingID(rs.getInt("BookingID"));
@@ -241,7 +241,7 @@ public class BookingDAO extends DBContext {//add merge?
                 b.setRoomID(rs.getInt("RoomID"));
                 b.setBookingDate(rs.getDate("BookingDate"));
                 b.setTotalAmount(rs.getFloat("TotalAmount"));
-                b.setStatus(rs.getString("Status"));
+                b.setStatusBooking(rs.getString("StatusBooking"));
 
                 bookings.add(b);
             }
@@ -251,7 +251,7 @@ public class BookingDAO extends DBContext {//add merge?
 
         return bookings;
     }
-    
+
     public List<Booking> SearchBooking(String field, String target, Date fromDate, Date toDate) {
         String sql;
 
@@ -264,51 +264,51 @@ public class BookingDAO extends DBContext {//add merge?
         try {
             switch (field) {
                 case "any":
-                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE "
+                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE "
                             + "[BookingID] LIKE '%" + target + "%' OR "
                             + "[ProfileID] LIKE '%" + target + "%' OR "
                             + "[RoomID] LIKE '%" + target + "%' OR "
                             + "[BookingDate] LIKE '%" + target + "%' OR "
                             + "[TotalAmount] LIKE '%" + target + "%' OR "
-                            + "[Status] LIKE '%" + target + "%'";
+                            + "[StatusBooking] LIKE '%" + target + "%'";
                     break;
                 case "ProfileID":
-                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE "
+                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE "
                             + "[Booking].[ProfileID] LIKE '%" + target + "%'";
                     break;
                 case "Name":
-                    sql = "SELECT [BookingID], [Booking].[ProfileID], [Booking].[RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] INNER JOIN [Profile] ON [Booking].[ProfileID] = [Profile].[ProfileID] WHERE "
+                    sql = "SELECT [BookingID], [Booking].[ProfileID], [Booking].[RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] INNER JOIN [Profile] ON [Booking].[ProfileID] = [Profile].[ProfileID] WHERE "
                             + "[Profile].[Name] LIKE '%" + target + "%'";
                     break;
                 case "RoomID":
-                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE "
+                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE "
                             + "[Booking].[RoomID] LIKE '%" + target + "%'";
                     break;
                 case "RoomName":
-                    sql = "SELECT [BookingID], [Booking].[ProfileID], [Booking].[RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] INNER JOIN [Room] ON [Booking].[RoomID] = [Room].[RoomID] WHERE "
+                    sql = "SELECT [BookingID], [Booking].[ProfileID], [Booking].[RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] INNER JOIN [Room] ON [Booking].[RoomID] = [Room].[RoomID] WHERE "
                             + "[Room].[RoomName] LIKE '%" + target + "%'";
                     break;
-                case "Status":
-                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE "
-                            + "[Booking].[Status] LIKE '%" + target + "%'";
+                case "StatusBooking":
+                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE "
+                            + "[Booking].[StatusBooking] LIKE '%" + target + "%'";
                     break;
                 case "TotalAmount":
-                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE "
+                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE "
                             + "[Booking].[TotalAmount] LIKE '%" + target + "%'";
                     break;
                 default:
-                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE 1 = 1";
+                    sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE 1 = 1";
                     break;
             }
 
             sql += " AND [BookingDate] BETWEEN '" + fromDate + "' AND '" + toDate + "'";
-            
+
             ResultSet rs = getData(sql);
-            
-            if(rs == null){
+
+            if (rs == null) {
                 return null;
             }
-            
+
             while (rs.next()) {
                 Booking b = new Booking();
                 b.setBookingID(rs.getInt("BookingID"));
@@ -316,7 +316,7 @@ public class BookingDAO extends DBContext {//add merge?
                 b.setRoomID(rs.getInt("[Booking].[RoomID]"));
                 b.setBookingDate(rs.getDate("BookingDate"));
                 b.setTotalAmount(rs.getFloat("TotalAmount"));
-                b.setStatus(rs.getString("Status"));
+                b.setStatusBooking(rs.getString("StatusBooking"));
 
                 bookings.add(b);
             }
@@ -328,15 +328,15 @@ public class BookingDAO extends DBContext {//add merge?
     }
 
     public Booking SearchBooking(int bookingId) {
-        String sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status] FROM [dbo].[Booking] WHERE [BookingID] = " + bookingId;
+        String sql = "SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE [BookingID] = " + bookingId;
 
         try {
             ResultSet rs = getData(sql);
 
-            if(rs == null){
+            if (rs == null) {
                 return null;
             }
-            
+
             if (rs.next()) {
                 Booking b = new Booking();
                 b.setBookingID(rs.getInt("BookingID"));
@@ -344,7 +344,7 @@ public class BookingDAO extends DBContext {//add merge?
                 b.setRoomID(rs.getInt("RoomID"));
                 b.setBookingDate(rs.getDate("BookingDate"));
                 b.setTotalAmount(rs.getFloat("TotalAmount"));
-                b.setStatus(rs.getString("Status"));
+                b.setStatusBooking(rs.getString("StatusBooking"));
 
                 return b;
             }
@@ -354,7 +354,7 @@ public class BookingDAO extends DBContext {//add merge?
 
         return null;
     }
-    
+
     public int lastBookingID() {
         String sql = "SELECT TOP 1 [BookingID]\n"
                 + "FROM [dbo].[Booking]\n"

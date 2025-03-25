@@ -73,8 +73,8 @@ public class AddService extends HttpServlet {
         String serviceName = request.getParameter("serviceName");//is null -> why???????
         String description = request.getParameter("description");//is null -> why???????
         String priceStr = request.getParameter("price");//is null -> why???????
-        String status = request.getParameter("status");
-        String type = request.getParameter("type");
+        String statusService = request.getParameter("statusService");
+        String typeService = request.getParameter("typeService");
         Part filePart = request.getPart("serviceImage");
 
         serviceName = serviceName.trim();
@@ -128,7 +128,7 @@ public class AddService extends HttpServlet {
         }
 
         // Create Service object
-        Service service = new Service(serviceName, description, price, image, status, type);
+        Service service = new Service(serviceName, description, price, image, statusService, typeService);
 
         // Add the service to the database
         serviceDAO.Add(service);

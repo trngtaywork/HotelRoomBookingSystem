@@ -64,17 +64,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="status">Status</label>
-                    <select name="status" id="status" class="form-control" required>
+                    <label for="statusService">Status</label>
+                    <select name="statusService" id="statusService" class="form-control" required>
                         <option value="available" >Available</option>
                         <option value="notAvailable" >Occupied</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="status">Type</label>
-                    <input type="text" name="type" id="type" class="form-control" 
-                           value="<%= s.getType() %>" required>
+                    <label for="typeService">Type</label>
+                    <input type="text" name="typeService" id="typeService" class="form-control" 
+                           value="<%= s.getTypeService() %>" required>
                 </div>
 
                 <div class="form-group">
