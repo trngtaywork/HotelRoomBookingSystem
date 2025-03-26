@@ -1,40 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-/**
- *
- * @author My PC
- */
 public class Profile {
+    private int profileID;
+    private String name;
+    private String phoneNumber;
+    private String gender;
+    private String address;
+    private int accountID;
 
-    private int ProfileID;
-    private String Name;
-    private String PhoneNumber;
-    private String Gender;
-    private String Address;
-    private int AccountID;
-
-    public Profile() {
+    public Profile(int profileID, String name, String phoneNumber, String gender, String address, int accountID) {
+        this.profileID = profileID;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.address = address;
+        this.accountID = accountID;
     }
 
-    public Profile(int ProfileID, String Name, String PhoneNumber, String Gender, String Address, int AccountID) {
-        this.ProfileID = ProfileID;
-        this.Name = Name;
-        this.PhoneNumber = PhoneNumber;
-        this.Gender = Gender;
-        this.Address = Address;
-        this.AccountID = AccountID;
-    }
-
-    public Profile(String Name, String PhoneNumber, String Gender, String Address, int AccountID) {
-        this.Name = Name;
-        this.PhoneNumber = PhoneNumber;
-        this.Gender = Gender;
-        this.Address = Address;
-        this.AccountID = AccountID;
+  public Profile(String name, String phoneNumber, String gender, String address, int accountID) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.address = address;
+        this.accountID = accountID;
     }
 
     public int getProfileID() {

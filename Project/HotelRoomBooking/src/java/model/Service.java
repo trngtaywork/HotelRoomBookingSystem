@@ -11,7 +11,6 @@ import java.awt.Image;
  * @author My PC
  */
 public class Service {
-
     private int ServiceID;
     private String ServiceName;
     private String Description;
@@ -97,5 +96,4 @@ public class Service {
     public void setTypeService(String TypeService) {
         this.TypeService = TypeService;
     }
-
 }

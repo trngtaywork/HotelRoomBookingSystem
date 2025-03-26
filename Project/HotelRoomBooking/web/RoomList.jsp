@@ -12,7 +12,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Room List</title>
-
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700&display=swap" rel="stylesheet">
@@ -33,6 +32,7 @@
         <%--<%var roomList = request.getAttribute("roomList");%>--%>
         <header>
             <jsp:include page="header.html"></jsp:include>
+
             </header>
 
         <section class="rooms-section spad">
@@ -43,6 +43,7 @@
                         <label class="h2">Room List is Empty</label>
                     </c:when>    
                     <c:otherwise>
+
                         <div class="row">
                             <c:forEach items="${requestScope.roomList}" var="r">
                                 <div class="col-lg-4 col-md-6">

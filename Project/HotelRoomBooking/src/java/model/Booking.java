@@ -11,7 +11,6 @@ import java.sql.Date;
  * @author My PC
  */
 public class Booking {
-
     private int BookingID;
     private int ProfileID;
     private int RoomID;
@@ -86,5 +85,4 @@ public class Booking {
     public void setStatusBooking(String StatusBooking) {
         this.StatusBooking = StatusBooking;
     }
-
 }

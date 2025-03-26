@@ -11,7 +11,6 @@ import java.sql.Date;
  * @author My PC
  */
 public class Payment {
-
     private int PaymentID;
     private int BookingID;
     private String StatusPayment;
@@ -30,7 +29,7 @@ public class Payment {
         this.PaymentDate = PaymentDate;
         this.PaymentMethod = PaymentMethod;
     }
-
+  
     public Payment(int BookingID, String StatusPayment, float Amount, Date PaymentDate, String PaymentMethod) {
         this.BookingID = BookingID;
         this.StatusPayment = StatusPayment;
@@ -87,5 +86,4 @@ public class Payment {
         this.PaymentMethod = PaymentMethod;
     }
 
-    
 }
