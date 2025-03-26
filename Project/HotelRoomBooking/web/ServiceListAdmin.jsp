@@ -81,8 +81,8 @@
                                         <th>Service ID</th>
                                         <th>Service Name</th>
                                         <th>Price</th>
-                                        <th>Status</th>
-                                        <th>Type</th>
+                                        <th>StatusService</th>
+                                        <th>TypeService</th>
                                         <th style="width: 300px">Action</th>
                                     </tr>
                                 </thead>
@@ -92,8 +92,8 @@
                                             <td>${s.getServiceID()}</td>
                                             <td>${s.getServiceName()}</td>
                                             <td>${s.getPrice()}</td>
-                                            <td>${s.getStatus()}</td>
-                                            <td>${s.getType()}</td>
+                                            <td>${s.getStatusService()}</td>
+                                            <td>${s.getTypeService()}</td>
                                             <td>
                                                 <a class="btn-custom btn-primary" href = "EditService?serviceID=${s.getServiceID()}" >Edit</a>
                                                 <a class="btn-custom btn-danger" href="DeleteService?serviceID=${s.getServiceID()}">Delete</a>

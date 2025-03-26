@@ -98,8 +98,8 @@ public class EditService extends HttpServlet {
         String serviceName = request.getParameter("serviceName").trim();
         String description = request.getParameter("description").trim();
         String priceStr = request.getParameter("price").trim();
-        String status = request.getParameter("status");
-        String type = request.getParameter("type").trim();
+        String statusService = request.getParameter("statusService");
+        String typeService = request.getParameter("typeService").trim();
 
         boolean hasError = false;
 
@@ -146,7 +146,7 @@ public class EditService extends HttpServlet {
             imagePath = "/img/serivce/" + fileName;
         }
 
-        Service updatedService = new Service(serviceID, serviceName, description, price, imagePath, status, type);
+        Service updatedService = new Service(serviceID, serviceName, description, price, imagePath, statusService, typeService);
         try {
             boolean isUpdated = serviceDAO.Update(updatedService);
             if (isUpdated) {

@@ -66,7 +66,7 @@
 
                     <div class="formbold-input-group">
                         <label class="formbold-form-label">Status</label>
-                        <select name="status" id="status" class="formbold-form-select">
+                        <select name="statusService" id="statusService" class="formbold-form-select">
                             <option value="available" >Available</option>
                             <option value="unavailable" >Unavailable</option>
                         </select>
@@ -74,7 +74,7 @@
                     
                     <div class="formbold-input-group">
                         <label class="formbold-form-label">Type</label>
-                        <input type="text" name="type" id="type" placeholder="Enter service type" class="formbold-form-input">
+                        <input type="text" name="typeService" id="typeService" placeholder="Enter service type" class="formbold-form-input">
                     </div>
 
                     <div class="formbold-input-group">

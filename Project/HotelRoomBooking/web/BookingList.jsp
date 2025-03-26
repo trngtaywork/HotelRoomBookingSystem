@@ -76,7 +76,7 @@
                                         </c:forEach>
                                         <td>${b.getBookingDate()}</td>
                                         <td>${b.getTotalAmount()}</td>
-                                        <td>${b.getStatus()}</td>
+                                        <td>${b.getStatusBooking()}</td>
                                         <td><a class="link" href="BookingDetail?bookingID=${b.getBookingID()}">More Details</a></td>
                                     </tr>
                                 </c:forEach>
@@ -88,20 +88,7 @@
 
 
         </div>
-        <%--
-                <c:forEach items="${requestScope.bookingList}" var="b">
-                    <div>
-                        <p>${b.getBookingID()}</p>
-                        <p>${b.getProfileID()}</p>
-                        <p>${b.getRoomID()}</p>
-                        <p>${b.getBookingDate()}</p>
-                        <p>${b.getTotalAmount()}</p>
-                        <p>${b.getStatus()}</p>
-                        <p><a href="BookingDetail?bookingID=${b.getBookingID()}">More Details</a></p>
-                        <p></p>
-                    </div>
-                </c:forEach>
-        --%>
+        
         <footer>
             <jsp:include page="footer.html"></jsp:include>
         </footer>

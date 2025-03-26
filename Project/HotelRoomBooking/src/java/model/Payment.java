@@ -13,7 +13,7 @@ import java.sql.Date;
 public class Payment {
     private int PaymentID;
     private int BookingID;
-    private int StatusID;
+    private String StatusPayment;
     private float Amount;
     private Date PaymentDate;
     private String PaymentMethod;
@@ -21,17 +21,18 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(int PaymentID, int BookingID, int StatusID, float Amount, Date PaymentDate, String PaymentMethod) {
+    public Payment(int PaymentID, int BookingID, String StatusPayment, float Amount, Date PaymentDate, String PaymentMethod) {
         this.PaymentID = PaymentID;
         this.BookingID = BookingID;
-        this.StatusID = StatusID;
+        this.StatusPayment = StatusPayment;
         this.Amount = Amount;
         this.PaymentDate = PaymentDate;
         this.PaymentMethod = PaymentMethod;
     }
-    public Payment(int BookingID, int StatusID, float Amount, Date PaymentDate, String PaymentMethod) {
+  
+    public Payment(int BookingID, String StatusPayment, float Amount, Date PaymentDate, String PaymentMethod) {
         this.BookingID = BookingID;
-        this.StatusID = StatusID;
+        this.StatusPayment = StatusPayment;
         this.Amount = Amount;
         this.PaymentDate = PaymentDate;
         this.PaymentMethod = PaymentMethod;
@@ -53,12 +54,12 @@ public class Payment {
         this.BookingID = BookingID;
     }
 
-    public int getStatusID() {
-        return StatusID;
+    public String getStatusPayment() {
+        return StatusPayment;
     }
 
-    public void setStatusID(int StatusID) {
-        this.StatusID = StatusID;
+    public void setStatusPayment(String StatusPayment) {
+        this.StatusPayment = StatusPayment;
     }
 
     public float getAmount() {
@@ -84,4 +85,5 @@ public class Payment {
     public void setPaymentMethod(String PaymentMethod) {
         this.PaymentMethod = PaymentMethod;
     }
+
 }

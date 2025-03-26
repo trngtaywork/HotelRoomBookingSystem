@@ -3,95 +3,92 @@ package model;
 import java.awt.Image;
 
 public class Room {
-    private int roomID;
-    private String roomName;
-    private String description;
-    private double price;
-    private String image;
-    private String statusRoom;
-    private String typeRoom;
+    private int RoomID;
+    private String RoomName;
+    private String Description;
+    private double Price;
+    private String Image;
+    private String StatusRoom;
+    private String TypeRoom;
 
-    // Constructor, getters, and setters
-    public Room(int roomID, String roomName, String description, double price, String image, String statusRoom, String typeRoom) {
-        this.roomID = roomID;
-        this.roomName = roomName;
-        this.description = description;
-        this.price = price;
-        this.image = image;
-        this.statusRoom = statusRoom;
-        this.typeRoom = typeRoom;
-    }
-  
     public Room() {
     }
 
+    public Room(int RoomID, String RoomName, String Description, double Price, String Image, String StatusRoom, String TypeRoom) {
+        this.RoomID = RoomID;
+        this.RoomName = RoomName;
+        this.Description = Description;
+        this.Price = Price;
+        this.Image = Image;
+        this.StatusRoom = StatusRoom;
+        this.TypeRoom = TypeRoom;
+    }
 
-    public Room(String roomName, String description, double price, String image, String statusRoom, String type) {
-
-        this.roomName = roomName;
-        this.description = description;
-        this.price = price;
-        this.image = image;
-        this.statusRoom = status;
-        this.type = type;
+    public Room(String RoomName, String Description, double Price, String Image, String StatusRoom, String TypeRoom) {
+        this.RoomName = RoomName;
+        this.Description = Description;
+        this.Price = Price;
+        this.Image = Image;
+        this.StatusRoom = StatusRoom;
+        this.TypeRoom = TypeRoom;
 
     }
 
     // Getters and setters
     public int getRoomID() {
-        return roomID;
+        return RoomID;
     }
 
-    public void setRoomID(int roomID) {
-        this.roomID = roomID;
+    public void setRoomID(int RoomID) {
+        this.RoomID = RoomID;
     }
 
     public String getRoomName() {
-        return roomName;
+        return RoomName;
     }
 
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
+    public void setRoomName(String RoomName) {
+        this.RoomName = RoomName;
     }
 
     public String getDescription() {
-        return description;
+        return Description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String Description) {
+        this.Description = Description;
     }
 
     public double getPrice() {
-        return price;
+        return Price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPrice(double Price) {
+        this.Price = Price;
     }
 
     public String getImage() {
-        return image;
+        return Image;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImage(String Image) {
+        this.Image = Image;
     }
 
     public String getStatusRoom() {
-        return statusRoom;
+        return StatusRoom;
     }
 
-    public void setStatusRoom(String statusRoom) {
-        this.statusRoom = statusRoom;
+    public void setStatusRoom(String StatusRoom) {
+        this.StatusRoom = StatusRoom;
     }
 
     public String getTypeRoom() {
-        return typeRoom;
+        return TypeRoom;
     }
 
-    public void setTypeRoom(String typeRoom) {
-        this.typeRoom = typeRoom;
+    public void setTypeRoom(String TypeRoom) {
+        this.TypeRoom = TypeRoom;
     }
 
 }

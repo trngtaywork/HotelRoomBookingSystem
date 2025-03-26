@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import model.*;
 
@@ -57,7 +58,8 @@ public class BookingServiceList extends HttpServlet {
         List<Service> serviceList = serviceDAO.GetServiceList();
         List<Room> roomList = roomDAO.GetRoomList();
         List<BookingService> bookingServiceList = bookingServiceDAO.GetBookingServiceList();
-
+        
+        
         request.setAttribute("bookingServiceList", bookingServiceList);
         request.setAttribute("bookingList", bookingList);
         request.setAttribute("profileList", profileList);

@@ -182,8 +182,8 @@ public class RoomDAO {
                      ,[Description]
                      ,[Price]
                      ,[Image]
-                     ,[Status]
-                     ,[Type]
+                     ,[StatusRoom]
+                     ,[TypeRoom]
                      FROM [dbo].[Room] WHERE 1 = 1""";
         List<Room> Rooms = new ArrayList<>();
 
@@ -203,8 +203,8 @@ public class RoomDAO {
                 r.setPrice(rs.getDouble("Price"));
                 String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
                 r.setImage(imageTemp.isBlank() ? "" : imageTemp);////
-                r.setStatus(rs.getString("Status"));
-                r.setType(rs.getString("Type"));
+                r.setStatusRoom(rs.getString("StatusRoom"));
+                r.setTypeRoom(rs.getString("TypeRoom"));
 
                 Rooms.add(r);
             }
@@ -222,8 +222,8 @@ public class RoomDAO {
                      ,[Description]
                      ,[Price]
                      ,[Image]
-                     ,[Status]
-                     ,[Type]
+                     ,[StatusRoom]
+                     ,[TypeRoom]
                      FROM [dbo].[Room] WHERE [RoomID] = '""" + RoomID + "'";
 
         try {
@@ -243,8 +243,8 @@ public class RoomDAO {
                 r.setPrice(rs.getDouble("Price"));
                 String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
                 r.setImage(imageTemp.isBlank() ? "" : imageTemp);////
-                r.setStatus(rs.getString("Status"));
-                r.setType(rs.getString("Type"));
+                r.setStatusRoom(rs.getString("StatusRoom"));
+                r.setTypeRoom(rs.getString("TypeRoom"));
 
                 return r;
             } else {

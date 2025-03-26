@@ -63,11 +63,11 @@
                 </tr>
                 <tr>
                     <th>Status</th>
-                    <td><%=s.getStatus()%></td>
+                    <td><%=s.getStatusService()%></td>
                 </tr>
                 <tr>
                     <th>Type</th>
-                    <td><%=s.getType()%></td>
+                    <td><%=s.getTypeService()%></td>
                 </tr>
             </table>
 

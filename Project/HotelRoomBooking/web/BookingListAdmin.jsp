@@ -93,20 +93,6 @@
         <header>
             <jsp:include page="header.html"></jsp:include>
             </header>
-        <%--
-        <c:forEach items="${requestScope.bookingList}" var="b">
-                    <div>
-                        <p>${b.getBookingID()}</p>
-                        <p>${b.getProfileID()}</p>
-                        <p>${b.getRoomID()}</p>
-                        <p>${b.getBookingDate()}</p>
-                        <p>${b.getTotalAmount()}</p>
-                        <p>${b.getStatus()}</p>
-                        <p><a href="BookingDetail?bookingID=${b.getBookingID()}">More Details</a></p>
-                        <p></p>
-                    </div>
-                </c:forEach>
-        --%>
 
         <div class="container">
             <div>
@@ -142,7 +128,7 @@
                                 <option value="RoomID">Room ID</option>
                                 <option value="RoomName">Room Name</option>
                                 <option value="TotalAmount">Total Amount</option>
-                                <option value="Status">Status</option>
+                                <option value="StatusBooking">StatusBooking</option>
                             </select>
                         </td>
                         <td><input type="text" name="searchString" /></td>
@@ -170,7 +156,7 @@
                                     <th style="background-color: #dfa974">Room</th>
                                     <th style="background-color: #dfa974">Booking Date</th>
                                     <th style="background-color: #dfa974">Total Amount</th>
-                                    <th style="background-color: #dfa974">Status</th>
+                                    <th style="background-color: #dfa974">StatusBooking</th>
                                     <th style="background-color: #dfa974"></th>
                                     <th style="background-color: #dfa974"></th>
                                     <th style="background-color: #dfa974"></th>
@@ -202,8 +188,8 @@
                                         </c:forEach>
                                         <td>${b.getBookingDate()}</td>
                                         <td>${b.getTotalAmount()}</td>
-                                        <td>${b.getStatus()}</td>
-                                        <td><a href="" class="link">Room Detail</a></td>
+                                        <td>${b.getStatusBooking()}</td>
+                                        <td><a href="RoomDetailAdmin?roomID=${b.getRoomID()}" class="link">Room Detail</a></td>
                                         <td><a href="" class="link">Service Detail</a></td>
                                         <td><a href="BookingDetailAdmin?bookingID=${b.getBookingID()}" class="link">More Details</a></td>
                                     </tr>

@@ -71,8 +71,8 @@
                                             <td>${r.getRoomID()}</td>
                                             <td>${r.getRoomName()}</td>
                                             <td>${r.getPrice()}</td>
-                                            <td>${r.getType()}</td>
-                                            <td>${r.getStatus()}</td>
+                                            <td>${r.getTypeRoom()}</td>
+                                            <td>${r.getStatusRoom()}</td>
                                             <td>
                                                 <button class="btn-custom btn-primary" onclick="window.location.href = 'editUser.jsp?accountID=<%= acc.getAccountID() %>'">Edit</button>
                                                 <button class="btn-custom btn-danger" onclick="window.location.href = 'deleteUser.jsp?accountID=<%= acc.getAccountID() %>'">Delete</button>
