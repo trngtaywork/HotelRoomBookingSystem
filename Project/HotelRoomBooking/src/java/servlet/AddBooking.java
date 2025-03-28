@@ -17,6 +17,7 @@ import dao.*;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -115,17 +116,17 @@ public class AddBooking extends HttpServlet {
             String quantityStr = request.getParameter("quantity").trim();
             String startTimeStr = request.getParameter("startTime").trim();
             String endTimeStr = request.getParameter("endTime").trim();
-            String totalAmountStr = request.getParameter("totalAmount");
+            //String totalAmountStr = request.getParameter("totalAmount");
 
             if (isNullOrEmpty(quantityStr) || isNullOrEmpty(startTimeStr) || isNullOrEmpty(endTimeStr)) {
-                //response.sendRedirect("nullInput");
                 response.sendRedirect("RoomList");
                 return;
             }
 
             int quantity = Integer.parseInt(quantityStr);
 
-            float totalAmount = Float.parseFloat(totalAmountStr);
+            //float totalAmount = Float.parseFloat(totalAmountStr);
+            float totalAmount;
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -136,12 +137,22 @@ public class AddBooking extends HttpServlet {
             java.sql.Date endTimeSQL = new java.sql.Date(endTime.getTime());
 
             //if (startTimeSQL.before(currentDate) || endTimeSQL.before(startTimeSQL) || endTimeSQL.before(startTimeSQL))
-            if (endTimeSQL.before(startTimeSQL))
-            {
+            if (endTimeSQL.before(startTimeSQL)) {
                 //response.sendRedirect("datetimeError");
                 response.sendRedirect("RoomList");
                 return;
             }
+
+            //
+            long diffInMillies = Math.abs(endTimeSQL.getTime() - startTimeSQL.getTime());
+            long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+            if(diff <= 1){
+                diff = 1;
+            }
+            
+            totalAmount = quantity * diff * (float)room.getPrice();
+            //
 
             Booking booking = new Booking(profile.getProfileID(), roomID, currentDate, totalAmount, "Booked");
 

@@ -80,42 +80,7 @@
                     </div>
                 </c:if>
             </div>
-            <%--
-            <form action="BookingListAdmin" method="post">
-                <table class="table table-borderless">
-                    <tr>
-                        <td>From</td>
-                        <td>To</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><input type="date" name="fromDate"/></td>
-                        <td><input type="date" name="toDate"/></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Search Field</td>
-                        <td>Search Value</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select name="fieldList">
-                                <option value="any">Any</option>
-                                <option value="ProfileID">Profile ID</option>
-                                <option value="Name">Customer Name</option>
-                                <option value="RoomID">Room ID</option>
-                                <option value="RoomName">Room Name</option>
-                                <option value="TotalAmount">Total Amount</option>
-                                <option value="Status">Status</option>
-                            </select>
-                        </td>
-                        <td><input type="text" name="searchString" /></td>
-                        <td><input type="submit" value="Search"></td>
-                    </tr>
-                </table>
-            </form>
-            --%>
+            
         </div>
         <div>
             <c:choose>

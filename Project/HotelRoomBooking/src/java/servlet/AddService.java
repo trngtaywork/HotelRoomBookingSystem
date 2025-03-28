@@ -141,7 +141,7 @@ public class AddService extends HttpServlet {
             request.setAttribute("errorMessage", "Failed to add room.");
         }
          */
-        // Forward back to addRoom.jsp
+        // Forward back to ServiceListAdmin
         request.getRequestDispatcher("ServiceListAdmin").forward(request, response);
     }
 
