@@ -10,8 +10,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Image;
-import model.*;
 
 public class RoomDAO {
 
@@ -174,86 +172,5 @@ public class RoomDAO {
         return false;
     }
 
-
-    public List<Room> GetRoomList() {
-        String sql = """
-                     SELECT [RoomID]
-                     ,[RoomName]
-                     ,[Description]
-                     ,[Price]
-                     ,[Image]
-                     ,[StatusRoom]
-                     ,[TypeRoom]
-                     FROM [dbo].[Room] WHERE 1 = 1""";
-        List<Room> Rooms = new ArrayList<>();
-
-        try {
-            ResultSet rs = getData(sql);
-
-            if(rs == null){
-                return null;
-            }
-            
-            while (rs.next()) {
-                Room r = new Room();
-                r.setRoomID(rs.getInt("RoomID"));
-                r.setRoomName(rs.getString("RoomName"));
-                String desTemp = rs.getString("Description") == null ? "" : rs.getString("Description");
-                r.setDescription(desTemp.isBlank() ? "" : desTemp);
-                r.setPrice(rs.getDouble("Price"));
-                String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
-                r.setImage(imageTemp.isBlank() ? "" : imageTemp);////
-                r.setStatusRoom(rs.getString("StatusRoom"));
-                r.setTypeRoom(rs.getString("TypeRoom"));
-
-                Rooms.add(r);
-            }
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-
-        return Rooms;
-    }
-
-    public Room SearchRoomByID(int RoomID) {
-        String sql = """
-                     SELECT [RoomID]
-                     ,[RoomName]
-                     ,[Description]
-                     ,[Price]
-                     ,[Image]
-                     ,[StatusRoom]
-                     ,[TypeRoom]
-                     FROM [dbo].[Room] WHERE [RoomID] = '""" + RoomID + "'";
-
-        try {
-            ResultSet rs = getData(sql);
-
-            if(rs == null){
-                return null;
-            }
-            
-            if (rs.next()) {
-                Room r = new Room();
-
-                r.setRoomID(rs.getInt("RoomID"));
-                r.setRoomName(rs.getString("RoomName"));
-                String desTemp = rs.getString("Description") == null ? "" : rs.getString("Description");
-                r.setDescription(desTemp.isBlank() ? "" : desTemp);
-                r.setPrice(rs.getDouble("Price"));
-                String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
-                r.setImage(imageTemp.isBlank() ? "" : imageTemp);////
-                r.setStatusRoom(rs.getString("StatusRoom"));
-                r.setTypeRoom(rs.getString("TypeRoom"));
-
-                return r;
-            } else {
-                return null;
-            }
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-
-        return null;
-    }
+    
 }

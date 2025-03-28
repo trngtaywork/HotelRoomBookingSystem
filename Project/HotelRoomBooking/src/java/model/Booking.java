@@ -11,31 +11,43 @@ import java.sql.Date;
  * @author My PC
  */
 public class Booking {
+
     private int BookingID;
     private int ProfileID;
     private int RoomID;
+    private int ServiceID;
     private Date BookingDate;
     private float TotalAmount;
-    private String StatusBooking;
+    private int StatusID;
 
     public Booking() {
     }
 
-    public Booking(int BookingID, int ProfileID, int RoomID, Date BookingDate, float TotalAmount, String StatusBooking) {
+    public Booking(int BookingID, int ProfileID, int RoomID, int ServiceID, Date BookingDate, float TotalAmount, int StatusID) {
+        this.BookingID = BookingID;
+        this.ProfileID = ProfileID;
+        this.RoomID = RoomID;
+        this.ServiceID = ServiceID;
+        this.BookingDate = BookingDate;
+        this.TotalAmount = TotalAmount;
+        this.StatusID = StatusID;
+    }
+
+    public Booking(int BookingID, int ProfileID, int RoomID, Date BookingDate, float TotalAmount, int StatusID) {
         this.BookingID = BookingID;
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
         this.BookingDate = BookingDate;
         this.TotalAmount = TotalAmount;
-        this.StatusBooking = StatusBooking;
+        this.StatusID = StatusID;
     }
 
-    public Booking(int ProfileID, int RoomID, Date BookingDate, float TotalAmount, String StatusBooking) {
+    public Booking(int ProfileID, int RoomID, Date BookingDate, float TotalAmount, int StatusID) {
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
         this.BookingDate = BookingDate;
         this.TotalAmount = TotalAmount;
-        this.StatusBooking = StatusBooking;
+        this.StatusID = StatusID;
     }
 
     public int getBookingID() {
@@ -78,11 +90,20 @@ public class Booking {
         this.TotalAmount = TotalAmount;
     }
 
-    public String getStatusBooking() {
-        return StatusBooking;
+    public int getStatusID() {
+        return StatusID;
     }
 
-    public void setStatusBooking(String StatusBooking) {
-        this.StatusBooking = StatusBooking;
+    public void setStatusID(int StatusID) {
+        this.StatusID = StatusID;
     }
+
+    public int getServiceID() {
+        return ServiceID;
+    }
+
+    public void setServiceID(int ServiceID) {
+        this.ServiceID = ServiceID;
+    }
+
 }

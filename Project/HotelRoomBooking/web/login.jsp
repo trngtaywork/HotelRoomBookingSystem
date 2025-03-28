@@ -20,7 +20,7 @@
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
         <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
-        <link rel="stylesheet" href="css/room.css">
+        <link rel="stylesheet" href="css/login.css">
 
         <style>
             .header-section {
@@ -53,7 +53,6 @@
         </style>
 
         <title>Login</title>
-        <link rel="stylesheet" href="css/login.css">
     </head>
     <body>
         <header class="header-section">
@@ -126,7 +125,7 @@
                             </div>
                             <div class="hr"></div>
                             <div class="foot-lnk">
-                                <a href="resetpassword.jsp">Forgot Password?</a>
+                                <a href="resetPassword.jsp">Forgot Password?</a>
                             </div>
 
                         </div>

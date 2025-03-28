@@ -16,29 +16,26 @@ public class Service {
     private String Description;
     private float Price;
     private String Image;
-    private String StatusService;
-    private String TypeService;
+    private int StatusID;
 
     public Service() {
     }
 
-    public Service(int ServiceID, String ServiceName, String Description, float Price, String Image, String StatusService, String TypeService) {
+    public Service(int ServiceID, String ServiceName, String Description, float Price, String Image, int StatusID) {
         this.ServiceID = ServiceID;
         this.ServiceName = ServiceName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
-        this.StatusService = StatusService;
-        this.TypeService = TypeService;
+        this.StatusID = StatusID;
     }
-
-    public Service(String ServiceName, String Description, float Price, String Image, String StatusService, String TypeService) {
+    
+    public Service(String ServiceName, String Description, float Price, String Image, int StatusID) {
         this.ServiceName = ServiceName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
-        this.StatusService = StatusService;
-        this.TypeService = TypeService;
+        this.StatusID = StatusID;
     }
 
     public int getServiceID() {
@@ -81,19 +78,13 @@ public class Service {
         this.Image = Image;
     }
 
-    public String getStatusService() {
-        return StatusService;
+    public int getStatusID() {
+        return StatusID;
     }
 
-    public void setStatusService(String StatusService) {
-        this.StatusService = StatusService;
+    public void setStatusID(int StatusID) {
+        this.StatusID = StatusID;
     }
-
-    public String getTypeService() {
-        return TypeService;
-    }
-
-    public void setTypeService(String TypeService) {
-        this.TypeService = TypeService;
-    }
+    
+    
 }

@@ -1,15 +1,13 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
-<%@ page import="model.Account" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" import="java.util.*, model.*, dao.*" pageEncoding="UTF-8"%>
 <%
-    HttpSession sessionUser = request.getSession(false);
-    Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
-    if (user == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
+    DashboardDAO dashboardDAO = new DashboardDAO();
+    List<Integer> availableYears = dashboardDAO.getAvailableYears();
+    int selectedYear = request.getParameter("year") != null ? Integer.parseInt(request.getParameter("year")) : availableYears.get(0);
+    List<MonthlyRevenue> monthlyRevenues = dashboardDAO.getRevenueByYear(selectedYear);
+    List<MonthlyRevenue> annualRevenues = dashboardDAO.getAnnualRevenue();
+    List<MonthlyRevenue> lastFiveYearsRevenues = dashboardDAO.getLastFiveYearsRevenue();
 %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -35,6 +33,7 @@
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
 
+        <title>Dashboard - Revenue Report</title>
         <style>
             .header-section {
                 position: fixed;
@@ -48,17 +47,30 @@
             body {
                 padding-top: 80px;
             }
+            .footer-section {
+                position: relative;
+                z-index: 1000;
+                padding: 40px 20px;
+                margin-left: 0;
+            }
+            body {
+                padding-top: 80px;
+            }
+            .main-content {
+                margin-left: 270px;
+                padding: 40px 20px;
+            }
             .sidebar {
+                position: fixed;
                 left: 0;
                 width: 270px;
-                min-height: calc(100vh - 80px);
-
+                height: 100vh;
+                background: #f8f9fa;
                 padding-top: 20px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
             }
-
             .sidebar .btn-custom {
                 display: block;
                 width: 90%;
@@ -71,10 +83,17 @@
                 text-decoration: none;
                 transition: all 0.3s ease;
             }
-
             .sidebar .btn-custom:hover {
                 background-color: #dfa974;
                 color: white;
+            }
+            table th {
+                background-color: #dfa974;
+                color: white;
+                text-align: center;
+            }
+            table td {
+                text-align: center;
             }
         </style>
     </head>
@@ -109,11 +128,71 @@
             </div>
         </header>
 
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <a href="dashboard.jsp" class="btn-custom" style="background-color: #dfa974; color: white;">Report</a>
+            <a href="statistics.jsp" class="btn-custom">Statistics</a>
+            <a href="sendEmailAll.jsp" class="btn-custom">Send Email</a>
+        </div>
+
+        <!-- Main Content -->
         <div class="main-content">
-            <div class="sidebar">
-                <a href="dashboard.jsp" class="btn-custom">Report</a>
-                <a href="statistics.jsp" class="btn-custom">Statistics</a>
-            </div>
+            <h2>Revenue Report for Year <%= selectedYear %></h2>
+
+            <form action="dashboard.jsp" method="get">
+                <div class="form-group">
+                    <label for="year">Select Year:</label>
+                    <select name="year" class="form-control" onchange="this.form.submit()">
+                        <% for (Integer year : availableYears) { %>
+                        <option value="<%= year %>" <%= year == selectedYear ? "selected" : "" %>><%= year %></option>
+                        <% } %>
+                    </select>
+                </div>
+            </form>
+
+            <h3>Monthly Revenue for <%= selectedYear %></h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Total Revenue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (int month = 1; month <= 12; month++) {
+                        MonthlyRevenue revenue = null;
+                        for (MonthlyRevenue mr : monthlyRevenues) {
+                            if (mr.getMonth() == month) {
+                                revenue = mr;
+                                break;
+                            }
+                        }
+                    %>
+                    <tr>
+                        <td><%= month %></td>
+                        <td><%= revenue != null ? "$" + revenue.getTotalRevenue() : "$0.00" %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+
+            <h3>Annual Revenue</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Total Revenue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (MonthlyRevenue revenue : annualRevenues) { %>
+                    <tr>
+                        <td><%= revenue.getMonth() %></td>
+                        <td><%= "$" + revenue.getTotalRevenue() %></td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
         </div>
 
         <footer class="footer-section">

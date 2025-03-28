@@ -140,7 +140,7 @@
             <button class="btn-custom1 btn-primary" onclick="window.location.href = 'addAccount.jsp'">Add New Account</button>
             <hr>
 
-            <!-- Role and Status Filter -->
+            <!-- Filter -->
             <form action="userList.jsp" method="get" class="row">
                 <div class="col-md-3">
                     <label for="roleFilter">Filter by Role:</label>
@@ -209,6 +209,7 @@
                             </button>
                             <button class="btn-custom btn-danger" onclick="window.location.href = 'deleteUser.jsp?accountID=<%= acc.getAccountID() %>'">Delete</button>
                             <button class="btn-custom btn-info" onclick="window.location.href = 'profileDetails.jsp?accountID=<%= acc.getAccountID() %>'">Profile</button>
+                            <button class="btn-custom btn-success" onclick="window.location.href = 'sendEmail.jsp?email=<%= acc.getEmail() %>'">Send Email</button>
                         </td>
                     </tr>
                     <% 

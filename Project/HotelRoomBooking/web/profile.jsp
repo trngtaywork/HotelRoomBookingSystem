@@ -51,26 +51,14 @@
                 padding-top: 80px;
             }
             .btn-custom {
-                height: 60px;
-                width: 100px;
                 border-radius: 5%;
                 background-color: black;
                 color: white;
                 border: 1px solid black;
                 padding-left: 5px;
                 margin: 3px;
-            }
-            .d-flex {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .btn-custom {
                 width: 80%;
-                margin-bottom: 10px; 
             }
-
         </style>
 
         <title>Profile</title>
@@ -91,7 +79,7 @@
                             <div class="nav-menu">
                                 <nav class="mainmenu">
                                     <ul>
-                                        <li><a href="./index.html">Home</a></li>
+                                        <li><a href="feedbackList.jsp">Feedback List</a></li>
                                         <li><a href="userList.jsp">User List</a></li>
                                         <li><a href="roomListForAdmin.jsp">Room List</a></li>
                                         <li><a href="serviceList.jsp">Service List</a></li>
@@ -106,7 +94,7 @@
             </div>
         </header>
 
-        <div class="container mt-4 mb-4 p-3 d-flex justify-content-center" style="height: 90vh">
+        <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
             <div class="card p-4">
                 <div class="image d-flex flex-column justify-content-center align-items-center">
                     <h4 class="mt-3"><%= user.getUsername() %></h4>
@@ -147,14 +135,14 @@
                         </tr>
                     </table>
                     <div class="d-flex mt-2">
-                        <button class="btn-custom btn-primary me-3 px-4 py-2" onclick="window.location.href = 'editProfile.jsp'">Edit Profile</button>
-                        <button class="btn-custom btn-warning px-4 py-2" onclick="window.location.href = 'changePassword.jsp'">Change Password</button>
-                        <button class="btn-custom btn-danger px-4 py-2" onclick="window.location.href = 'logout.jsp'">Sign Out</button>
+                        <button class="btn-custom btn-primary" onclick="window.location.href = 'editProfile.jsp'">Edit Profile</button>
+                        <button class="btn-custom btn-warning" onclick="window.location.href = 'changePassword.jsp'">Change Password</button>
+                        <button class="btn-custom btn-danger" onclick="window.location.href = 'logout.jsp'">Sign Out</button>
                     </div>
                 </div>
             </div>
         </div>
-  
+
         <footer class="footer-section">
             <div class="container">
                 <div class="footer-text">

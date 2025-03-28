@@ -20,13 +20,22 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
+        // Tạo đối tượng AccountDAO để xác thực tài khoản
         AccountDAO accountDAO = new AccountDAO();
         Account user = accountDAO.validateLogin(username, password);
 
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
-            response.sendRedirect("RoomList"); 
+
+            String role = user.getRole();
+            if ("Admin".equals(role)) {
+                response.sendRedirect("profile.jsp");
+            } else if ("Customer".equals(role)) {
+                response.sendRedirect("profileCustomer.jsp");
+            } else if ("Receptionist".equals(role)) {
+                response.sendRedirect("profileReceptionist.jsp");
+            }
         } else {
             request.setAttribute("error", "Invalid username or password!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
