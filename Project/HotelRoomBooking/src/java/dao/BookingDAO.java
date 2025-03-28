@@ -1,24 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import model.*;
+import model.BookingRoomStatistic;
+import model.BookingServiceStatistic;
 import utils.DBContext;
 
-/**
- *
- * @author My PC
- */
-public class BookingDAO extends DBContext {//add merge?
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import model.Booking;
 
+<<<<<<< Updated upstream
     public void Add(Booking booking) {
         String SQL = "INSERT INTO [dbo].[Booking]([ProfileID], [RoomID], [BookingDate], [TotalAmount], [Status]) "
                 + "VALUES (?, ?, ?, ?, ?)";
@@ -30,12 +21,18 @@ public class BookingDAO extends DBContext {//add merge?
             st.setDate(3, booking.getBookingDate());
             st.setFloat(4, booking.getTotalAmount());
             st.setString(5, booking.getStatus());
+=======
+public class BookingDAO {
 
-            st.executeUpdate();
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
+    private Connection conn;
+>>>>>>> Stashed changes
+
+    public BookingDAO() {
+        this.conn = new DBContext().connection;
+        DBContext dbContext = new DBContext();
+        this.conn = dbContext.connection;
     }
+<<<<<<< Updated upstream
     
     public void Update(Booking booking) {
         String SQL = "UPDATE [dbo].[Booking] SET ProfileID = ?, RoomID = ?, BookingDate = ?, TotalAmount = ?, Status = ? WHERE BookingID = ?";
@@ -50,9 +47,21 @@ public class BookingDAO extends DBContext {//add merge?
             st.executeUpdate();
         } catch (Exception e) {
             System.out.println(e.toString());
-        }
-    }
+=======
 
+    public List<BookingRoomStatistic> getRoomBookingStatistics(String roomNameFilter) {
+        List<BookingRoomStatistic> list = new ArrayList<>();
+        String sql = "SELECT p.Name AS CustomerName, r.RoomName, b.BookingDate, b.TotalAmount, b.StatusBooking "
+                + "FROM Booking b "
+                + "JOIN Profile p ON b.ProfileID = p.ProfileID "
+                + "JOIN Room r ON b.RoomID = r.RoomID";
+
+        if (roomNameFilter != null && !roomNameFilter.isEmpty()) {
+            sql += " WHERE r.RoomName LIKE ?";
+>>>>>>> Stashed changes
+        }
+
+<<<<<<< Updated upstream
     public void Delete(int bookingID) {
         String SQL = "DELETE FROM [dbo].[Booking] WHERE BookingID = ?";
         try {
@@ -364,13 +373,64 @@ public class BookingDAO extends DBContext {//add merge?
             ResultSet rs = getData(sql);
             if (rs.next()) {
                 n = rs.getInt("BookingID");
+=======
+        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+            if (roomNameFilter != null && !roomNameFilter.isEmpty()) {
+                stmt.setString(1, "%" + roomNameFilter + "%");  // Tìm kiếm tương đối (LIKE)
+            }
+
+            try ( ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new BookingRoomStatistic(
+                            rs.getString("CustomerName"),
+                            rs.getString("RoomName"),
+                            rs.getTimestamp("BookingDate"),
+                            rs.getDouble("TotalAmount"),
+                            rs.getString("StatusBooking")
+                    ));
+                }
+>>>>>>> Stashed changes
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return n;
+        return list;
     }
 
-    private boolean IsNullOrEmpty(String s) {
-        return s.trim().length() == 0 || s.equals(null) || s.equals("");
+    public List<BookingServiceStatistic> getServiceBookingStatistics(String serviceNameFilter) {
+        List<BookingServiceStatistic> list = new ArrayList<>();
+        String sql = "SELECT p.Name AS CustomerName, s.ServiceName, b.BookingDate, b.TotalAmount, b.StatusBooking "
+                + "FROM BookingService bs "
+                + "JOIN Booking b ON bs.BookingID = b.BookingID "
+                + "JOIN Profile p ON b.ProfileID = p.ProfileID "
+                + "JOIN Service s ON bs.ServiceID = s.ServiceID";
+
+        // Thêm điều kiện lọc theo tên dịch vụ nếu có
+        if (serviceNameFilter != null && !serviceNameFilter.isEmpty()) {
+            sql += " WHERE s.ServiceName LIKE ?";
+        }
+
+        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+            // Nếu có điều kiện lọc tên dịch vụ, gán tham số vào PreparedStatement
+            if (serviceNameFilter != null && !serviceNameFilter.isEmpty()) {
+                stmt.setString(1, "%" + serviceNameFilter + "%");  // Tìm kiếm tương đối (LIKE)
+            }
+
+            try ( ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new BookingServiceStatistic(
+                            rs.getString("CustomerName"),
+                            rs.getString("ServiceName"),
+                            rs.getTimestamp("BookingDate"),
+                            rs.getDouble("TotalAmount"),
+                            rs.getString("StatusBooking")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
+
 }

@@ -151,6 +151,9 @@
                 <div class="form-group">
                     <label for="roomImage">Room Image (Optional)</label>
                     <input type="file" name="roomImage" class="form-control">
+                    <% if (request.getAttribute("imageError") != null) { %>
+                    <span class="text-danger"><%= request.getAttribute("imageError") %></span>
+                    <% } %>
                 </div>
 
                 <div class="form-group">

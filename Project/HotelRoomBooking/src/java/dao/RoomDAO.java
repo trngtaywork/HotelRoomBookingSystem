@@ -10,8 +10,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Image;
-import model.*;
 
 public class RoomDAO {
 
@@ -174,6 +172,7 @@ public class RoomDAO {
         return false;
     }
 
+<<<<<<< Updated upstream
 
     public List<Room> GetRoomList() {
         String sql = """
@@ -257,3 +256,7 @@ public class RoomDAO {
         return null;
     }
 }
+=======
+    
+}
+>>>>>>> Stashed changes

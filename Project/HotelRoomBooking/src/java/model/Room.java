@@ -1,7 +1,5 @@
 package model;
 
-import java.awt.Image;
-
 public class Room {
     private int roomID;
     private String roomName;
@@ -10,6 +8,7 @@ public class Room {
     private String image;
     private String statusRoom;
     private String typeRoom;
+<<<<<<< Updated upstream
 
     // Constructor, getters, and setters
     public Room(int roomID, String roomName, String description, double price, String image, String statusRoom, String typeRoom) {
@@ -34,7 +33,18 @@ public class Room {
         this.image = image;
         this.statusRoom = status;
         this.type = type;
+=======
+>>>>>>> Stashed changes
 
+    // Constructor, getters, and setters
+    public Room(int roomID, String roomName, String description, double price, String image, String statusRoom, String typeRoom) {
+        this.roomID = roomID;
+        this.roomName = roomName;
+        this.description = description;
+        this.price = price;
+        this.image = image;
+        this.statusRoom = statusRoom;
+        this.typeRoom = typeRoom;
     }
 
     // Getters and setters
@@ -93,5 +103,4 @@ public class Room {
     public void setTypeRoom(String typeRoom) {
         this.typeRoom = typeRoom;
     }
-
 }

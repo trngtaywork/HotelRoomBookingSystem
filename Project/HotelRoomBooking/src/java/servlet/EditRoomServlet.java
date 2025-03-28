@@ -73,7 +73,6 @@ public class EditRoomServlet extends HttpServlet {
         }
 
         if (hasError) {
-            // Lưu lại dữ liệu người dùng nhập vào khi có lỗi
             request.setAttribute("roomName", roomName);
             request.setAttribute("description", description);
             request.setAttribute("price", priceStr);
@@ -96,13 +95,33 @@ public class EditRoomServlet extends HttpServlet {
 
         if (filePart != null && filePart.getSize() > 0) {
             String fileName = extractFileName(filePart);
-            String uploadDir = getServletContext().getRealPath("") + File.separator + "images";
-            File uploadFolder = new File(uploadDir);
-            if (!uploadFolder.exists()) {
-                uploadFolder.mkdir();
+            String fileExtension = getFileExtension(fileName).toLowerCase();
+
+            if (!fileExtension.equals("jpg") && !fileExtension.equals("jpeg") && !fileExtension.equals("png") && !fileExtension.equals("gif")) {
+                request.setAttribute("imageError", "Only JPG, JPEG, PNG, or GIF images are allowed.");
+                hasError = true;
             }
-            filePart.write(uploadDir + File.separator + fileName);
-            imagePath = "/images/" + fileName;
+
+            long maxSize = 5 * 1024 * 1024;
+            if (filePart.getSize() > maxSize) {
+                request.setAttribute("imageError", "Image size must be less than 5MB.");
+                hasError = true;
+            }
+
+            if (!hasError) {
+                String uploadDir = getServletContext().getRealPath("") + File.separator + "images";
+                File uploadFolder = new File(uploadDir);
+                if (!uploadFolder.exists()) {
+                    uploadFolder.mkdir();
+                }
+                filePart.write(uploadDir + File.separator + fileName);
+                imagePath = "/images/" + fileName;
+            }
+        }
+
+        if (hasError) {
+            request.getRequestDispatcher("/editRoom.jsp?roomID=" + roomID).forward(request, response);
+            return;
         }
 
         Room updatedRoom = new Room(roomID, roomName, description, price, imagePath, status, type);
@@ -127,6 +146,14 @@ public class EditRoomServlet extends HttpServlet {
             if (content.trim().startsWith("filename")) {
                 return content.substring(content.indexOf("=") + 2, content.length() - 1);
             }
+        }
+        return "";
+    }
+
+    private String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf(".");
+        if (dotIndex > 0) {
+            return fileName.substring(dotIndex + 1);
         }
         return "";
     }

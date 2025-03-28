@@ -16,29 +16,48 @@ public class Service {
     private String Description;
     private float Price;
     private String Image;
+<<<<<<< Updated upstream
     private String Status;
     private String Type;
+=======
+    private int StatusID;
+>>>>>>> Stashed changes
 
     public Service() {
     }
 
+<<<<<<< Updated upstream
     public Service(int ServiceID, String ServiceName, String Description, float Price, String Image, String Status, String Type) {
+=======
+    public Service(int ServiceID, String ServiceName, String Description, float Price, String Image, int StatusID) {
+>>>>>>> Stashed changes
         this.ServiceID = ServiceID;
         this.ServiceName = ServiceName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
+<<<<<<< Updated upstream
         this.Status = Status;
         this.Type = Type;
     }
 
     public Service(String ServiceName, String Description, float Price, String Image, String Status, String Type) {
+=======
+        this.StatusID = StatusID;
+    }
+    
+    public Service(String ServiceName, String Description, float Price, String Image, int StatusID) {
+>>>>>>> Stashed changes
         this.ServiceName = ServiceName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
+<<<<<<< Updated upstream
         this.Status = Status;
         this.Type = Type;
+=======
+        this.StatusID = StatusID;
+>>>>>>> Stashed changes
     }
 
     public int getServiceID() {
@@ -81,6 +100,7 @@ public class Service {
         this.Image = Image;
     }
 
+<<<<<<< Updated upstream
     public String getStatus() {
         return Status;
     }
@@ -95,5 +115,15 @@ public class Service {
 
     public void setType(String Type) {
         this.Type = Type;
+=======
+    public int getStatusID() {
+        return StatusID;
     }
+
+    public void setStatusID(int StatusID) {
+        this.StatusID = StatusID;
+>>>>>>> Stashed changes
+    }
+    
+    
 }
