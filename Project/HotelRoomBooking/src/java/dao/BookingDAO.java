@@ -168,7 +168,7 @@ public class BookingDAO extends DBContext {//add merge?
                 b.setRoomID(rs.getInt("RoomID"));
                 b.setBookingDate(rs.getDate("BookingDate"));
                 b.setTotalAmount(rs.getFloat("TotalAmount"));
-                b.setStatusBooking(rs.getString("StatusBookng"));
+                b.setStatusBooking(rs.getString("StatusBooking"));
 
                 bookings.add(b);
             }

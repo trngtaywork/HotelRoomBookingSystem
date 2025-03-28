@@ -16,6 +16,7 @@ import model.*;
 import dao.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -119,7 +120,7 @@ public class AddBookingService extends HttpServlet {
             String amountStr = request.getParameter("amount");
             String startTimeStr = request.getParameter("startTime");
             String endTimeStr = request.getParameter("endTime");
-            String totalAmountStr = request.getParameter("totalAmount");
+            //String totalAmountStr = request.getParameter("totalAmount");
 
             if (isNullOrEmpty(amountStr) || isNullOrEmpty(startTimeStr) || isNullOrEmpty(endTimeStr)) {
                 response.sendRedirect("ServiceList");
@@ -127,7 +128,7 @@ public class AddBookingService extends HttpServlet {
             }
 
             int amount = Integer.parseInt(amountStr);
-            float totalAmount = Float.parseFloat(totalAmountStr);
+            //float totalAmount = Float.parseFloat(totalAmountStr);
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -144,6 +145,18 @@ public class AddBookingService extends HttpServlet {
                 return;
             }
             
+            float totalAmount;
+            //
+            long diffInMillies = Math.abs(endTimeSQL.getTime() - startTimeSQL.getTime());
+            long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+            if(diff <= 1){
+                diff = 1;
+            }
+            
+            totalAmount = amount * diff * (float)service.getPrice();
+            //
+            
             BookingService bookingService = new BookingService(serviceID, booking.getBookingID(), amount, startTimeSQL, endTimeSQL);
 
             bookingServiceDAO.Add(bookingService);
@@ -153,7 +166,7 @@ public class AddBookingService extends HttpServlet {
 
             bookingDAO.Update(bookingToUpdate);
 
-            request.getRequestDispatcher("BookingList").forward(request, response);
+            request.getRequestDispatcher("BookingServiceList").forward(request, response);
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }

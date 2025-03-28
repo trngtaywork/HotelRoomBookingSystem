@@ -63,34 +63,40 @@
 
                                                 <c:forEach items="${requestScope.serviceList}" var="s">
                                                     <c:if test="${bs.getServiceID() == s.getServiceID()}">
-                                                        <c:when test="${s.getServiceName() == null}">
-                                                            <td>Booking Service is Empty</td>
-                                                        </c:when>    
-                                                        <c:otherwise>
-                                                            <td>${s.getServiceName()}</td>
-                                                        </c:otherwise>
+                                                        <c:choose>
+                                                            <c:when test="${s.getServiceName().length() == 0}">
+                                                                <td>Booking Service is Empty</td>
+                                                            </c:when>    
+                                                            <c:otherwise>
+                                                                <td>${s.getServiceName()}</td>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </c:if>
                                                 </c:forEach>
 
                                                 <c:forEach items="${requestScope.serviceList}" var="s">
                                                     <c:if test="${bs.getServiceID() == s.getServiceID()}">
-                                                        <c:when test="${s.getAmount() == null}">
-                                                            <td>0</td>
-                                                        </c:when>    
-                                                        <c:otherwise>
-                                                            <td>${bs.getAmount()}</td>
-                                                        </c:otherwise>
+                                                        <c:choose>
+                                                            <c:when test="${bs.getAmount() == 0}">
+                                                                <td>0</td>
+                                                            </c:when>    
+                                                            <c:otherwise>
+                                                                <td>${bs.getAmount()}</td>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </c:if>
                                                 </c:forEach>
 
                                                 <c:forEach items="${requestScope.serviceList}" var="s">
                                                     <c:if test="${bs.getServiceID() == s.getServiceID()}">
-                                                        <c:when test="${s.getBookingServiceID() == null}">
-                                                            <td></td>
-                                                        </c:when>    
-                                                        <c:otherwise>
-                                                            <td><a class="link" href="BookingServiceDetail?bookingServiceID=${bs.getBookingServiceID()}">More Details</a></td>
-                                                        </c:otherwise>
+                                                        <c:choose>
+                                                            <c:when test="${bs.getBookingServiceID() == 0}">
+                                                                <td></td>
+                                                            </c:when>    
+                                                            <c:otherwise>
+                                                                <td><a class="link" href="BookingServiceDetail?bookingServiceID=${bs.getBookingServiceID()}">More Details</a></td>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </c:if>
                                                 </c:forEach>
 

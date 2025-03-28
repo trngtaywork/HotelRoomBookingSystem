@@ -201,7 +201,7 @@ public class BookingServiceDAO extends DBContext{
     
     public BookingService SearchBookingService(int bookingServiceID)
     {
-        String sql = "SELECT [BookingServiceID], [ServiceID], [BookingID], [Amount], [StartTime], [EndTime] FROM [dbo].[BookingService] WHERE [BookingService] = '" + bookingServiceID + "'";
+        String sql = "SELECT [BookingServiceID], [ServiceID], [BookingID], [Amount], [StartTime], [EndTime] FROM [dbo].[BookingService] WHERE [BookingServiceID] = '" + bookingServiceID + "'";
         
         
         try {
