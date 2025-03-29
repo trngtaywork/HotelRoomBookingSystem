@@ -31,9 +31,19 @@
     <body>
 
 
+        <%
+            HttpSession sessionUser = request.getSession(false);
+            Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
+            if (user == null) {
+        %>
         <header>
             <jsp:include page="header.html"></jsp:include>
             </header>
+        <%
+    }else{%><header>
+            <jsp:include page="header_loggedIn.html"></jsp:include>
+        </header><%}
+        %>
 
         <%Room r = (Room)request.getAttribute("room");%>
 

@@ -161,7 +161,8 @@ public class AddBooking extends HttpServlet {
             BookingRoom bookingRoom = new BookingRoom(bookingDAO.lastBookingID(), roomID, quantity, startTimeSQL, endTimeSQL);
 
             bookingRoomDAO.Add(bookingRoom);
-
+            
+            request.setAttribute("message", "Room booked successfully");
             request.getRequestDispatcher("BookingList").forward(request, response);
         } catch (Exception ex) {
             System.out.println(ex.toString());

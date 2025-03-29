@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Service List</title>
 
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
@@ -30,9 +30,19 @@
         <link rel="stylesheet" href="css/style.css" type="text/css">
     </head>
     <body>
+        <%
+            HttpSession sessionUser = request.getSession(false);
+            Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
+            if (user == null) {
+        %>
         <header>
             <jsp:include page="header.html"></jsp:include>
             </header>
+        <%
+    }else{%><header>
+            <jsp:include page="header_loggedIn.html"></jsp:include>
+        </header><%}
+        %>
 
             <section class="rooms-section spad">
                 <div class="container">

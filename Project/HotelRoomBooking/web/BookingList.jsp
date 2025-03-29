@@ -43,11 +43,16 @@
     </head>
     <body>
         <header>
-            <jsp:include page="header.html"></jsp:include>
+            <jsp:include page="header_loggedIn.html"></jsp:include>
             </header>
 
+            <% if (request.getAttribute("message") != null) { %>
+                <div class="alert alert-success">
+                    <%= request.getAttribute("message") %>
+                </div>
+                <% } %>
+            
             <div>
-
             <c:choose>
                 <c:when test="${requestScope.bookingList.size() == 0}">
                     <div class="container">

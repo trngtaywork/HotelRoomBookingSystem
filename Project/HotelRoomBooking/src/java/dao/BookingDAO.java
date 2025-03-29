@@ -228,10 +228,14 @@ public class BookingDAO extends DBContext {//add merge?
                     break;
             }
 
-            ResultSet rs = getData(sql);
+            ResultSet rs = getData("SELECT [BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking] FROM [dbo].[Booking] WHERE 1 = 1");
 
             if (rs == null) {
-                return null;
+                rs = getData(sql);
+                
+                if (rs == null) {
+                    return null;
+                }
             }
 
             while (rs.next()) {

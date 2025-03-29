@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.*;
 import dao.*;
+import java.util.List;
 
 /**
  *
@@ -21,6 +22,8 @@ import dao.*;
 @WebServlet(name = "DeleteService", urlPatterns = {"/DeleteService"})
 public class DeleteService extends HttpServlet {
     ServiceDAO serviceDAO = new ServiceDAO();
+    BookingDAO bookingDAO = new BookingDAO();
+    BookingServiceDAO bookingServiceDAO = new BookingServiceDAO();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,6 +38,14 @@ public class DeleteService extends HttpServlet {
         int serviceID = Integer.parseInt(request.getParameter("serviceID"));
         
         Service service = serviceDAO.SearchServiceByID(serviceID);
+        
+        //check current service booking
+        List<Booking> bookingList1 = bookingDAO.SearchBooking("StatusBooking", "Booked");
+        List<Booking> bookingList2 = bookingDAO.SearchBooking("StatusBooking", "Staying");
+
+        if (bookingList1 != null || bookingList2 != null) {
+            request.setAttribute("errorMessage", "This Service is currently in use. Are you sure you want to delete this?");
+        }
         
         request.setAttribute("service", service);
         request.getRequestDispatcher("DeleteService.jsp").forward(request, response);

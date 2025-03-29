@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import model.*;
 import dao.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -48,7 +49,7 @@ public class AddBookingService extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
-        
+
         int serviceID = Integer.parseInt(request.getParameter("serviceID"));
         Service service = serviceDAO.SearchServiceByID(serviceID);
         if (service == null) {
@@ -61,10 +62,17 @@ public class AddBookingService extends HttpServlet {
         List<Booking> bookingList = bookingDAO.SearchBooking("ProfileID", String.valueOf(profile.getProfileID()));
         List<Room> roomList = roomDAO.GetRoomList();
 
-        request.setAttribute("service", service);
-        request.setAttribute("bookingList", bookingList);
-        request.setAttribute("roomList", roomList);
-        request.getRequestDispatcher("BookingServiceOrder.jsp").forward(request, response);
+        List<Booking> temp = new ArrayList<Booking>();
+        for (Booking booking : bookingList) {
+            if (booking.getStatusBooking().equals("Staying") || booking.getStatusBooking().equals("Booked")) {
+                temp.add(booking);
+            }
+
+            request.setAttribute("service", service);
+            request.setAttribute("bookingList", bookingList);
+            request.setAttribute("roomList", roomList);
+            request.getRequestDispatcher("BookingServiceOrder.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -137,26 +145,25 @@ public class AddBookingService extends HttpServlet {
 
             java.sql.Date startTimeSQL = new java.sql.Date(startTime.getTime());
             java.sql.Date endTimeSQL = new java.sql.Date(endTime.getTime());
-            
-            if (endTimeSQL.before(startTimeSQL))
-            {
+
+            if (endTimeSQL.before(startTimeSQL)) {
                 //response.sendRedirect("datetimeError");
                 response.sendRedirect("ServiceList");
                 return;
             }
-            
+
             float totalAmount;
             //
             long diffInMillies = Math.abs(endTimeSQL.getTime() - startTimeSQL.getTime());
             long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 
-            if(diff <= 1){
+            if (diff <= 1) {
                 diff = 1;
             }
-            
-            totalAmount = amount * diff * (float)service.getPrice();
+
+            totalAmount = amount * diff * (float) service.getPrice();
             //
-            
+
             BookingService bookingService = new BookingService(serviceID, booking.getBookingID(), amount, startTimeSQL, endTimeSQL);
 
             bookingServiceDAO.Add(bookingService);

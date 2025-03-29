@@ -42,7 +42,7 @@
     </head>
     <body>
         <header>
-            <jsp:include page="header.html"></jsp:include>
+            <jsp:include page="header_loggedIn.html"></jsp:include>
             </header>
 
         <%Booking b = (Booking)request.getAttribute("booking");%>

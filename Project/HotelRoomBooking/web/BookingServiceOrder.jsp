@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Order Service</title>
 
         <meta charset="UTF-8">
         <meta name="description" content="Sona Template">
@@ -35,7 +35,7 @@
     </head>
     <body>
         <header>
-            <jsp:include page="header.html"></jsp:include>
+            <jsp:include page="header_loggedIn.html"></jsp:include>
             </header>
 
         <%Service s = (Service)request.getAttribute("service");%>

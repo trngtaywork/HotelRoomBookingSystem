@@ -11,7 +11,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Book Room</title>
 
         <meta charset="UTF-8">
         <meta name="description" content="Sona Template">
@@ -35,15 +35,16 @@
     </head>
     <body>
         <header>
-            <jsp:include page="header.html"></jsp:include>
+            <jsp:include page="header_loggedIn.html"></jsp:include>
             </header>
 
         <%Room r = (Room)request.getAttribute("room");%>
+        
+        <table class="table table-borderless" >
+            <h2>Please confirm your booking</h2>
+            <form action="AddBooking" method="post">
+                <input type="hidden" name="roomID" value="<%=r.getRoomID()%>">
 
-        <h2>Please confirm your booking</h2>
-        <form action="AddBooking" method="post">
-            <input type="hidden" name="roomID" value="<%=r.getRoomID()%>">
-            <table class="table table-borderless">
                 <tbody>
                     <tr>
                         <td><label>Room Name</label></td>
@@ -78,10 +79,10 @@
                         <td><input type="submit" value="Submit"></td>
                     </tr>
                 </tbody>
-            </table>
-            <input type="hidden" name="totalAmount" id="totalAmount" value="">
-        </form>
 
+                <input type="hidden" name="totalAmount" id="totalAmount" value="">
+            </form>
+        </table>
         <footer>
             <jsp:include page="footer.html"></jsp:include>
             </footer>
@@ -128,7 +129,7 @@
 
                 // Call function on page load to set the initial total
                 document.addEventListener("DOMContentLoaded", updateTotal);
-                
+
                 document.getElementById('totalAmount').value = calculateTotal();
         </script>
 

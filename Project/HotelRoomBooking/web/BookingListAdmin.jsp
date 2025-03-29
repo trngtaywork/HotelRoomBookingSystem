@@ -157,8 +157,8 @@
                                     <th style="background-color: #dfa974">Booking Date</th>
                                     <th style="background-color: #dfa974">Total Amount</th>
                                     <th style="background-color: #dfa974">StatusBooking</th>
-                                    <th style="background-color: #dfa974"></th>
-                                    <th style="background-color: #dfa974"></th>
+                                    <%--<th style="background-color: #dfa974"></th>--%>
+                                    <%--<th style="background-color: #dfa974"></th>--%>
                                     <th style="background-color: #dfa974"></th>
                                 </tr>
                             </thead>
@@ -189,8 +189,8 @@
                                         <td>${b.getBookingDate()}</td>
                                         <td>${b.getTotalAmount()}</td>
                                         <td>${b.getStatusBooking()}</td>
-                                        <td><a href="RoomDetailAdmin?roomID=${b.getRoomID()}" class="link">Room Detail</a></td>
-                                        <td><a href="" class="link">Service Detail</a></td>
+                                        <%--<td><a href="RoomDetailAdmin?roomID=${b.getRoomID()}" class="link">Room Detail</a></td>--%>
+                                        <%--<td><a href="" class="link">Service Detail</a></td>--%>
                                         <td><a href="BookingDetailAdmin?bookingID=${b.getBookingID()}" class="link">More Details</a></td>
                                     </tr>
                                 </c:forEach>
