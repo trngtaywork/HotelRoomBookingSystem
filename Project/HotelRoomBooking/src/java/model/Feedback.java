@@ -5,6 +5,7 @@
 package model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -12,79 +13,98 @@ import java.sql.Date;
  */
 public class Feedback {
 
-    private int FeedbackID;
-    private int ProfileID;
-    private int RoomID;
-    private String Comment;
-    private int Rating;
-    private Date Date;
+    private int feedbackID;
+    private int profileID;
+    private int roomID;
+    private String comment;
+    private int rating;
+    private Timestamp date;
+    private String roomName;
+    private String image;
+    private String customerName;
 
-    public Feedback() {
+    public Feedback(int feedbackID, int profileID, int roomID, String comment, int rating, Timestamp date, String roomName, String image, String customerName) {
+        this.feedbackID = feedbackID;
+        this.profileID = profileID;
+        this.roomID = roomID;
+        this.comment = comment;
+        this.rating = rating;
+        this.date = date;
+        this.roomName = roomName;
+        this.image = image;
+        this.customerName = customerName;
     }
 
-    public Feedback(int FeedbackID, int ProfileID, int RoomID, String Comment, int Rating, Date Date) {
-        this.FeedbackID = FeedbackID;
-        this.ProfileID = ProfileID;
-        this.RoomID = RoomID;
-        this.Comment = Comment;
-        this.Rating = Rating;
-        this.Date = Date;
-    }
-
-    public Feedback(int ProfileID, int RoomID, String Comment, int Rating, Date Date) {
-        this.ProfileID = ProfileID;
-        this.RoomID = RoomID;
-        this.Comment = Comment;
-        this.Rating = Rating;
-        this.Date = Date;
-    }
-
+    // Getters and Setters
     public int getFeedbackID() {
-        return FeedbackID;
+        return feedbackID;
     }
 
-    public void setFeedbackID(int FeedbackID) {
-        this.FeedbackID = FeedbackID;
+    public void setFeedbackID(int feedbackID) {
+        this.feedbackID = feedbackID;
     }
 
     public int getProfileID() {
-        return ProfileID;
+        return profileID;
     }
 
-    public void setProfileID(int ProfileID) {
-        this.ProfileID = ProfileID;
+    public void setProfileID(int profileID) {
+        this.profileID = profileID;
     }
 
     public int getRoomID() {
-        return RoomID;
+        return roomID;
     }
 
-    public void setRoomID(int RoomID) {
-        this.RoomID = RoomID;
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
     }
 
     public String getComment() {
-        return Comment;
+        return comment;
     }
 
-    public void setComment(String Comment) {
-        this.Comment = Comment;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public int getRating() {
-        return Rating;
+        return rating;
     }
 
-    public void setRating(int Rating) {
-        this.Rating = Rating;
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
-    public Date getDate() {
-        return Date;
+    public Timestamp getDate() {
+        return date;
     }
 
-    public void setDate(Date Date) {
-        this.Date = Date;
+    public void setDate(Timestamp date) {
+        this.date = date;
     }
 
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 }

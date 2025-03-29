@@ -59,7 +59,7 @@ public class AddBookingService extends HttpServlet {
 
         Profile profile = profileDAO.SearchProfileByAccountId(user.getAccountID());
 
-        List<Booking> bookingList = bookingDAO.SearchBooking("ProfileID", String.valueOf(profile.getProfileID()));
+        List<Booking> bookingList = bookingDAO.SearchBookingsByProfileID(profile.getProfileID());
         List<Room> roomList = roomDAO.GetRoomList();
 
         List<Booking> temp = new ArrayList<Booking>();

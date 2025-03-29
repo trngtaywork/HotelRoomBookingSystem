@@ -1,3 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.*" %>
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -49,7 +52,7 @@
             </div>
             <nav class="mainmenu mobile-menu">
                 <ul>
-                    <li class="active"><a href="./index.html">Home</a></li>
+                    <li  ><a href="./index.jsp">Home</a></li>
                     <li><a href="RoomList">Rooms</a></li>
                     <li><a href="ServiceList">Services</a></li>
                     <li><a href="BookingList">My Booking</a></li>
@@ -61,47 +64,19 @@
         <!-- Offcanvas Menu Section End -->
 
         <!-- Header Section Begin -->
-        <header class="header-section">
-            <div class="top-nav">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-6">
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="tn-right">
-                                <a href="login.jsp" class="bk-btn">Login</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="menu-item">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-2">
-                            <div class="logo">
-                                <a href="./index.html">
-                                    <img src="img/logo.png" alt="">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-lg-10">
-                            <div class="nav-menu">
-                                <nav class="mainmenu">
-                                    <ul>
-                                        <li class="active"><a href="./index.html">Home</a></li>
-                                        <li><a href="RoomList">Rooms</a></li>
-                                        <li><a href="ServiceList">Services</a></li>
-                                        <li><a href="BookingList">My Bookings</a></li>
-                                        <li><a href="BookingServiceList">My Services</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
+        <%
+            HttpSession sessionUser = request.getSession(false);
+            Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
+            if (user == null) {
+        %>
+        <header>
+            <jsp:include page="header.html"></jsp:include>
+            </header>
+        <%
+    }else{%><header>
+            <jsp:include page="header_loggedIn.html"></jsp:include>
+        </header><%}
+        %>
         <!-- Header End -->
 
         <!-- Hero Section Begin -->

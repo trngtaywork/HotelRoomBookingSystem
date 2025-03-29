@@ -39,50 +39,78 @@
             </header>
 
         <%Room r = (Room)request.getAttribute("room");%>
-        
-        <table class="table table-borderless" >
-            <h2>Please confirm your booking</h2>
-            <form action="AddBooking" method="post">
-                <input type="hidden" name="roomID" value="<%=r.getRoomID()%>">
 
-                <tbody>
-                    <tr>
-                        <td><label>Room Name</label></td>
-                        <td><%=r.getRoomName()%></td>
-                    </tr>
-                    <tr>
-                        <td><label>Room Price</label></td>
-                        <td><%=r.getPrice()%></td>
-                    </tr>
-                    <tr>
-                        <td><label>Quantity</label></td>
-                        <td><input type="number" name="quantity" id="quantity" min="1" value="1" oninput="calculateTotal()"></td>
-                    </tr>
-                    <tr>
-                        <td><label>Start Time</label></td>
-                        <td><input type="date" name="startTime" id="startTime"></td>
-                    </tr>
-                    <tr>
-                        <td><label>End Time</label></td>
-                        <td><input type="date" name="endTime" id="endTime"></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><label>Total</label></td>
-                        <td id="totalPrice"><></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><input type="submit" value="Submit"></td>
-                    </tr>
-                </tbody>
+        <div class="formbold-main-wrapper" style="align-self: center; align-content: center">
+            <div class="formbold-form-wrapper">
+                <table class="table table-borderless" >
+                    <h2>Please confirm your booking</h2>
+                    <form action="AddBooking" method="post">
+                        <input type="hidden" name="roomID" value="<%=r.getRoomID()%>">
 
-                <input type="hidden" name="totalAmount" id="totalAmount" value="">
-            </form>
-        </table>
+                        <tbody>
+                            <tr>
+                        <div class="formbold-input-group">
+                            <td><label class="formbold-form-label">Room Name</label></td>
+                            <td><%=r.getRoomName()%></td>
+                        </div>
+                        </tr>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td><label class="formbold-form-label">Room Price</label></td>
+                                <td><%=r.getPrice()%></td>
+                            </tr>
+                        </div>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td><label class="formbold-form-label">Quantity</label></td>
+                                <td><input class="formbold-form-input" type="number" name="quantity" id="quantity" min="1" value="1" oninput="calculateTotal()"></td>
+                            </tr>
+                        </div>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td><label class="formbold-form-label">Start Time</label></td>
+                                <td><input class="formbold-form-input" type="date" name="startTime" id="startTime"></td>
+                            </tr>
+                        </div>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td><label class="formbold-form-label">End Time</label></td>
+                                <td><input class="formbold-form-input" type="date" name="endTime" id="endTime"></td>
+                            </tr>
+                        </div>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </div>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td><label class="formbold-form-label">Total</label></td>
+                                <td id="totalPrice"><></td>
+                            </tr>
+                        </div>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td></td>
+                                <td><input type="submit" value="Submit" class="formbold-btn"></td>
+                            </tr>
+                        </div>
+                        </tbody>
+
+                        <input type="hidden" name="totalAmount" id="totalAmount" value="">
+                    </form>
+                </table>
+            </div>
+        </div>
+
         <footer>
             <jsp:include page="footer.html"></jsp:include>
             </footer>

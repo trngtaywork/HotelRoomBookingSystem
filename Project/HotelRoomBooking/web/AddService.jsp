@@ -28,13 +28,31 @@
         <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
+        <link rel="stylesheet" href="css/room.css" type="text/css">
+        
+        <style>
+            .header-section {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 999;
+                background-color: #fff;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            body {
+                padding-top: 80px;
+            }
+        </style>
     </head>
     <body>
 
         <header>
             <jsp:include page="headerAdmin.jsp"></jsp:include>
             </header>
-
+                <%------------------------------------------%>
+                
+<%------------------------------------------%>
             <div class="formbold-main-wrapper" style="align-self: center; align-content: center">
                 <div class="formbold-form-wrapper">
                     <table class="table table-borderless">
@@ -55,7 +73,7 @@
                         <tr>
                         <div class="formbold-input-group">
                             <label class="formbold-form-label">Service Name</label>
-                            <input type="text" name="serviceName" id="serviceName" placeholder="Enter service name">
+                            <input class="formbold-form-input" type="text" name="serviceName" id="serviceName" placeholder="Enter service name">
                         </div>
                         </tr>
 

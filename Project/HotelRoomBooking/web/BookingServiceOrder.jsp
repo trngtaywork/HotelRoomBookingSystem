@@ -40,55 +40,115 @@
 
         <%Service s = (Service)request.getAttribute("service");%>
 
-        <h2>Please confirm your service order</h2>
-        <form action="AddBookingService" method="post">
-            <input type="hidden" name="serviceID" value="<%=s.getServiceID()%>">
-            <table class="table table-borderless">
-                <tbody>
-                    <tr>
-                        <td><label>Service Name</label></td>
-                        <td><%=s.getServiceName()%></td>
-                    </tr>
-                    <tr>
-                        <td><label>Service Price</label></td>
-                        <td><%=s.getPrice()%></td>
-                    </tr>
-                    <tr>
-                        <td><label>For Booking</label></td>
-                        <td><select name="forBooking" id="forBooking">
-                                <c:forEach items="${requestScope.bookingList}" var="b">
-                                    <option value="${b.getBookingID()}"><c:forEach items="${requestScope.roomList}" var="r"><c:if test="${b.getRoomID() == r.getRoomID()}">Room Name: ${r.getRoomName()} Booking Date: ${b.getBookingDate()}</c:if></c:forEach></option>
-                                </c:forEach>
-                            </select></td>
-                    </tr>
-                    <tr>
-                        <td><label>Amount</label></td>
-                        <td><input type="number" name="amount" id="amount" value="1" oninput="calculateTotal()"></td>
-                    </tr>
-                    <tr>
-                        <td><label>Start Time</label></td>
-                        <td><input type="date" name="startTime" id="startTime"></td>
-                    </tr>
-                    <tr>
-                        <td><label>End Time</label></td>
-                        <td><input type="date" name="endTime" id="endTime"></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><label>Total</label></td>
-                        <td id="totalPrice"><></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><input type="submit" value="Submit"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <input type="hidden" name="totalAmount" id="totalAmount" value="">
-        </form>
+        <div class="formbold-main-wrapper" style="align-self: center; align-content: center">
+            <div class="formbold-form-wrapper">
+                <table class="table table-borderless">
+                    <h2>Please confirm your service order</h2>
+                    <form action="AddBookingService" method="post">
+                        <input type="hidden" name="serviceID" value="<%=s.getServiceID()%>">
+
+                        <tbody>
+                            <tr>
+                        <div class="formbold-input-group">
+                            <td><label class="formbold-form-label">Service Name</label></td>
+                            <td><%=s.getServiceName()%></td>
+                        </div>
+                        </tr>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td><label class="formbold-form-label">Service Price</label></td>
+                                <td><%=s.getPrice()%></td>
+                            </tr>
+                        </div>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td><label class="formbold-form-label">For Booking</label></td>
+
+                                <c:choose>
+                                    <c:when test="${requestScope.bookingList.size() == 0}">
+                                        <td class="container">
+                                            <label class="formbold-form-label">Your Booking List is Empty</label>
+                                        </td>
+                                    </c:when>    
+                                    <c:otherwise>
+                                        <td>
+                                            <select name="forBooking" id="forBooking" class="formbold-form-select">
+                                                <c:forEach items="${requestScope.bookingList}" var="b">
+                                                    <option value="${b.getBookingID()}"><c:forEach items="${requestScope.roomList}" var="r"><c:if test="${b.getRoomID() == r.getRoomID()}">Room Name: ${r.getRoomName()} | Booking Date: ${b.getBookingDate()}</c:if></c:forEach></option>
+                                                </c:forEach>
+                                            </select>
+                                        </td>
+                                    </c:otherwise>
+                                </c:choose>
+                            </tr>
+                        </div>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td><label class="formbold-form-label">Amount</label></td>
+                                <td><input class="formbold-form-input" type="number" name="amount" id="amount" value="1" oninput="calculateTotal()"></td>
+                            </tr>
+                        </div>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td><label class="formbold-form-label">Start Time</label></td>
+                                <td><input class="formbold-form-input" type="date" name="startTime" id="startTime"></td>
+                            </tr>
+                        </div>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td><label class="formbold-form-label">End Time</label></td>
+                                <td><input class="formbold-form-input" type="date" name="endTime" id="endTime"></td>
+                            </tr>
+                        </div>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </div>
+
+                        <div class="formbold-input-group">
+                            <tr>
+                                <td><label class="formbold-form-label">Total</label></td>
+                                <td id="totalPrice"><></td>
+                            </tr>
+                        </div>
+
+                        <div class="formbold-input-group">
+
+
+                            <tr>
+                                <td></td>
+
+                                <c:choose>
+                                    <c:when test="${requestScope.bookingList.size() == 0}">
+                                        <td>
+                                            <input disabled="true" type="submit" value="Submit" class="formbold-btn">
+                                        </td>
+                                    </c:when>    
+                                    <c:otherwise>
+                                        <td>
+                                            <input type="submit" value="Submit" class="formbold-btn">
+                                        </td>
+                                    </c:otherwise>
+                                </c:choose>
+
+
+                            </tr>
+                        </div>
+                        </tbody>
+
+                        <input type="hidden" name="totalAmount" id="totalAmount" value="">
+                    </form>
+                </table>
+            </div>
+        </div>
 
         <footer>
             <jsp:include page="footer.html"></jsp:include>
@@ -136,7 +196,7 @@
 
                 // Call function on page load to set the initial total
                 document.addEventListener("DOMContentLoaded", updateTotal);
-                
+
                 document.getElementById('totalAmount').value = calculateTotal();
         </script>
     </body>

@@ -18,12 +18,12 @@ import java.util.logging.Logger;
  */
 public class DBContext {
 
-    protected Connection connection = null;
+    public Connection connection = null;
 
     public DBContext() {
         try {
             //String url = "jdbc:sqlserver://localhost\\NGUYENVIETCUONG:1433;databaseName=HotelRoomBooking;encrypt=true;trustServerCertificate=true";
-            String url = "jdbc:sqlserver://localhost\\NGUYENVIETCUONG:1433;databaseName=HRBS;trustServerCertificate=true";
+            String url = "jdbc:sqlserver://localhost\\NGUYENVIETCUONG:1433;databaseName=HRBS_new;trustServerCertificate=true";
             String username = "admin";
             String password = "admin";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

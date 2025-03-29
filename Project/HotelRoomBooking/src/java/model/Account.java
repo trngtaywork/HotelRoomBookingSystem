@@ -51,6 +51,21 @@ public class Account {
         this.CreatedDate = CreatedDate;
     }
 
+    public Account(int AccountID, String Username, String Email) {
+        this.AccountID = AccountID;
+        this.Username = Username;
+        this.Email = Email;
+    }
+
+    public Account(int AccountID, String Username, String Email, Date CreatedDate, String Role, boolean IsActive) {
+        this.AccountID = AccountID;
+        this.Username = Username;
+        this.Email = Email;
+        this.CreatedDate = CreatedDate;
+        this.Role = Role;
+        this.IsActive = IsActive;
+    }
+    
     public int getAccountID() {
         return AccountID;
     }
