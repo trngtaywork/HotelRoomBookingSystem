@@ -85,7 +85,7 @@
                 <div class="form-group">
                     <label for="serviceImage">Current Image</label>
                     <br>
-                    <img src="<%= s.getImage() %>" alt="" width="200" height="150">
+                    <img src="<%= request.getContextPath() + r.getImage() %>" alt="" width="200" height="150">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Update Service</button>

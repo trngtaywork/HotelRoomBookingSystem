@@ -56,7 +56,7 @@
                             <c:forEach items="${requestScope.serviceList}" var="s">
                                 <div class="col-lg-4 col-md-6">
                                     <div class="room-item">
-                                        <img src="${s.getImage()}" alt="">
+                                        <img src="${pageContext.request.contextPath}${s.getImage()};" alt="" width="540" height="240">
                                         <div class="ri-text">
                                             <h4>${s.getServiceName()}</h4>
                                             <h3>${s.getPrice()}$</h3>

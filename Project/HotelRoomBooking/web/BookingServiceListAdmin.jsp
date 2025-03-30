@@ -69,7 +69,7 @@
     </head>
     <body>
         <header>
-            <jsp:include page="header.html"></jsp:include>
+            <jsp:include page="headerAdmin.jsp"></jsp:include>
             </header>
         
         <div class="container">

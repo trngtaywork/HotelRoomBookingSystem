@@ -95,8 +95,8 @@
                         <div class="formbold-input-group">
                             <label class="formbold-form-label">Status</label>
                             <select name="statusService" id="statusService" class="formbold-form-select">
-                                <option value="available" >Available</option>
-                                <option value="unavailable" >Unavailable</option>
+                                <option value="Available" >Available</option>
+                                <option value="Unavailable" >Unavailable</option>
                             </select>
                         </div>
                         </tr>

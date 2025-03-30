@@ -57,7 +57,7 @@
                             <c:forEach items="${requestScope.roomList}" var="r">
                                 <div class="col-lg-4 col-md-6">
                                     <div class="room-item">
-                                        <img src="${r.getImage()}" alt="">
+                                        <img src="${pageContext.request.contextPath}${r.getImage()};" alt="" width="540" height="240">
                                         <div class="ri-text">
                                             <h4>${r.getRoomName()}</h4>
                                             <h3>${r.getPrice()}$<span>/Pernight</span></h3>

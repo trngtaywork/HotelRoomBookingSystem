@@ -119,7 +119,7 @@ public class ServiceDAO extends DBContext {
                      ,[Image]
                      ,[StatusService]
                      ,[TypeService]
-                     FROM [dbo].[Service] WHERE [ServiceName] LIKE '%""" + ServiceName + "%' AND [Status] LIKE '%" + ServiceStatus + "%' ORDER BY [PRICE]";
+                     FROM [dbo].[Service] WHERE [ServiceName] LIKE '%""" + ServiceName + "%' AND [StatusService] LIKE '%" + ServiceStatus + "%' ORDER BY [PRICE]";
                 break;
             case "desc":
                 sql = """
@@ -130,7 +130,7 @@ public class ServiceDAO extends DBContext {
                      ,[Image]
                      ,[StatusService]
                      ,[TypeService]
-                     FROM [dbo].[Service] WHERE [ServiceName] LIKE '%""" + ServiceName + "%' AND [Status] LIKE '%" + ServiceStatus + "%' ORDER BY [PRICE] DESC";
+                     FROM [dbo].[Service] WHERE [ServiceName] LIKE '%""" + ServiceName + "%' AND [StatusService] LIKE '%" + ServiceStatus + "%' ORDER BY [PRICE] DESC";
                 break;
             default:
                 sql = """
@@ -141,7 +141,7 @@ public class ServiceDAO extends DBContext {
                      ,[Image]
                      ,[StatusService]
                      ,[TypeService]
-                     FROM [dbo].[Service] WHERE [ServiceName] LIKE '%""" + ServiceName + "%' AND [Status] LIKE '%" + ServiceStatus + "%'";
+                     FROM [dbo].[Service] WHERE [ServiceName] LIKE '%""" + ServiceName + "%' AND [StatusService] LIKE '%" + ServiceStatus + "%'";
                 break;
         }
         
@@ -204,23 +204,27 @@ public class ServiceDAO extends DBContext {
     }
     
     public void Add(Service s) {
+        int id = lastserviceID() + 1;
+        
         String sql = "INSERT INTO [dbo].[Service]\n"
-                + "           ([ServiceName]\n"
+                + "           ([ServiceID]\n"
+                + "           ,[ServiceName]\n"
                 + "           ,[Description]\n"
                 + "           ,[Price]\n"
                 + "           ,[Image]\n"
                 + "           ,[StatusService]\n"
                 + "           ,[TypeService])\n"
                 + "     VALUES\n"
-                + "           (?,?,?,?,?,?)";
+                + "           (?,?,?,?,?,?,?)";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
-            pre.setString(1, s.getServiceName());
-            pre.setString(2, s.getDescription());
-            pre.setFloat(3, s.getPrice());
-            pre.setString(4, s.getImage());
-            pre.setString(5, s.getStatusService());
-            pre.setString(6, s.getTypeService());
+            pre.setInt(1, id);
+            pre.setString(2, s.getServiceName());
+            pre.setString(3, s.getDescription());
+            pre.setFloat(4, s.getPrice());
+            pre.setString(5, s.getImage());
+            pre.setString(6, s.getStatusService());
+            pre.setString(7, s.getTypeService());
             
             ResultSet rs = pre.executeQuery();
         } catch (SQLException e) {
@@ -258,5 +262,20 @@ public class ServiceDAO extends DBContext {
             System.out.println(e);
             return false;
         }
+    }
+    
+    public int lastserviceID() {
+        String sql = "SELECT TOP 1 [ServiceID]\n"
+                + "FROM [dbo].[Service]\n"
+                + "ORDER BY [ServiceID] DESC";
+        int n = 0;
+        try {
+            ResultSet rs = getData(sql);
+            if (rs.next()) {
+                n = rs.getInt("ServiceID");
+            }
+        } catch (SQLException e) {
+        }
+        return n;
     }
 }

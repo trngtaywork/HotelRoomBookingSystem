@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.*;
 /**
  *
@@ -36,6 +37,13 @@ public class ServiceDetailAdmin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sessionUser = request.getSession(false);
+        Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        
         int serviceID = Integer.parseInt(request.getParameter("serviceID"));
         
         Service service = serviceDAO.SearchServiceByID(serviceID);

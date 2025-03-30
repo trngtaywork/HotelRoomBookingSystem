@@ -50,7 +50,7 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="room-details-item">
-                            <img src="<%=s.getImage()%>" alt="">
+                            <img src="<%= request.getContextPath() + s.getImage() %>" alt="" width="800" height="480">
                             <div class="rd-text">
                                 <div class="rd-title">
                                     <h3><%=s.getServiceName()%></h3>

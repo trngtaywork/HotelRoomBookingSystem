@@ -159,7 +159,7 @@
                     let amount = document.getElementById("amount").value;
                     let startDate = document.getElementById("startTime").value;
                     let endDate = document.getElementById("endTime").value;
-                    let roomPrice = <%= s.getPrice() %>; // Get price per day from JSP
+                    let servicePrice = <%= s.getPrice() %>; // Get price per day from JSP
 
                     let total;
 
@@ -176,10 +176,10 @@
                         days = days >= 1 ? days : 1;
 
                         // Calculate total with days
-                        total = amount * days * roomPrice;
+                        total = amount * days * servicePrice;
                     } else {
                         // If dates are empty, only multiply price × quantity
-                        total = amount * roomPrice;
+                        total = amount * servicePrice;
                     }
 
                     return total.toFixed(2); // Return total as a string with 2 decimal places

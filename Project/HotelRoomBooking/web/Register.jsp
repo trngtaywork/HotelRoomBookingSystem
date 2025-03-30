@@ -255,8 +255,11 @@
 
         <div class="login-wrap">
             <div class="login-html">
-                <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
-                <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+                <input id="tab-1" type="radio" name="tab" class="sign-in">
+                <label for="tab-1" class="tab" onclick="window.location.href = 'login.jsp'">Sign In</label>
+                <input id="tab-2" type="radio" name="tab" class="sign-up" checked >
+                <label style="padding-right: 15px" for="tab-2" class="tab">Sign Up</label>
+                
                 <div class="login-form">
                     <div class="sign-in-htm">
                         <c:if test="${requestScope.error != null || !requestScope.error.isBlank()}">

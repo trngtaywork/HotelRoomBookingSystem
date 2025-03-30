@@ -24,7 +24,7 @@
     </head>
     <body>
         <header>
-            <jsp:include page="header.html"></jsp:include>
+            <jsp:include page="headerAdmin.jsp"></jsp:include>
         </header>
 
         <%Booking b = (Booking)request.getAttribute("booking");%>

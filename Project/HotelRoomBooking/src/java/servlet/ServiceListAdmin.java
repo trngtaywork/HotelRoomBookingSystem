@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import model.*;
@@ -38,6 +39,13 @@ public class ServiceListAdmin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession sessionUser = request.getSession(false);
+        Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+        
         List<Service> serviceList = serviceDAO.GetServiceList();
         
         request.setAttribute("serviceList", serviceList);

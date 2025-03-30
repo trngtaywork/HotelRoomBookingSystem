@@ -193,7 +193,7 @@
                 <tr>
                     <th>Image</th>
                     <td>
-                        <img src="<%= s.getImage() %>" alt="Service Image" width="200" height="150">
+                        <img src="<%= request.getContextPath() + r.getImage() %>" alt="Service Image" width="200" height="150">
                     </td>
                 </tr>
                 <tr>

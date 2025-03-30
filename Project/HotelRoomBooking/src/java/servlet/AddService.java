@@ -118,13 +118,13 @@ public class AddService extends HttpServlet {
             }
 
             // Save the image
-            String path = getServletContext().getRealPath("/") + "../web/img/service";
+            String path = getServletContext().getRealPath("/uploads");
             File directory = new File(path);
             if (!directory.exists()) {
                 directory.mkdirs(); // Ensure the directory exists
             }
             filePart.write(path + "/" + fileName);
-            image = "/img/service/" + fileName;
+            image = "/uploads/" + fileName;
         }
 
         // Create Service object

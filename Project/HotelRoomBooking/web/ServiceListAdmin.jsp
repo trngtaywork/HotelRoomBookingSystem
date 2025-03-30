@@ -120,8 +120,8 @@
                     <table class="table table-bordered mt-3">
                         <thead>
                             <tr style="background-color: #dfa974">
-                                <th>Service ID</th>
                                 <th>Service Name</th>
+                                <th>Service Image</th>
                                 <th>Price</th>
                                 <th>StatusService</th>
                                 <th>TypeService</th>
@@ -132,8 +132,8 @@
                         <tbody>
                             <c:forEach items="${requestScope.serviceList}" var="s">
                                 <tr>
-                                    <td>${s.getServiceID()}</td>
                                     <td>${s.getServiceName()}</td>
+                                    <td><img src="${pageContext.request.contextPath}${s.getImage()}" width="480" height="120"></td>
                                     <td>${s.getPrice()}</td>
                                     <td>${s.getStatusService()}</td>
                                     <td>${s.getTypeService()}</td>

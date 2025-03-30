@@ -52,7 +52,7 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="room-details-item">
-                            <img src="<%=r.getImage()%>" alt="">
+                            <img src="<%= request.getContextPath() + r.getImage() %>" alt="" width="800" height="480">
                             <div class="rd-text">
                                 <div class="rd-title">
                                     <h3><%=r.getRoomName()%></h3>
