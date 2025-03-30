@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import model.Account;
 import model.Profile;
 import utils.DBContext;
 
@@ -112,6 +115,121 @@ public class ProfileDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
+    }
+    
+    public Profile SearchProfileById(int profileId) {
+        String sql = "SELECT * FROM [dbo].[Profile] WHERE 1 = 1 AND [ProfileID] = '" + profileId + "'";
+        
+        try {
+            ResultSet rs = getData(sql);
+
+            if(rs == null){
+                return null;
+            }
+            
+            if (rs.next()) {
+                Profile p = new Profile();
+                p.setProfileID(rs.getInt("ProfileID"));
+                p.setName(rs.getString("Name"));
+                p.setPhoneNumber(rs.getString("PhoneNumber"));
+                p.setGender(rs.getString("Gender"));
+                p.setAddress(rs.getString("Address"));
+                p.setAccountID(rs.getInt("AccountID"));
+
+                return p;
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return null;
+    }
+    
+    public Profile SearchProfileByAccountId(int accountID) {
+        String sql = "SELECT * FROM [dbo].[Profile] WHERE 1 = 1 AND [AccountID] = '" + accountID + "'";
+        
+        try {
+            ResultSet rs = getData(sql);
+
+            if(rs == null){
+                return null;
+            }
+            
+            if (rs.next()) {
+                Profile p = new Profile();
+                p.setProfileID(rs.getInt("ProfileID"));
+                p.setName(rs.getString("Name"));
+                p.setPhoneNumber(rs.getString("PhoneNumber"));
+                p.setGender(rs.getString("Gender"));
+                p.setAddress(rs.getString("Address"));
+                p.setAccountID(rs.getInt("AccountID"));
+
+                return p;
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return null;
+    }
+    
+    public List<Profile> GetProfileList() {
+        String sql = "SELECT * FROM [dbo].[Profile] WHERE 1 = 1";
+        List<Profile> profiles = new ArrayList<>();
+
+        try {
+            ResultSet rs = getData(sql);
+
+            if(rs == null){
+                return null;
+            }
+            
+            while (rs.next()) {
+                Profile p = new Profile();
+                p.setProfileID(rs.getInt("ProfileID"));
+                p.setName(rs.getString("Name"));
+                p.setPhoneNumber(rs.getString("PhoneNumber"));
+                p.setGender(rs.getString("Gender"));
+                p.setAddress(rs.getString("Address"));
+                p.setAccountID(rs.getInt("AccountID"));
+
+                profiles.add(p);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return profiles;
+    }
+
+    public List<Account> GetAccountList() {
+        String sql = "SELECT [AccountID], [Username], [Email], [Password], [CreatedDate], [Role], [IsActive] FROM Account WHERE 1 = 1";
+        List<Account> Accounts = new ArrayList<>();
+
+        try {
+            ResultSet rs = getData(sql);
+
+            if (rs == null) {
+                return null;
+            }
+
+            while (rs.next()) {
+                Account a = new Account();
+                a.setAccountID(rs.getInt("AccountID"));
+                a.setUsername(rs.getString("Username"));
+                a.setPassword(rs.getString("Password"));
+                a.setEmail(rs.getString("Email"));
+                a.setCreatedDate(rs.getDate("CreatedDate"));
+                a.setRole(rs.getString("Role"));
+                a.setIsActive(rs.getBoolean("IsActive"));
+
+                Accounts.add(a);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return Accounts;
     }
     
 }

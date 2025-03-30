@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
 
-        <title>Dashboard - Revenue Report</title>
+        <title>Revenue Report</title>
         <style>
             .header-section {
                 position: fixed;
@@ -130,8 +130,8 @@
 
         <!-- Sidebar -->
         <div class="sidebar">
-            <a href="dashboard.jsp" class="btn-custom" style="background-color: #dfa974; color: white;">Report</a>
-            <a href="statistics.jsp" class="btn-custom">Statistics</a>
+            <a href="dashboard.jsp" class="btn-custom" style="background-color: #dfa974; color: white;">Revenue Report</a>
+            <a href="statistics.jsp" class="btn-custom">Book Room/Service List</a>
             <a href="sendEmailAll.jsp" class="btn-custom">Send Email</a>
         </div>
 

@@ -79,6 +79,14 @@
         <servlet-name>DashboardServlet</servlet-name>
         <servlet-class>servlet.DashboardServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BookingServiceDAO</servlet-name>
+        <servlet-class>dao.BookingServiceDAO</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServiceListAdmin</servlet-name>
+        <servlet-class>servlet.ServiceListAdmin</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -150,6 +158,14 @@
     <servlet-mapping>
         <servlet-name>DashboardServlet</servlet-name>
         <url-pattern>/DashboardServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookingServiceDAO</servlet-name>
+        <url-pattern>/BookingServiceDAO</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServiceListAdmin</servlet-name>
+        <url-pattern>/ServiceListAdmin</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

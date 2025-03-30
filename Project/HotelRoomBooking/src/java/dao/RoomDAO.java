@@ -172,91 +172,53 @@ public class RoomDAO {
         return false;
     }
 
-<<<<<<< Updated upstream
+    public List<Room> getFilteredRooms(String priceFilter, String statusFilter, String typeFilter, String roomNameFilter) {
+        List<Room> roomList = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM Room WHERE 1=1");
 
-    public List<Room> GetRoomList() {
-        String sql = """
-                     SELECT [RoomID]
-                     ,[RoomName]
-                     ,[Description]
-                     ,[Price]
-                     ,[Image]
-                     ,[Status]
-                     ,[Type]
-                     FROM [dbo].[Room] WHERE 1 = 1""";
-        List<Room> Rooms = new ArrayList<>();
-
-        try {
-            ResultSet rs = getData(sql);
-
-            if(rs == null){
-                return null;
+        // Lọc theo giá
+        if (priceFilter != null && !priceFilter.equals("All")) {
+            if (priceFilter.equals("asc")) {
+                query.append(" ORDER BY Price ASC");
+            } else if (priceFilter.equals("desc")) {
+                query.append(" ORDER BY Price DESC");
             }
-            
+        }
+
+        // Lọc theo trạng thái phòng
+        if (statusFilter != null && !statusFilter.equals("All")) {
+            query.append(" AND StatusRoom = '").append(statusFilter).append("'");
+        }
+
+        // Lọc theo loại phòng
+        if (typeFilter != null && !typeFilter.equals("All")) {
+            query.append(" AND TypeRoom = '").append(typeFilter).append("'");
+        }
+
+        // Lọc theo tên phòng
+        if (roomNameFilter != null && !roomNameFilter.isEmpty()) {
+            query.append(" AND RoomName LIKE '%").append(roomNameFilter).append("%'");
+        }
+
+        // Thực hiện truy vấn
+        try ( Statement stmt = dbContext.connection.createStatement();  ResultSet rs = stmt.executeQuery(query.toString())) {
             while (rs.next()) {
-                Room r = new Room();
-                r.setRoomID(rs.getInt("RoomID"));
-                r.setRoomName(rs.getString("RoomName"));
-                String desTemp = rs.getString("Description") == null ? "" : rs.getString("Description");
-                r.setDescription(desTemp.isBlank() ? "" : desTemp);
-                r.setPrice(rs.getDouble("Price"));
-                String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
-                r.setImage(imageTemp.isBlank() ? "" : imageTemp);////
-                r.setStatus(rs.getString("Status"));
-                r.setType(rs.getString("Type"));
-
-                Rooms.add(r);
+                Room room = new Room(
+                        rs.getInt("RoomID"),
+                        rs.getString("RoomName"),
+                        rs.getString("Description"),
+                        rs.getDouble("Price"),
+                        rs.getString("Image"),
+                        rs.getString("StatusRoom"),
+                        rs.getString("TypeRoom")
+                );
+                roomList.add(room);
             }
-        } catch (Exception ex) {
-            System.out.println(ex);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
 
-        return Rooms;
+        return roomList;
     }
 
-    public Room SearchRoomByID(int RoomID) {
-        String sql = """
-                     SELECT [RoomID]
-                     ,[RoomName]
-                     ,[Description]
-                     ,[Price]
-                     ,[Image]
-                     ,[Status]
-                     ,[Type]
-                     FROM [dbo].[Room] WHERE [RoomID] = '""" + RoomID + "'";
-
-        try {
-            ResultSet rs = getData(sql);
-
-            if(rs == null){
-                return null;
-            }
-            
-            if (rs.next()) {
-                Room r = new Room();
-
-                r.setRoomID(rs.getInt("RoomID"));
-                r.setRoomName(rs.getString("RoomName"));
-                String desTemp = rs.getString("Description") == null ? "" : rs.getString("Description");
-                r.setDescription(desTemp.isBlank() ? "" : desTemp);
-                r.setPrice(rs.getDouble("Price"));
-                String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
-                r.setImage(imageTemp.isBlank() ? "" : imageTemp);////
-                r.setStatus(rs.getString("Status"));
-                r.setType(rs.getString("Type"));
-
-                return r;
-            } else {
-                return null;
-            }
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }
-
-        return null;
-    }
 }
-=======
-    
-}
->>>>>>> Stashed changes

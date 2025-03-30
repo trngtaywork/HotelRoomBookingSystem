@@ -12,18 +12,21 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import model.*;
-
 /**
  *
  * @author My PC
  */
-@WebServlet(name = "BookingServiceDetail", urlPatterns = {"/BookingServiceDetail"})
-public class BookingServiceDetail extends HttpServlet {
-    BookingDAO bookingDAO = new BookingDAO();
+@WebServlet(name = "ServiceListAdmin", urlPatterns = {"/ServiceListAdmin"})
+public class ServiceListAdmin extends HttpServlet {
+    BookingDAO bookingDao = new BookingDAO();
     BookingServiceDAO bookingServiceDAO = new BookingServiceDAO();
+    AccountDAO accountDao = new AccountDAO();
+    ProfileDAO profileDAO = new ProfileDAO();
     ServiceDAO serviceDAO = new ServiceDAO();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,34 +38,11 @@ public class BookingServiceDetail extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession sessionUser = request.getSession(false);
-        Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
-        if (user == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
+        List<Service> serviceList = serviceDAO.GetServiceList();
+        
+        request.setAttribute("serviceList", serviceList);
 
-        var bookingServiceID = request.getParameter("bookingServiceID");
-
-        //Add user check
-        if (bookingServiceID == null || bookingServiceID.length() == 0) {
-            request.getRequestDispatcher("BookingServiceList").forward(request, response);
-        } else {
-            BookingService bookingService = bookingServiceDAO.SearchBookingService(Integer.parseInt(bookingServiceID));
-            var serviceId = bookingService.getServiceID();
-            var bookingID = bookingService.getBookingID();
-            if (serviceId <= 0 || bookingID <= 0) {
-                request.getRequestDispatcher("BookingServiceList").forward(request, response);
-            }
-
-            Service service = serviceDAO.SearchServiceByID(serviceId);
-            Booking booking = bookingDAO.SearchBooking(bookingID);
-
-            request.setAttribute("service", service);
-            request.setAttribute("booking", booking);
-            request.setAttribute("bookingService", bookingService);
-            request.getRequestDispatcher("BookingServiceDetail.jsp").forward(request, response);
-        }
+        request.getRequestDispatcher("ServiceListAdmin.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -91,7 +71,17 @@ public class BookingServiceDetail extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String priceFilter = request.getParameter("priceFilter");
+        String statusFilter = request.getParameter("statusFilter");
+        String serviceNameFilter = request.getParameter("serviceNameFilter");
+        
+        List<Service> serviceList = new ArrayList<Service>();
+        
+        serviceList = serviceDAO.SearchServices(serviceNameFilter, statusFilter, priceFilter);
+        
+        request.setAttribute("serviceList", serviceList);
+
+        request.getRequestDispatcher("ServiceListAdmin.jsp").forward(request, response);
     }
 
     /**

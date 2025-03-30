@@ -102,8 +102,8 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <a href="dashboard.jsp" class="btn-custom">Report</a>
-        <a href="statistics.jsp" class="btn-custom">Statistics</a>
+        <a href="dashboard.jsp" class="btn-custom">Revenue Report</a>
+        <a href="statistics.jsp" class="btn-custom">Book Room/Service List</a>
         <a href="sendEmailAll.jsp" class="btn-custom" style="background-color: #dfa974; color: white;">Send Email</a>
     </div>
 

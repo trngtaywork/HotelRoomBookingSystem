@@ -18,13 +18,6 @@ public class Booking {
     private int ServiceID;
     private Date BookingDate;
     private float TotalAmount;
-<<<<<<< Updated upstream
-    private String Status;
-
-    public Booking() {
-    }
-    public Booking(int BookingID, int ProfileID, int RoomID, Date BookingDate, float TotalAmount, String Status) {
-=======
     private int StatusID;
 
     public Booking() {
@@ -41,32 +34,20 @@ public class Booking {
     }
 
     public Booking(int BookingID, int ProfileID, int RoomID, Date BookingDate, float TotalAmount, int StatusID) {
->>>>>>> Stashed changes
         this.BookingID = BookingID;
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
         this.BookingDate = BookingDate;
         this.TotalAmount = TotalAmount;
-<<<<<<< Updated upstream
-        this.Status = Status;
-    }
-
-    public Booking(int ProfileID, int RoomID, Date BookingDate, float TotalAmount, String Status) {
-=======
         this.StatusID = StatusID;
     }
 
     public Booking(int ProfileID, int RoomID, Date BookingDate, float TotalAmount, int StatusID) {
->>>>>>> Stashed changes
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
         this.BookingDate = BookingDate;
         this.TotalAmount = TotalAmount;
-<<<<<<< Updated upstream
-        this.Status = Status;
-=======
         this.StatusID = StatusID;
->>>>>>> Stashed changes
     }
 
     public int getBookingID() {
@@ -109,21 +90,12 @@ public class Booking {
         this.TotalAmount = TotalAmount;
     }
 
-<<<<<<< Updated upstream
-    public String getStatus() {
-        return Status;
-    }
-
-    public void setStatus(String Status) {
-        this.Status = Status;
-=======
     public int getStatusID() {
         return StatusID;
     }
 
     public void setStatusID(int StatusID) {
         this.StatusID = StatusID;
->>>>>>> Stashed changes
     }
 
     public int getServiceID() {

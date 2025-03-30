@@ -16,48 +16,38 @@ public class Service {
     private String Description;
     private float Price;
     private String Image;
-<<<<<<< Updated upstream
-    private String Status;
-    private String Type;
-=======
-    private int StatusID;
->>>>>>> Stashed changes
+    private String StatusService;
+    private String TypeService;
 
     public Service() {
     }
 
-<<<<<<< Updated upstream
-    public Service(int ServiceID, String ServiceName, String Description, float Price, String Image, String Status, String Type) {
-=======
-    public Service(int ServiceID, String ServiceName, String Description, float Price, String Image, int StatusID) {
->>>>>>> Stashed changes
+
+    public Service(int ServiceID, String ServiceName, String Description, float Price, String Image, String StatusService, String TypeService) {
         this.ServiceID = ServiceID;
         this.ServiceName = ServiceName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
-<<<<<<< Updated upstream
-        this.Status = Status;
-        this.Type = Type;
+        this.StatusService = StatusService;
+        this.TypeService = TypeService;
     }
 
-    public Service(String ServiceName, String Description, float Price, String Image, String Status, String Type) {
-=======
-        this.StatusID = StatusID;
-    }
-    
-    public Service(String ServiceName, String Description, float Price, String Image, int StatusID) {
->>>>>>> Stashed changes
+    public Service(String ServiceName, String Description, float Price, String Image, String StatusService, String TypeService) {
         this.ServiceName = ServiceName;
         this.Description = Description;
         this.Price = Price;
         this.Image = Image;
-<<<<<<< Updated upstream
-        this.Status = Status;
-        this.Type = Type;
-=======
-        this.StatusID = StatusID;
->>>>>>> Stashed changes
+        this.StatusService = StatusService;
+        this.TypeService = TypeService;
+    }
+    
+    public Service(String ServiceName, String Description, float Price, String Image, String StatusService) {
+        this.ServiceName = ServiceName;
+        this.Description = Description;
+        this.Price = Price;
+        this.Image = Image;
+        this.StatusService = StatusService;
     }
 
     public int getServiceID() {
@@ -100,30 +90,22 @@ public class Service {
         this.Image = Image;
     }
 
-<<<<<<< Updated upstream
-    public String getStatus() {
-        return Status;
+    public String getStatusService() {
+        return StatusService;
     }
 
-    public void setStatus(String Status) {
-        this.Status = Status;
+    public void setStatusService(String StatusService) {
+        this.StatusService = StatusService;
     }
 
-    public String getType() {
-        return Type;
+    public String getTypeService() {
+        return TypeService;
     }
 
-    public void setType(String Type) {
-        this.Type = Type;
-=======
-    public int getStatusID() {
-        return StatusID;
+    public void setTypeService(String TypeService) {
+        this.TypeService = TypeService;
     }
 
-    public void setStatusID(int StatusID) {
-        this.StatusID = StatusID;
->>>>>>> Stashed changes
-    }
     
     
 }

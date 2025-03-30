@@ -32,6 +32,20 @@
 
     AccountDAO accountDAO = new AccountDAO();
     List<Account> accountList = accountDAO.getUsersFiltered(roleFilter, statusFilter, usernameSearch, sortDate);
+    
+    int pageSize = 10;  // Số tài khoản mỗi trang
+    int totalItems = accountList.size();  // Tổng số tài khoản
+    int totalPages = (int) Math.ceil((double) totalItems / pageSize); // Tính tổng số trang
+    
+    int currentPage = 1;
+    if (request.getParameter("page") != null) {
+        currentPage = Integer.parseInt(request.getParameter("page"));
+    }
+
+    // Tính toán chỉ số bắt đầu và kết thúc cho phân trang
+    int startIndex = (currentPage - 1) * pageSize;
+    int endIndex = Math.min(startIndex + pageSize, totalItems);
+    List<Account> paginatedAccountList = accountList.subList(startIndex, endIndex);
 %>
 
 
@@ -101,6 +115,47 @@
                 text-align: center;
                 vertical-align: middle;
             }
+
+            .pagination {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+            }
+
+            .pagination a {
+                padding: 8px 16px;
+                margin: 0 5px;
+                border-radius: 5px;
+                text-decoration: none;
+                color: #fff;
+                background-color: #000;
+                transition: background-color 0.3s ease;
+            }
+
+            .pagination a:hover {
+                background-color: #dfa974;
+            }
+
+            .pagination a.active {
+                background-color: #dfa974;
+                pointer-events: none;
+            }
+
+            .pagination a.disabled {
+                background-color: #d6d6d6;
+                pointer-events: none;
+            }
+
+            .pagination span {
+                padding: 8px 16px;
+                margin: 0 5px;
+                font-size: 16px;
+                color: #333;
+            }
+
+            .pagination .disabled {
+                color: #ccc;
+            }
         </style>
     </head>
     <body>
@@ -122,7 +177,7 @@
                                         <li><a href="./index.html">Home</a></li>
                                         <li class="active"><a href="userList.jsp">User List</a></li>
                                         <li><a href="roomListForAdmin.jsp">Room List</a></li>
-                                        <li><a href="serviceList.jsp">Service List</a></li>
+                                        <li><a href="ServiceListAdmin">Service List</a></li>
                                         <li><a href="dashboard.jsp">Dashboard</a></li>
                                         <li><a href="profile.jsp">Profile</a></li>
                                     </ul>
@@ -225,6 +280,17 @@
                 </tbody>
 
             </table>
+
+        </div>
+
+        <div class="pagination">
+            <% if (currentPage > 1) { %>
+            <a href="userList.jsp?page=<%= currentPage - 1 %>">Previous</a>
+            <% } %>
+            <span>Page <%= currentPage %> of <%= totalPages %></span>
+            <% if (currentPage < totalPages) { %>
+            <a href="userList.jsp?page=<%= currentPage + 1 %>">Next</a>
+            <% } %>
         </div>
 
         <footer class="footer-section">

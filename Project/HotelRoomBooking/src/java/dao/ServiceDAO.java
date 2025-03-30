@@ -19,15 +19,7 @@ import model.*;
 public class ServiceDAO extends DBContext {
 
     public List<Service> GetServiceList() {
-        String sql = """
-                     SELECT [ServiceID]
-                     ,[ServiceName]
-                     ,[Description]
-                     ,[Price]
-                     ,[Image]
-                     ,[Status]
-                     ,[Type]
-                     FROM [dbo].[Service] WHERE 1 = 1""";
+        String sql = "SELECT [ServiceID],[ServiceName],[Description],[Price],[Image],[StatusService],[TypeService] FROM [dbo].[Service] WHERE 1 = 1";
         List<Service> Services = new ArrayList<>();
 
         try {
@@ -42,12 +34,12 @@ public class ServiceDAO extends DBContext {
                 s.setServiceID(rs.getInt("ServiceID"));
                 s.setServiceName(rs.getString("ServiceName"));
                 String desTemp = rs.getString("Description") == null ? "" : rs.getString("Description");
-                s.setDescription(desTemp.isBlank() ? "" : desTemp);
+                s.setDescription(desTemp.isEmpty()? "" : desTemp);
                 s.setPrice(rs.getFloat("Price"));
                 String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
-                s.setImage(imageTemp.isBlank() ? "" : imageTemp);////
-                s.setStatus(rs.getString("Status"));
-                s.setType(rs.getString("Type"));
+                s.setImage(imageTemp.isEmpty()? "" : imageTemp);////
+                s.setStatusService(rs.getString("StatusService"));
+                s.setTypeService(rs.getString("TypeService"));
                 
                 Services.add(s);
             }
@@ -59,15 +51,7 @@ public class ServiceDAO extends DBContext {
     }
 
     public Service SearchServiceByID(int ServiceID) {
-        String sql = """
-                     SELECT [ServiceID]
-                     ,[ServiceName]
-                     ,[Description]
-                     ,[Price]
-                     ,[Image]
-                     ,[Status]
-                     ,[Type]
-                     FROM [dbo].[Service] WHERE [ServiceID] = '""" + ServiceID + "'";
+        String sql = "SELECT [ServiceID],[ServiceName],[Description],[Price],[Image],[StatusService],[TypeService] FROM [dbo].[Service] WHERE [ServiceID] = '" + ServiceID + "'";
 
         try {
             ResultSet rs = getData(sql);
@@ -81,12 +65,12 @@ public class ServiceDAO extends DBContext {
                 s.setServiceID(rs.getInt("ServiceID"));
                 s.setServiceName(rs.getString("ServiceName"));
                 String desTemp = rs.getString("Description") == null ? "" : rs.getString("Description");
-                s.setDescription(desTemp.isBlank() ? "" : desTemp);
+                s.setDescription(desTemp.isEmpty()? "" : desTemp);
                 s.setPrice(rs.getFloat("Price"));
                 String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
-                s.setImage(imageTemp.isBlank() ? "" : imageTemp);////
-                s.setStatus(rs.getString("Status"));
-                s.setType(rs.getString("Type"));
+                s.setImage(imageTemp.isEmpty()? "" : imageTemp);////
+                s.setStatusService(rs.getString("StatusService"));
+                s.setTypeService(rs.getString("TypeService"));
                 
                 return s;
             } else {
@@ -111,37 +95,13 @@ public class ServiceDAO extends DBContext {
         
         switch(sort){
             case "asc":
-                sql = """
-                     SELECT [ServiceID]
-                     ,[ServiceName]
-                     ,[Description]
-                     ,[Price]
-                     ,[Image]
-                     ,[Status]
-                     ,[Type]
-                     FROM [dbo].[Service] WHERE [ServiceName] LIKE '%""" + ServiceName + "%' AND [Status] LIKE '%" + ServiceStatus + "%' ORDER BY [PRICE]";
+                sql = "SELECT [ServiceID],[ServiceName],[Description],[Price],[Image],[StatusService],[TypeService] FROM [dbo].[Service] WHERE [ServiceName] LIKE '%" + ServiceName + "%' AND [StatusService] LIKE '%" + ServiceStatus + "%' ORDER BY [PRICE]";
                 break;
             case "desc":
-                sql = """
-                     SELECT [ServiceID]
-                     ,[ServiceName]
-                     ,[Description]
-                     ,[Price]
-                     ,[Image]
-                     ,[Status]
-                     ,[Type]
-                     FROM [dbo].[Service] WHERE [ServiceName] LIKE '%""" + ServiceName + "%' AND [Status] LIKE '%" + ServiceStatus + "%' ORDER BY [PRICE] DESC";
+                sql = "SELECT [ServiceID],[ServiceName],[Description],[Price],[Image],[StatusService],[TypeService] FROM [dbo].[Service] WHERE [ServiceName] LIKE '%" + ServiceName + "%' AND [StatusService] LIKE '%" + ServiceStatus + "%' ORDER BY [PRICE] DESC";
                 break;
             default:
-                sql = """
-                     SELECT [ServiceID]
-                     ,[ServiceName]
-                     ,[Description]
-                     ,[Price]
-                     ,[Image]
-                     ,[Status]
-                     ,[Type]
-                     FROM [dbo].[Service] WHERE [ServiceName] LIKE '%""" + ServiceName + "%' AND [Status] LIKE '%" + ServiceStatus + "%'";
+                sql = "SELECT [ServiceID],[ServiceName],[Description],[Price],[Image],[StatusService],[TypeService] FROM [dbo].[Service] WHERE [ServiceName] LIKE '%" + ServiceName + "%' AND [StatusService] LIKE '%" + ServiceStatus + "%'";
                 break;
         }
         
@@ -157,12 +117,12 @@ public class ServiceDAO extends DBContext {
                 s.setServiceID(rs.getInt("ServiceID"));
                 s.setServiceName(rs.getString("ServiceName"));
                 String desTemp = rs.getString("Description") == null ? "" : rs.getString("Description");
-                s.setDescription(desTemp.isBlank() ? "" : desTemp);
+                s.setDescription(desTemp.isEmpty()? "" : desTemp);
                 s.setPrice(rs.getFloat("Price"));
                 String imageTemp = rs.getString("Image") == null ? "" : rs.getString("Image");
-                s.setImage(imageTemp.isBlank() ? "" : imageTemp);////
-                s.setStatus(rs.getString("Status"));
-                s.setType(rs.getString("Type"));
+                s.setImage(imageTemp.isEmpty()? "" : imageTemp);////
+                s.setStatusService(rs.getString("StatusService"));
+                s.setTypeService(rs.getString("TypeService"));
                 
                 Services.add(s);
             }
@@ -174,15 +134,7 @@ public class ServiceDAO extends DBContext {
     }
     
     public boolean SearchIfServiceExistByName(String ServiceName) {
-        String sql = """
-                     SELECT [ServiceID]
-                     ,[ServiceName]
-                     ,[Description]
-                     ,[Price]
-                     ,[Image]
-                     ,[Status]
-                     ,[Type]
-                     FROM [dbo].[Service] WHERE [ServiceName] = '""" + ServiceName + "'";
+        String sql = "SELECT [ServiceID],[ServiceName],[Description],[Price],[Image],[StatusService],[TypeService] FROM [dbo].[Service] WHERE [ServiceName] = '" + ServiceName + "'";
 
         try {
             ResultSet rs = getData(sql);
@@ -204,23 +156,15 @@ public class ServiceDAO extends DBContext {
     }
     
     public void Add(Service s) {
-        String sql = "INSERT INTO [dbo].[Service]\n"
-                + "           ([ServiceName]\n"
-                + "           ,[Description]\n"
-                + "           ,[Price]\n"
-                + "           ,[Image]\n"
-                + "           ,[Status]\n"
-                + "           ,[Type])\n"
-                + "     VALUES\n"
-                + "           (?,?,?,?,?,?)";
+        String sql = "INSERT INTO [dbo].[Service] ([ServiceName],[Description],[Price],[Image],[Status],[TypeService]) VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, s.getServiceName());
             pre.setString(2, s.getDescription());
             pre.setFloat(3, s.getPrice());
             pre.setString(4, s.getImage());
-            pre.setString(5, s.getStatus());
-            pre.setString(6, s.getType());
+            pre.setString(5, s.getStatusService());
+            pre.setString(6, s.getTypeService());
             
             ResultSet rs = pre.executeQuery();
         } catch (SQLException e) {
@@ -229,15 +173,15 @@ public class ServiceDAO extends DBContext {
     }
     
     public boolean Update(Service s) {
-        String sql = "UPDATE [dbo].[Service] SET [ServiceName] = ?, [Description] = ?, [Price] = ?, [Image] = ?, [Status] = ?, [Type] = ? WHERE [ServiceID] = ?";
+        String sql = "UPDATE [dbo].[Service] SET [ServiceName] = ?, [Description] = ?, [Price] = ?, [Image] = ?, [StatusService] = ?, [TypeService] = ? WHERE [ServiceID] = ?";
         try {
             PreparedStatement pre = connection.prepareStatement(sql);
             pre.setString(1, s.getServiceName());
             pre.setString(2, s.getDescription());
             pre.setFloat(3, s.getPrice());
             pre.setString(4, s.getImage());
-            pre.setString(5, s.getStatus());
-            pre.setString(6, s.getType());
+            pre.setString(5, s.getStatusService());
+            pre.setString(6, s.getTypeService());
             pre.setInt(7, s.getServiceID());
             pre.executeUpdate();
         } catch (SQLException e) {

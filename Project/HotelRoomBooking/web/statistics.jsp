@@ -1,9 +1,34 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" import="java.util.*, model.*, dao.*" pageEncoding="UTF-8"%>
+
 <%
+    // Lấy tham số lọc từ request
     String roomNameFilter = request.getParameter("roomNameFilter");
+
+    // Đặt số lượng phòng mỗi trang
+    int pageSize = 10;
+    int currentPage = 1;
+
+    // Kiểm tra nếu có tham số page trong request, nếu không thì mặc định là trang 1
+    if (request.getParameter("page") != null) {
+        currentPage = Integer.parseInt(request.getParameter("page"));
+    }
+
+    // Tính toán chỉ số bắt đầu và kết thúc của trang hiện tại
+    int startIndex = (currentPage - 1) * pageSize;
+    int endIndex = startIndex + pageSize;
+
+    // Lấy dữ liệu từ database
     BookingDAO bookingDAO = new BookingDAO();
     List<BookingRoomStatistic> roomStats = bookingDAO.getRoomBookingStatistics(roomNameFilter);
+
+    // Tính số trang
+    int totalRecords = roomStats.size(); // Tổng số phòng đặt
+    int totalPages = (int) Math.ceil((double) totalRecords / pageSize); // Tính tổng số trang
+
+    // Phân trang dữ liệu, chỉ lấy dữ liệu cần thiết cho trang hiện tại
+    List<BookingRoomStatistic> paginatedRoomStats = roomStats.subList(startIndex, Math.min(endIndex, totalRecords));
 %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -115,6 +140,46 @@
             .statistics-list a:active {
                 background-color: #e09b29;
             }
+            .pagination {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+            }
+
+            .pagination a {
+                padding: 8px 16px;
+                margin: 0 5px;
+                border-radius: 5px;
+                text-decoration: none;
+                color: #fff;
+                background-color: #000;
+                transition: background-color 0.3s ease;
+            }
+
+            .pagination a:hover {
+                background-color: #dfa974;
+            }
+
+            .pagination a.active {
+                background-color: #dfa974;
+                pointer-events: none;
+            }
+
+            .pagination a.disabled {
+                background-color: #d6d6d6;
+                pointer-events: none;
+            }
+
+            .pagination span {
+                padding: 8px 16px;
+                margin: 0 5px;
+                font-size: 16px;
+                color: #333;
+            }
+
+            .pagination .disabled {
+                color: #ccc;
+            }
         </style>
     </head>
     <body>
@@ -150,22 +215,23 @@
 
         <!-- Sidebar -->
         <div class="sidebar">
-            <a href="dashboard.jsp" class="btn-custom">Report</a>
-            <a href="statistics.jsp" class="btn-custom" style="background-color: #dfa974; color: white;">Statistics</a>
+            <a href="dashboard.jsp" class="btn-custom">Revenue Report</a>
+            <a href="statistics.jsp" class="btn-custom" style="background-color: #dfa974; color: white;">Book Room/Service List</a>
             <a href="sendEmail.jsp" class="btn-custom">Send Email</a>
         </div>
 
+        
         <!-- Main Content -->
         <div class="main-content">
             <div class="statistics-list">
                 <ul>
-                    <ol><a href="statistics.jsp">Room Booking Statistics</a></ol>
-                    <ol><a href="statistics_1.jsp">Service Booking Statistics</a></ol>
+                    <ol><a href="statistics.jsp">Room Booking List</a></ol>
+                    <ol><a href="statistics_1.jsp">Service Booking List</a></ol>
                 </ul>
-            </div>
-            <hr>
+            </div><!-- comment -->
+            <hr/>
             <br/>
-            <h2>Room Booking Statistics</h2>
+            <h2>Room Booking List</h2>
             <!-- Filter Form -->
             <form action="statistics.jsp" method="get">
                 <div class="form-group">
@@ -173,11 +239,10 @@
                     <input type="text" name="roomNameFilter" id="roomNameFilter" class="form-control" 
                            value="<%= roomNameFilter != null ? roomNameFilter : "" %>" 
                            onkeyup="if (event.keyCode == 13) {
-                           this.form.submit();
-                       }">
+                                       this.form.submit();
+                                   }">
                 </div>
             </form>
-
 
             <table class="table table-bordered">
                 <thead>
@@ -190,7 +255,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% for (BookingRoomStatistic r : roomStats) { %>
+                    <% for (BookingRoomStatistic r : paginatedRoomStats) { %>
                     <tr>
                         <td><%= r.getCustomerName() %></td>
                         <td><%= r.getRoomName() %></td>
@@ -201,7 +266,27 @@
                     <% } %>
                 </tbody>
             </table>
+
+            <!-- Phân trang -->
+            <div class="pagination">
+                <% if (currentPage > 1) { %>
+                <a href="statistics.jsp?page=<%= currentPage - 1 %>">Previous</a>
+                <% } else { %>
+                <a href="#" class="disabled">Previous</a>
+                <% } %>
+
+                <% for (int i = 1; i <= totalPages; i++) { %>
+                <a href="statistics.jsp?page=<%= i %>" class="<%= (i == currentPage) ? "active" : "" %>"><%= i %></a>
+                <% } %>
+
+                <% if (currentPage < totalPages) { %>
+                <a href="statistics.jsp?page=<%= currentPage + 1 %>">Next</a>
+                <% } else { %>
+                <a href="#" class="disabled">Next</a>
+                <% } %>
+            </div>
         </div>
+
 
         <footer class="footer-section">
             <div class="container">

@@ -8,33 +8,6 @@ public class Room {
     private String image;
     private String statusRoom;
     private String typeRoom;
-<<<<<<< Updated upstream
-
-    // Constructor, getters, and setters
-    public Room(int roomID, String roomName, String description, double price, String image, String statusRoom, String typeRoom) {
-        this.roomID = roomID;
-        this.roomName = roomName;
-        this.description = description;
-        this.price = price;
-        this.image = image;
-        this.statusRoom = statusRoom;
-        this.typeRoom = typeRoom;
-    }
-  
-    public Room() {
-    }
-
-
-    public Room(String roomName, String description, double price, String image, String statusRoom, String type) {
-
-        this.roomName = roomName;
-        this.description = description;
-        this.price = price;
-        this.image = image;
-        this.statusRoom = status;
-        this.type = type;
-=======
->>>>>>> Stashed changes
 
     // Constructor, getters, and setters
     public Room(int roomID, String roomName, String description, double price, String image, String statusRoom, String typeRoom) {
