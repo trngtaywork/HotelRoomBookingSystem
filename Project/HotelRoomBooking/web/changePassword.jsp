@@ -96,7 +96,7 @@
                                         <li><a href="./index.jsp">Home</a></li>
                                         <li><a href="userList.jsp">User List</a></li>
                                         <li><a href="roomListForAdmin.jsp">Room List</a></li>
-                                        <li><a href="serviceList.jsp">Service List</a></li>
+                                        <li><a href="ServiceListAdmin">Service List</a></li>
                                         <li><a href="dashboard.jsp">Dashboard</a></li>
                                         <li  ><a href="profile.jsp">Profile</a></li>
                                     </ul>
