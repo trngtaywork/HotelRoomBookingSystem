@@ -98,7 +98,16 @@ public class BookingListAdmin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //default
+        String dateFilter = request.getParameter("dateFilter");
+        String profileFilter = request.getParameter("profileFilter");
+        String roomNameFilter = request.getParameter("roomNameFilter");
+        
+        List<Booking> bookingList = new ArrayList<Booking>();
+        
+        bookingList = bookingDao.SearchBookings(profileFilter, roomNameFilter, dateFilter);
+        
+        request.setAttribute("bookingList", bookingList);
+
         List<Profile> profileList = profileDAO.GetProfileList();
         List<Account> accountList = accountDao.GetAccountList();
         List<Room> roomList = roomDAO.GetRoomList();
@@ -109,39 +118,7 @@ public class BookingListAdmin extends HttpServlet {
         request.setAttribute("roomList", roomList);
         request.setAttribute("bookingRoomList", bookingRoomList);
         
-        String searchString = request.getParameter("searchString");
-        String field = request.getParameter("fieldList");
-        Date fromDate = null;
-        Date toDate = null;
-
-        List<Booking> searchResult = new ArrayList<Booking>();
-        
-        try {
-            if (/*request.getParameter("anyDate") == null &&*/ !request.getParameter("fromDate").equals("") && !request.getParameter("toDate").equals("")) {
-                fromDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("fromDate"));
-                toDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("toDate"));
-                
-                //check date input
-                if(toDate.before(fromDate)){
-                    request.setAttribute("error", "Invalid Date");
-                    request.getRequestDispatcher("BookingListAdmin.jsp").forward(request, response);
-                }
-                
-                searchResult = bookingDao.SearchBooking(field, searchString, fromDate, toDate);
-            }
-            else/* (request.getParameter("anyDate") != null)*/{
-                searchResult = bookingDao.SearchBooking(field, searchString);
-            }
-            //else{
-              //  searchResult = bookingDao.GetBookingList();
-            //}
-            
-            request.setAttribute("bookingList", searchResult);
-            request.getRequestDispatcher("BookingListAdmin.jsp").forward(request, response);
-            
-        } catch (Exception ex) {
-            System.out.println(ex.toString());
-        }
+        request.getRequestDispatcher("BookingListAdmin.jsp").forward(request, response);
     }
 
     /**

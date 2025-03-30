@@ -178,6 +178,55 @@ public class RoomDAO extends DBContext {
         return false;
     }
     
+    public List<Room> getFilteredRooms(String priceFilter, String statusFilter, String typeFilter, String roomNameFilter) {
+        List<Room> roomList = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM Room WHERE 1=1");
+
+        // Lọc theo giá
+        if (priceFilter != null && !priceFilter.equals("All")) {
+            if (priceFilter.equals("asc")) {
+                query.append(" ORDER BY Price ASC");
+            } else if (priceFilter.equals("desc")) {
+                query.append(" ORDER BY Price DESC");
+            }
+        }
+
+        // Lọc theo trạng thái phòng
+        if (statusFilter != null && !statusFilter.equals("All")) {
+            query.append(" AND StatusRoom = '").append(statusFilter).append("'");
+        }
+
+        // Lọc theo loại phòng
+        if (typeFilter != null && !typeFilter.equals("All")) {
+            query.append(" AND TypeRoom = '").append(typeFilter).append("'");
+        }
+
+        // Lọc theo tên phòng
+        if (roomNameFilter != null && !roomNameFilter.isEmpty()) {
+            query.append(" AND RoomName LIKE '%").append(roomNameFilter).append("%'");
+        }
+
+        // Thực hiện truy vấn
+        try ( Statement stmt = dbContext.connection.createStatement();  ResultSet rs = stmt.executeQuery(query.toString())) {
+            while (rs.next()) {
+                Room room = new Room(
+                        rs.getInt("RoomID"),
+                        rs.getString("RoomName"),
+                        rs.getString("Description"),
+                        rs.getDouble("Price"),
+                        rs.getString("Image"),
+                        rs.getString("StatusRoom"),
+                        rs.getString("TypeRoom")
+                );
+                roomList.add(room);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return roomList;
+    }
+    
     public List<Room> GetRoomList() {
         String sql = """
                      SELECT [RoomID]

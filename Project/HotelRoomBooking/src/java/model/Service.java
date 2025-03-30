@@ -41,6 +41,14 @@ public class Service {
         this.StatusService = StatusService;
         this.TypeService = TypeService;
     }
+    
+    public Service(String ServiceName, String Description, float Price, String Image, String StatusService) {
+        this.ServiceName = ServiceName;
+        this.Description = Description;
+        this.Price = Price;
+        this.Image = Image;
+        this.StatusService = StatusService;
+    }
 
     public int getServiceID() {
         return ServiceID;

@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import model.Account;
 import model.Booking;
@@ -104,7 +105,31 @@ BookingDAO bookingDao = new BookingDAO();
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        List<Booking> bookingList = bookingDao.GetBookingList();
+        List<Profile> profileList = profileDAO.GetProfileList();
+        List<Account> accountList = accountDao.GetAccountList();
+        List<Room> roomList = roomDAO.GetRoomList();
+        List<BookingRoom> bookingRoomList = bookingRoomDao.GetBookingRoomList();
+        List<Service> serviceList = serviceDAO.GetServiceList();
+        
+        request.setAttribute("bookingRoomList", bookingRoomList);
+        request.setAttribute("bookingList", bookingList);
+        request.setAttribute("profileList", profileList);
+        request.setAttribute("accountList", accountList);
+        request.setAttribute("roomList", roomList);
+        request.setAttribute("serviceList", serviceList);
+        
+        String profileFilter = request.getParameter("profileFilter");
+        String roomNameFilter = request.getParameter("roomNameFilter");
+        String serviceNameFilter = request.getParameter("serviceNameFilter");
+        
+        List<BookingService> bookingServices = new ArrayList<BookingService>();
+        
+        bookingServices = bookingServiceDAO.SearchBookingServices(profileFilter, roomNameFilter, serviceNameFilter);
+        
+        request.setAttribute("bookingServiceList", bookingServices);
+        
+        request.getRequestDispatcher("BookingServiceListAdmin.jsp").forward(request, response);
     }
 
     /**

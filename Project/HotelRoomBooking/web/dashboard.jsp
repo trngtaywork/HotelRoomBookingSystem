@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
 
-        <title>Dashboard - Revenue Report</title>
+        <title>Revenue Report</title>
         <style>
             .header-section {
                 position: fixed;
@@ -104,7 +104,7 @@
                     <div class="row">
                         <div class="col-lg-2">
                             <div class="logo">
-                                <a href="./index.jsp">
+                                <a href="./index.html">
                                     <img src="img/logo.png" alt="">
                                 </a>
                             </div>
@@ -113,12 +113,12 @@
                             <div class="nav-menu">
                                 <nav class="mainmenu">
                                     <ul>
-                                        <li><a href="feedbackList.jsp">Feedback List</a></li>
+                                        <li><a href="./index.html">Home</a></li>
                                         <li><a href="userList.jsp">User List</a></li>
                                         <li><a href="roomListForAdmin.jsp">Room List</a></li>
-                                        <li><a href="ServiceListAdmin">Service List</a></li>
+                                        <li><a href="serviceList.jsp">Service List</a></li>
                                         <li><a href="dashboard.jsp">Dashboard</a></li>
-                                        <li  ><a href="profile.jsp">Profile</a></li>
+                                        <li><a href="profile.jsp">Profile</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -130,8 +130,8 @@
 
         <!-- Sidebar -->
         <div class="sidebar">
-            <a href="dashboard.jsp" class="btn-custom" style="background-color: #dfa974; color: white;">Report</a>
-            <a href="statistics.jsp" class="btn-custom">Statistics</a>
+            <a href="dashboard.jsp" class="btn-custom" style="background-color: #dfa974; color: white;">Revenue Report</a>
+            <a href="statistics.jsp" class="btn-custom">Book Room/Service List</a>
             <a href="sendEmailAll.jsp" class="btn-custom">Send Email</a>
         </div>
 

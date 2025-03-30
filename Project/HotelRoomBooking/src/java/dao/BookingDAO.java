@@ -19,7 +19,8 @@ import utils.DBContext;
  * @author My PC
  */
 public class BookingDAO extends DBContext {//add merge?
-private Connection conn;
+
+    private Connection conn;
 
     public BookingDAO() {
         this.conn = new DBContext().connection;
@@ -38,12 +39,12 @@ private Connection conn;
             sql += " WHERE r.RoomName LIKE ?";
         }
 
-        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             if (roomNameFilter != null && !roomNameFilter.isEmpty()) {
                 stmt.setString(1, "%" + roomNameFilter + "%");  // Tìm kiếm tương đối (LIKE)
             }
 
-            try ( ResultSet rs = stmt.executeQuery()) {
+            try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     list.add(new BookingRoomStatistic(
                             rs.getString("CustomerName"),
@@ -73,13 +74,13 @@ private Connection conn;
             sql += " WHERE s.ServiceName LIKE ?";
         }
 
-        try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             // Nếu có điều kiện lọc tên dịch vụ, gán tham số vào PreparedStatement
             if (serviceNameFilter != null && !serviceNameFilter.isEmpty()) {
                 stmt.setString(1, "%" + serviceNameFilter + "%");  // Tìm kiếm tương đối (LIKE)
             }
 
-            try ( ResultSet rs = stmt.executeQuery()) {
+            try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     list.add(new BookingServiceStatistic(
                             rs.getString("CustomerName"),
@@ -95,7 +96,7 @@ private Connection conn;
         }
         return list;
     }
-    
+
     public void Add(Booking booking) {
         String SQL = "INSERT INTO [dbo].[Booking]([ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking]) "
                 + "VALUES (?, ?, ?, ?, ?)";
@@ -308,7 +309,7 @@ private Connection conn;
 
             if (rs == null) {
                 rs = getData(sql);
-                
+
                 if (rs == null) {
                     return null;
                 }
@@ -452,5 +453,64 @@ private Connection conn;
 
     private boolean IsNullOrEmpty(String s) {
         return s.trim().length() == 0 || s.equals(null) || s.equals("");
+    }
+
+    public List<Booking> SearchBookings(String profileName, String roomName, String sort) {
+        String sql;
+        List<Booking> bookings = new ArrayList<Booking>();
+
+        if (sort == null && roomName == null && profileName == null) {//??
+            sort = "";
+            profileName = "";
+            roomName = "";
+        }
+
+        switch (sort) {
+            case "asc":
+                sql = """
+                     SELECT * FROM [dbo].[Booking] 
+                     LEFT OUTER JOIN [dbo].[Room] ON ([dbo].[Booking].[RoomID] = [dbo].[Room].[RoomID])
+                     LEFT OUTER JOIN [dbo].[Profile] ON ([dbo].[Booking].[ProfileID] = [dbo].[Profile].[ProfileID])
+                     WHERE [dbo].[Room].[RoomName] LIKE '%""" + roomName + "%' AND [dbo].[Profile].[Name] LIKE '%" + profileName + "%' ORDER BY [BookingDate]";
+                break;
+            case "desc":
+                sql = """
+                     SELECT * FROM [dbo].[Booking] 
+                     LEFT OUTER JOIN [dbo].[Room] ON ([dbo].[Booking].[RoomID] = [dbo].[Room].[RoomID])
+                     LEFT OUTER JOIN [dbo].[Profile] ON ([dbo].[Booking].[ProfileID] = [dbo].[Profile].[ProfileID])
+                     WHERE [dbo].[Room].[RoomName] LIKE '%""" + roomName + "%' AND [dbo].[Profile].[Name] LIKE '%" + profileName + "%' ORDER BY [BookingDate] DESC";
+                break;
+            default:
+                sql = """
+                     SELECT * FROM [dbo].[Booking] 
+                     LEFT OUTER JOIN [dbo].[Room] ON ([dbo].[Booking].[RoomID] = [dbo].[Room].[RoomID])
+                     LEFT OUTER JOIN [dbo].[Profile] ON ([dbo].[Booking].[ProfileID] = [dbo].[Profile].[ProfileID])
+                     WHERE [dbo].[Room].[RoomName] LIKE '%""" + roomName + "%' AND [dbo].[Profile].[Name] LIKE '%" + profileName + "%'";
+                break;
+        }
+
+        try {
+            ResultSet rs = getData(sql);
+
+            if (rs == null) {
+                return null;
+            }
+
+            while (rs.next()) {
+                Booking b = new Booking();
+                b.setBookingID(rs.getInt("BookingID"));
+                b.setProfileID(rs.getInt("ProfileID"));
+                b.setRoomID(rs.getInt("RoomID"));
+                b.setBookingDate(rs.getDate("BookingDate"));
+                b.setTotalAmount(rs.getFloat("TotalAmount"));
+                b.setStatusBooking(rs.getString("StatusBooking"));
+
+                bookings.add(b);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return bookings;
     }
 }

@@ -18,6 +18,7 @@ import utils.DBContext;
  * @author My PC
  */
 public class ProfileDAO extends DBContext {
+
     public List<Profile> GetProfileList() {
         String sql = "SELECT * FROM [dbo].[Profile] WHERE 1 = 1";
         List<Profile> profiles = new ArrayList<>();
@@ -25,10 +26,10 @@ public class ProfileDAO extends DBContext {
         try {
             ResultSet rs = getData(sql);
 
-            if(rs == null){
+            if (rs == null) {
                 return null;
             }
-            
+
             while (rs.next()) {
                 Profile p = new Profile();
                 p.setProfileID(rs.getInt("ProfileID"));
@@ -49,41 +50,38 @@ public class ProfileDAO extends DBContext {
 
     public List<Profile> SearchProfile(Profile target) {
         String sql = "SELECT * FROM [dbo].[Profile] WHERE 1 = 1";
-        
-        if(target.getProfileID() > 0)//??
+
+        if (target.getProfileID() > 0)//??
         {
             sql += " AND [ProfileID] = '" + target.getProfileID() + "'";
         }
-        if(!target.getName().isBlank())//??
+        if (!target.getName().isBlank())//??
         {
             sql += " AND [Name] = '" + target.getName() + "'";
         }
-        if(!target.getPhoneNumber().isBlank())//??
+        if (!target.getPhoneNumber().isBlank())//??
         {
             sql += " AND [PhoneNumber] = '" + target.getPhoneNumber() + "'";
         }
-        if(!target.getGender().isBlank())
-        {
+        if (!target.getGender().isBlank()) {
             sql += " AND [Gender] = '" + target.getGender() + "'";
         }
-        if(!target.getAddress().isBlank())
-        {
+        if (!target.getAddress().isBlank()) {
             sql += " AND [Address] = '" + target.getAddress() + "'";
         }
-        if(target.getAccountID() > 0)
-        {
+        if (target.getAccountID() > 0) {
             sql += " AND [AccountID] = '" + target.getAccountID() + "'";
         }
-        
+
         List<Profile> profiles = new ArrayList<>();
-        
+
         try {
             ResultSet rs = getData(sql);
 
-            if(rs == null){
+            if (rs == null) {
                 return null;
             }
-            
+
             while (rs.next()) {
                 Profile p = new Profile();
                 p.setProfileID(rs.getInt("ProfileID"));
@@ -101,17 +99,17 @@ public class ProfileDAO extends DBContext {
 
         return profiles;
     }
-    
+
     public Profile SearchProfileById(int profileId) {
         String sql = "SELECT * FROM [dbo].[Profile] WHERE 1 = 1 AND [ProfileID] = '" + profileId + "'";
-        
+
         try {
             ResultSet rs = getData(sql);
 
-            if(rs == null){
+            if (rs == null) {
                 return null;
             }
-            
+
             if (rs.next()) {
                 Profile p = new Profile();
                 p.setProfileID(rs.getInt("ProfileID"));
@@ -129,17 +127,17 @@ public class ProfileDAO extends DBContext {
 
         return null;
     }
-    
+
     public Profile SearchProfileByAccountId(int accountID) {
         String sql = "SELECT * FROM [dbo].[Profile] WHERE 1 = 1 AND [AccountID] = '" + accountID + "'";
-        
+
         try {
             ResultSet rs = getData(sql);
 
-            if(rs == null){
+            if (rs == null) {
                 return null;
             }
-            
+
             if (rs.next()) {
                 Profile p = new Profile();
                 p.setProfileID(rs.getInt("ProfileID"));
@@ -157,9 +155,9 @@ public class ProfileDAO extends DBContext {
 
         return null;
     }
-    
+
     public void Add(Profile p) {
-        if (/*Validate(p)*/ true) {//????????????
+        if (/*Validate(p)*/true) {//????????????
             String SQL = "INSERT INTO [dbo].[Profile]([Name], [PhoneNumber], [Gender], [Address], [AccountID]) "
                     + "VALUES (?, ?, ?, ?, ?)";
 
@@ -187,29 +185,31 @@ public class ProfileDAO extends DBContext {
             ResultSet rs2 = getData(sql2);
 
             //if(rs1 != null || rs2 == null)
-                //return false;
-            
+            //return false;
             int count = 0;
             while (rs1.next())//check xem neu co profile dung trung account
             {
                 count++;
             }
-            if(count >= 1)
+            if (count >= 1) {
                 return false;
-            
+            }
+
             count = 0;
             while (rs2.next())//check account exsist
             {
                 count++;
             }
-            if(count != 1)
+            if (count != 1) {
                 return false;
+            }
         } catch (Exception ex) {
             System.out.println(ex);
         }
 
         return true;
     }
+
     /*
     public void Add(Profile p) {
         if (Validate(p)) {
@@ -256,7 +256,7 @@ public class ProfileDAO extends DBContext {
 
         return true;
     }
-*/
+     */
     public Profile getProfileByAccountId(int accountId) {
         Profile profile = null;
         String sql = "SELECT * FROM [dbo].[Profile] WHERE AccountID = " + accountId;
@@ -276,30 +276,28 @@ public class ProfileDAO extends DBContext {
         }
         return profile;
     }
-    
+
     public boolean updateProfile(Profile profile) {
-    String sql = "UPDATE Profile SET Name = ?, PhoneNumber = ?, Gender = ?, Address = ? WHERE AccountID = ?";
-    try (Connection connection = new DBContext().connection;  PreparedStatement stmt = connection.prepareStatement(sql)) {
-        stmt.setString(1, profile.getName());
-        stmt.setString(2, profile.getPhoneNumber());
-        stmt.setString(3, profile.getGender());
-        stmt.setString(4, profile.getAddress());
-        stmt.setInt(5, profile.getAccountID());
+        String sql = "UPDATE Profile SET Name = ?, PhoneNumber = ?, Gender = ?, Address = ? WHERE AccountID = ?";
+        try (Connection connection = new DBContext().connection; PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, profile.getName());
+            stmt.setString(2, profile.getPhoneNumber());
+            stmt.setString(3, profile.getGender());
+            stmt.setString(4, profile.getAddress());
+            stmt.setInt(5, profile.getAccountID());
 
-        return stmt.executeUpdate() > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
-    return false;
-}
 
-    
     public boolean addProfile(Profile profile) {
         String sql = "INSERT INTO Profile (Name, PhoneNumber, Gender, Address, AccountID) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection connection = new DBContext().connection;
-             PreparedStatement stmt = connection.prepareStatement(sql)) {
-             
+        try (Connection connection = new DBContext().connection; PreparedStatement stmt = connection.prepareStatement(sql)) {
+
             stmt.setString(1, profile.getName().trim());
             stmt.setString(2, profile.getPhoneNumber().trim());
             stmt.setString(3, profile.getGender());
@@ -313,5 +311,35 @@ public class ProfileDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<Account> GetAccountList() {
+        String sql = "SELECT [AccountID], [Username], [Email], [Password], [CreatedDate], [Role], [IsActive] FROM Account WHERE 1 = 1";
+        List<Account> Accounts = new ArrayList<>();
+
+        try {
+            ResultSet rs = getData(sql);
+
+            if (rs == null) {
+                return null;
+            }
+
+            while (rs.next()) {
+                Account a = new Account();
+                a.setAccountID(rs.getInt("AccountID"));
+                a.setUsername(rs.getString("Username"));
+                a.setPassword(rs.getString("Password"));
+                a.setEmail(rs.getString("Email"));
+                a.setCreatedDate(rs.getDate("CreatedDate"));
+                a.setRole(rs.getString("Role"));
+                a.setIsActive(rs.getBoolean("IsActive"));
+
+                Accounts.add(a);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return Accounts;
     }
 }

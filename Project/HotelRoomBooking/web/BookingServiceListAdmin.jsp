@@ -80,7 +80,27 @@
                     </div>
                 </c:if>
             </div>
-            
+            <hr>
+            <form action="BookingServiceListAdmin" method="post" class="row">
+                <div class="col-md-3">
+                    <label for="profileFilter">Profile:</label>
+                    <input type="text" name="profileFilter" id="profileFilter" class="form-control" placeholder="Search by profile name">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="roomNameFilter">Room Name:</label>
+                    <input type="text" name="roomNameFilter" id="roomNameFilter" class="form-control" placeholder="Search by room name">
+                </div>
+                
+                <div class="col-md-3">
+                    <label for="serviceNameFilter">Service Name:</label>
+                    <input type="text" name="serviceNameFilter" id="serviceNameFilter" class="form-control" placeholder="Search by service name">
+                </div>
+
+                <div class="col-md-3">
+                    <input type="submit" name="Search" class="form-control">
+                </div>
+            </form>
         </div>
         <div>
             <c:choose>

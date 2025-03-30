@@ -133,7 +133,7 @@
                             <c:forEach items="${requestScope.serviceList}" var="s">
                                 <tr>
                                     <td>${s.getServiceName()}</td>
-                                    <td><img src="${pageContext.request.contextPath}${s.getImage()}" width="480" height="120"></td>
+                                    <td><img src="${pageContext.request.contextPath}${s.getImage()}" width="300" height="150"></td>
                                     <td>${s.getPrice()}</td>
                                     <td>${s.getStatusService()}</td>
                                     <td>${s.getTypeService()}</td>

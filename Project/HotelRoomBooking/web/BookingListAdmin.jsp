@@ -102,39 +102,30 @@
                     </div>
                 </c:if>
             </div>
-            <form action="BookingListAdmin" method="post">
-                <table class="table table-borderless">
-                    <tr>
-                        <td>From</td>
-                        <td>To</td>
-                        <td><%--Any Date--%></td>
-                    </tr>
-                    <tr>
-                        <td><input type="date" name="fromDate"/></td>
-                        <td><input type="date" name="toDate"/></td>
-                        <td><%--<input type="checkbox" name="anyDate">--%></td>
-                    </tr>
-                    <tr>
-                        <td>Search Field</td>
-                        <td>Search Value</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select name="fieldList">
-                                <option value="any">Any</option>
-                                <option value="ProfileID">Profile ID</option>
-                                <option value="Name">Customer Name</option>
-                                <option value="RoomID">Room ID</option>
-                                <option value="RoomName">Room Name</option>
-                                <option value="TotalAmount">Total Amount</option>
-                                <option value="StatusBooking">StatusBooking</option>
-                            </select>
-                        </td>
-                        <td><input type="text" name="searchString" /></td>
-                        <td><input type="submit" value="Search"></td>
-                    </tr>
-                </table>
+            <hr>
+            <form action="BookingListAdmin" method="post" class="row">
+                <div class="col-md-3">
+                    <label for="dateFilter">Booking Date</label>
+                    <select name="dateFilter" id="DateFilter" class="form-control">
+                        <option value="default">No Sorting</option>
+                        <option value="asc">Low to High</option>
+                        <option value="desc">High to Low</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="profileFilter">Profile:</label>
+                    <input type="text" name="profileFilter" id="profileFilter" class="form-control" placeholder="Search by profile name">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="roomNameFilter">Room Name:</label>
+                    <input type="text" name="roomNameFilter" id="roomNameFilter" class="form-control" placeholder="Search by room name">
+                </div>
+
+                <div class="col-md-3">
+                    <input type="submit" name="Search" class="form-control">
+                </div>
             </form>
         </div>
         <div>

@@ -1,25 +1,47 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="jakarta.servlet.http.HttpSession" %>
-<%@ page import="model.Account" %>
-<%@ page import="dao.RoomDAO" %>
 <%@ page import="model.Room" %>
+<%@ page import="dao.RoomDAO" %>
+<%@ page import="jakarta.servlet.http.HttpSession" %>
 
 <%
-    HttpSession sessionUser = request.getSession(false);
-    Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
-    if (user == null) {
-        response.sendRedirect("login.jsp");
-        return;
+    String priceFilter = request.getParameter("priceFilter");
+    String statusFilter = request.getParameter("statusFilter");
+    String typeFilter = request.getParameter("typeFilter");
+    String roomNameFilter = request.getParameter("roomNameFilter");
+
+    if (priceFilter == null) {
+        priceFilter = "All";
+    }
+    if (statusFilter == null) {
+        statusFilter = "All";
+    }
+    if (typeFilter == null) {
+        typeFilter = "All";
+    }
+    if (roomNameFilter == null) {
+        roomNameFilter = "";
     }
 
-
     RoomDAO roomDAO = new RoomDAO();
-    List<Room> roomList = roomDAO.getAll();
+    List<Room> roomList = roomDAO.getFilteredRooms(priceFilter, statusFilter, typeFilter, roomNameFilter);
+
+    int pageSize = 10;  // Số phòng mỗi trang
+    int totalItems = roomList.size();  // Tổng số phòng
+    int totalPages = (int) Math.ceil((double) totalItems / pageSize); // Tính tổng số trang
+    
+    int currentPage = 1;
+    if (request.getParameter("page") != null) {
+        currentPage = Integer.parseInt(request.getParameter("page"));
+    }
+
+    int startIndex = (currentPage - 1) * pageSize;
+    int endIndex = Math.min(startIndex + pageSize, totalItems);
+    List<Room> paginatedRoomList = roomList.subList(startIndex, endIndex);
 %>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="description" content="Sona Template">
@@ -39,8 +61,8 @@
         <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
         <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
         <link rel="stylesheet" href="css/style.css" type="text/css">
-        <link rel="stylesheet" href="css/room.css" type="text/css">
 
+        <title>Room List For Admin</title>
         <style>
             .header-section {
                 position: fixed;
@@ -54,18 +76,18 @@
             body {
                 padding-top: 80px;
             }
-            .btn-custom1 {
-                height: 70px;
-                width: 240px;
+            .btn-custom {
+                height: 40px;
+                width: 120px;
+                border-radius: 5%;
                 background-color: black;
                 color: white;
                 border: 1px solid black;
-                padding-left: 5px;
+                margin: 5px;
             }
-            .btn-custom {
-                height: 35px;
-                width: 70px;
-                border-radius: 5%;
+            .btn-custom1 {
+                height: 70px;
+                width: 240px;
                 background-color: black;
                 color: white;
                 border: 1px solid black;
@@ -83,9 +105,48 @@
                 text-align: center;
                 vertical-align: middle;
             }
-        </style>
 
-        <title>Room List For Admin</title>
+            .pagination {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+            }
+
+            .pagination a {
+                padding: 8px 16px;
+                margin: 0 5px;
+                border-radius: 5px;
+                text-decoration: none;
+                color: #fff;
+                background-color: #000;
+                transition: background-color 0.3s ease;
+            }
+
+            .pagination a:hover {
+                background-color: #dfa974;
+            }
+
+            .pagination a.active {
+                background-color: #dfa974;
+                pointer-events: none;
+            }
+
+            .pagination a.disabled {
+                background-color: #d6d6d6;
+                pointer-events: none;
+            }
+
+            .pagination span {
+                padding: 8px 16px;
+                margin: 0 5px;
+                font-size: 16px;
+                color: #333;
+            }
+
+            .pagination .disabled {
+                color: #ccc;
+            }
+        </style>
     </head>
     <body>
         <header class="header-section">
@@ -94,7 +155,7 @@
                     <div class="row">
                         <div class="col-lg-2">
                             <div class="logo">
-                                <a href="./index.jsp">
+                                <a href="./index.html">
                                     <img src="img/logo.png" alt="">
                                 </a>
                             </div>
@@ -103,12 +164,12 @@
                             <div class="nav-menu">
                                 <nav class="mainmenu">
                                     <ul>
-                                        <li><a href="feedbackList.jsp">Feedback List</a></li>
+                                        <li><a href="./index.html">Home</a></li>
                                         <li><a href="userList.jsp">User List</a></li>
-                                        <li><a href="roomListForAdmin.jsp">Room List</a></li>
-                                        <li><a href="ServiceListAdmin">Service List</a></li>
+                                        <li class="active"><a href="roomListForAdmin.jsp">Room List</a></li>
+                                        <li><a href="serviceList.jsp">Service List</a></li>
                                         <li><a href="dashboard.jsp">Dashboard</a></li>
-                                        <li  ><a href="profile.jsp">Profile</a></li>
+                                        <li><a href="profile.jsp">Profile</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -118,67 +179,66 @@
             </div>
         </header>
 
-        <!-- Room List Table -->
-        <div class="container mt-4 mb-4 p-3">
+        <div class="container">
             <h3>Room List For Admin</h3>
-
             <button class="btn-custom1 btn-primary" onclick="window.location.href = 'addRoom.jsp'">Add New Room</button>
             <hr>
-            <form action="RoomListForAdminServlet" method="get" class="row">
+            <form action="roomListForAdmin.jsp" method="get" class="row">
                 <div class="col-md-3">
-                    <label for="priceFilter">Price:</label>
-                    <select name="priceFilter" id="priceFilter" class="form-control">
-                        <option value="asc">Low to High</option>
-                        <option value="desc">High to Low</option>
+                    <label for="priceFilter">Filter by Price:</label>
+                    <select name="priceFilter" class="form-control" onchange="this.form.submit()">
+                        <option value="All" <%= "All".equals(priceFilter) ? "selected" : "" %>>No Sorting</option>
+                        <option value="asc" <%= "asc".equals(priceFilter) ? "selected" : "" %>>Low to High</option>
+                        <option value="desc" <%= "desc".equals(priceFilter) ? "selected" : "" %>>High to Low</option>
                     </select>
                 </div>
-
                 <div class="col-md-3">
-                    <label for="statusFilter">Status:</label>
-                    <select name="statusFilter" id="statusFilter" class="form-control">
-                        <option value="all">All</option>
-                        <option value="available">Available</option>
-                        <option value="occupied">Occupied</option>
-                        <option value="maintenance">Maintenance</option>
+                    <label for="statusFilter">Filter by Status:</label>
+                    <select name="statusFilter" class="form-control" onchange="this.form.submit()">
+                        <option value="All" <%= "All".equals(statusFilter) ? "selected" : "" %>>All</option>
+                        <option value="available" <%= "available".equals(statusFilter) ? "selected" : "" %>>Available</option>
+                        <option value="occupied" <%= "occupied".equals(statusFilter) ? "selected" : "" %>>Occupied</option>
+                        <option value="maintenance" <%= "maintenance".equals(statusFilter) ? "selected" : "" %>>Maintenance</option>
                     </select>
                 </div>
-
                 <div class="col-md-3">
-                    <label for="typeFilter">Type:</label>
-                    <select name="typeFilter" id="typeFilter" class="form-control">
-                        <option value="all">All</option>
-                        <option value="single">Single</option>
-                        <option value="double">Double</option>
-                        <option value="suite">Suite</option>
+                    <label for="typeFilter">Filter by Type:</label>
+                    <select name="typeFilter" class="form-control" onchange="this.form.submit()">
+                        <option value="All" <%= "All".equals(typeFilter) ? "selected" : "" %>>All</option>
+                        <option value="single" <%= "single".equals(typeFilter) ? "selected" : "" %>>Single</option>
+                        <option value="double" <%= "double".equals(typeFilter) ? "selected" : "" %>>Double</option>
+                        <option value="suite" <%= "suite".equals(typeFilter) ? "selected" : "" %>>Suite</option>
                     </select>
                 </div>
-
                 <div class="col-md-3">
-                    <label for="roomNameFilter">Room Name:</label>
-                    <input type="text" name="roomNameFilter" id="roomNameFilter" class="form-control" placeholder="Search by name">
+                    <label for="roomNameFilter">Search by Room Name:</label>
+                    <input type="text" name="roomNameFilter" class="form-control" placeholder="Search by name" 
+                           value="<%= roomNameFilter %>" onkeydown="if (event.keyCode == 13) {
+                       this.form.submit();
+                   }">
                 </div>
+
             </form>
-            
-            <table class="table table-bordered mt-3">
+            <br/>
+
+            <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th style="background-color: #dfa974">Room Name</th>
-                        <th style="background-color: #dfa974">Image</th>
-                        <th style="background-color: #dfa974">Description</th>
-                        <th style="background-color: #dfa974">Price</th>
-                        <th style="background-color: #dfa974">Status Room</th>
-                        <th style="background-color: #dfa974">Type Room</th>
-                        <th style="background-color: #dfa974; width: 170px">Action</th>
+                        <th>Room Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Type</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% 
-                        if (roomList != null && !roomList.isEmpty()) {
-                            for (Room room : roomList) { 
+                        if (paginatedRoomList != null && !paginatedRoomList.isEmpty()) {
+                            for (Room room : paginatedRoomList) {
                     %>
                     <tr>
                         <td><%= room.getRoomName() %></td>
-                        <td><img src="<%= request.getContextPath() + room.getImage() %>" width="480" height="120"></td>                       
                         <td><%= room.getDescription() %></td>
                         <td><%= room.getPrice() %></td>
                         <td><%= room.getStatusRoom() %></td>
@@ -193,13 +253,23 @@
                         } else {
                     %>
                     <tr>
-                        <td colspan="8" class="text-center">No rooms available</td>
+                        <td colspan="6" class="text-center">No rooms available</td>
                     </tr>
                     <% 
                         }
                     %>
                 </tbody>
             </table>
+
+            <div class="pagination">
+                <% if (currentPage > 1) { %>
+                <a href="roomListForAdmin.jsp?page=<%= currentPage - 1 %>">Previous</a>
+                <% } %>
+                <span>Page <%= currentPage %> of <%= totalPages %></span>
+                <% if (currentPage < totalPages) { %>
+                <a href="roomListForAdmin.jsp?page=<%= currentPage + 1 %>">Next</a>
+                <% } %>
+            </div>
         </div>
 
         <footer class="footer-section">
@@ -220,15 +290,5 @@
                 </div>
             </div>
         </footer>
-
-        <script>
-            function deleteRoom(roomID) {
-                if (confirm("Are you sure you want to delete this room?")) {
-                    window.location.href = "DeleteRoomServlet?roomID=" + roomID;
-                }
-                ;
-            }
-            ;
-        </script>
     </body>
 </html>
