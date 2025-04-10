@@ -119,9 +119,9 @@ BookingDAO bookingDao = new BookingDAO();
         request.setAttribute("roomList", roomList);
         request.setAttribute("serviceList", serviceList);
         
-        String profileFilter = request.getParameter("profileFilter");
-        String roomNameFilter = request.getParameter("roomNameFilter");
-        String serviceNameFilter = request.getParameter("serviceNameFilter");
+        String profileFilter = request.getParameter("profileFilter").trim();
+        String roomNameFilter = request.getParameter("roomNameFilter").trim();
+        String serviceNameFilter = request.getParameter("serviceNameFilter").trim();
         
         List<BookingService> bookingServices = new ArrayList<BookingService>();
         

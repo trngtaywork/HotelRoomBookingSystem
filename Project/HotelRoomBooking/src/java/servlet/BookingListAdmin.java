@@ -98,9 +98,9 @@ public class BookingListAdmin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String dateFilter = request.getParameter("dateFilter");
-        String profileFilter = request.getParameter("profileFilter");
-        String roomNameFilter = request.getParameter("roomNameFilter");
+        String dateFilter = request.getParameter("dateFilter").trim();
+        String profileFilter = request.getParameter("profileFilter").trim();
+        String roomNameFilter = request.getParameter("roomNameFilter").trim();
         
         List<Booking> bookingList = new ArrayList<Booking>();
         

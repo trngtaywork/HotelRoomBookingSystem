@@ -56,9 +56,29 @@
                             <div class="rd-text">
                                 <div class="rd-title">
                                     <h3><%=r.getRoomName()%></h3>
+
+                                    <%if(r.getStatusRoom = "Available"){%>
                                     <div class="rdt-right">
                                         <a href="AddBooking?roomID=<%=r.getRoomID()%>">Booking Now</a>
                                     </div>
+                                    <%} else if(r.getStatusRoom = "Unavailable"){%>
+                                    <div class="rdt-right">
+                                        <a href="">Room Unavailable</a>
+                                    </div>
+                                    <%} else if(r.getStatusRoom = "Occupied"){%>
+                                    <div class="rdt-right">
+                                        <a href="">Room Occupied</a>
+                                    </div>
+                                    <%} else{%>
+                                    <div class="rdt-right">
+                                        <a href="">Room Unavailable</a>
+                                    </div>
+                                    <%}%>
+                                    <%--
+                                    <div class="rdt-right">
+                                        <a href="AddBooking?roomID=<%=r.getRoomID()%>">Booking Now</a>
+                                    </div>
+                                    --%>
                                 </div>
                                 <h2><%=r.getPrice()%>$<span>/Pernight</span></h2>
                                 <table>

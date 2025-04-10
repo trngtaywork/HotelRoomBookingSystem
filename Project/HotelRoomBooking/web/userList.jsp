@@ -42,9 +42,15 @@
         currentPage = Integer.parseInt(request.getParameter("page"));
     }
 
-    // Tính toán chỉ số bắt đầu và kết thúc cho phân trang
+    // Ensure currentPage is within valid range
+     if (currentPage < 1) currentPage = 1;
+     if (currentPage > totalPages) currentPage = totalPages;
+ 
+     // Calculate the start and end indices for pagination
     int startIndex = (currentPage - 1) * pageSize;
     int endIndex = Math.min(startIndex + pageSize, totalItems);
+    
+    // Get the sublist for the current page
     List<Account> paginatedAccountList = accountList.subList(startIndex, endIndex);
 %>
 
@@ -165,7 +171,7 @@
                     <div class="row">
                         <div class="col-lg-2">
                             <div class="logo">
-                                <a href="./index.html">
+                                <a href="./index.jsp">
                                     <img src="img/logo.png" alt="">
                                 </a>
                             </div>
@@ -174,7 +180,7 @@
                             <div class="nav-menu">
                                 <nav class="mainmenu">
                                     <ul>
-                                        <li><a href="./index.html">Home</a></li>
+                                        <li><a href="feedbackList.jsp">Feedback List</a></li>
                                         <li ><a href="userList.jsp">User List</a></li>
                                         <li><a href="roomListForAdmin.jsp">Room List</a></li>
                                         <li><a href="ServiceListAdmin">Service List</a></li>
@@ -248,8 +254,8 @@
                 </thead>
                 <tbody>
                     <% 
-                        if (accountList != null && !accountList.isEmpty()) {
-                            for (Account acc : accountList) { 
+                        if (paginatedAccountList != null && !paginatedAccountList.isEmpty()) {
+                             for (Account acc : paginatedAccountList) { 
                     %>
                     <tr>
                         <td><%= acc.getUsername() %></td>
@@ -262,7 +268,7 @@
                             <button class="btn-custom btn-warning" onclick="toggleStatus(<%= acc.getAccountID() %>, <%= acc.getIsActive() == true ? "false" : "true" %>)">
                                 <%= acc.getIsActive() == true ? "Deactivate" : "Activate" %>
                             </button>
-                            <button class="btn-custom btn-danger" onclick="window.location.href = 'deleteUser.jsp?accountID=<%= acc.getAccountID() %>'">Delete</button>
+                            <%--<button class="btn-custom btn-danger" onclick="window.location.href = 'deleteUser.jsp?accountID=<%= acc.getAccountID() %>'">Delete</button>--%>
                             <button class="btn-custom btn-info" onclick="window.location.href = 'profileDetails.jsp?accountID=<%= acc.getAccountID() %>'">Profile</button>
                             <button class="btn-custom btn-success" onclick="window.location.href = 'sendEmail.jsp?email=<%= acc.getEmail() %>'">Send Email</button>
                         </td>
@@ -281,16 +287,25 @@
 
             </table>
 
-        </div>
 
-        <div class="pagination">
-            <% if (currentPage > 1) { %>
-            <a href="userList.jsp?page=<%= currentPage - 1 %>">Previous</a>
-            <% } %>
-            <span>Page <%= currentPage %> of <%= totalPages %></span>
-            <% if (currentPage < totalPages) { %>
-            <a href="userList.jsp?page=<%= currentPage + 1 %>">Next</a>
-            <% } %>
+            <div class="pagination">
+                <% if (currentPage > 1) { %>
+                <a href="userList.jsp?page=<%= currentPage - 1 %>">Previous</a>
+                <% } else { %>
+                <span class="disabled">Previous</span>
+                <% } %>
+
+                <% for (int i = 1; i <= totalPages; i++) { %>
+                <a href="userList.jsp?page=<%= i %>" class="<%= (i == currentPage) ? "active" : "" %>"><%= i %></a>
+                <% } %>
+
+                <% if (currentPage < totalPages) { %>
+                <a href="userList.jsp?page=<%= currentPage + 1 %>">Next</a>
+                <% } else { %>
+                <span class="disabled">Next</span>
+                <% } %>
+            </div>
+
         </div>
 
         <footer class="footer-section">
@@ -314,6 +329,16 @@
 
         <script>
             function toggleStatus(accountID, isActive) {
+                // Get the currently logged-in user's account ID from the session (passed via JSP or a hidden field)
+                 var loggedInAccountID = <%= user.getAccountID() %>;  // Ensure this is set correctly in the JSP file
+ 
+                 // Check if the account being deactivated is the currently logged-in account
+                 if (accountID === loggedInAccountID) {
+                     alert("You cannot deactivate the account that is currently logged in.");
+                     return;
+                 }
+ 
+                 // Confirm the status change
                 if (confirm("Are you sure you want to change the status of this user?")) {
                     window.location.href = "UpdateUserStatusServlet?accountID=" + accountID + "&isActive=" + isActive;
                 }

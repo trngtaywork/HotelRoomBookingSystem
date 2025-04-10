@@ -166,17 +166,18 @@ public class AccountDAO extends DBContext {
 
     public void Add(Account a) {
         if (ValidateInput(a)) {
-            String SQL = "INSERT INTO [dbo].[Account]([Username], [Email], [Password], [CreatedDate], [Role], [IsActive]) "
-                    + "VALUES (?, ?, ?, ?, ?, ?)";
+            String SQL = "INSERT INTO [dbo].[Account]([AccountID], [Username], [Email], [Password], [CreatedDate], [Role], [IsActive]) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             try {
                 PreparedStatement st = connection.prepareStatement(SQL);
-                st.setString(1, a.getUsername());
-                st.setString(2, a.getEmail());
-                st.setString(3, a.getPassword());
-                st.setDate(4, a.getCreatedDate());
-                st.setString(5, a.getRole());
-                st.setBoolean(6, a.getIsActive());
+                st.setInt(1, lastAccountID() + 1);
+                st.setString(2, a.getUsername());
+                st.setString(3, a.getEmail());
+                st.setString(4, a.getPassword());
+                st.setDate(5, a.getCreatedDate());
+                st.setString(6, a.getRole());
+                st.setBoolean(7, a.getIsActive());
 
                 st.executeUpdate();
             } catch (Exception e) {
@@ -645,5 +646,20 @@ public class AccountDAO extends DBContext {
             e.printStackTrace();
         }
         return false;
+    }
+    
+    public int lastAccountID() {
+        String sql = "SELECT TOP 1 [AccountID]\n"
+                + "FROM [dbo].[Account]\n"
+                + "ORDER BY [AccountID] DESC";
+        int n = 0;
+        try {
+            ResultSet rs = getData(sql);
+            if (rs.next()) {
+                n = rs.getInt("AccountID");
+            }
+        } catch (SQLException e) {
+        }
+        return n;
     }
 }

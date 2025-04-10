@@ -158,16 +158,17 @@ public class ProfileDAO extends DBContext {
 
     public void Add(Profile p) {
         if (/*Validate(p)*/true) {//????????????
-            String SQL = "INSERT INTO [dbo].[Profile]([Name], [PhoneNumber], [Gender], [Address], [AccountID]) "
-                    + "VALUES (?, ?, ?, ?, ?)";
+            String SQL = "INSERT INTO [dbo].[Profile]([ProfileID], [Name], [PhoneNumber], [Gender], [Address], [AccountID]) "
+                    + "VALUES (?, ?, ?, ?, ?, ?)";
 
             try {
                 PreparedStatement st = connection.prepareStatement(SQL);
-                st.setString(1, p.getName());
-                st.setString(2, p.getPhoneNumber());
-                st.setString(3, p.getGender());
-                st.setString(4, p.getAddress());
-                st.setInt(5, p.getAccountID());
+                st.setInt(1, lastProfileID() + 1);
+                st.setString(2, p.getName());
+                st.setString(3, p.getPhoneNumber());
+                st.setString(4, p.getGender());
+                st.setString(5, p.getAddress());
+                st.setInt(6, p.getAccountID());
 
                 st.executeUpdate();
             } catch (Exception e) {
@@ -341,5 +342,20 @@ public class ProfileDAO extends DBContext {
         }
 
         return Accounts;
+    }
+    
+    public int lastProfileID() {
+        String sql = "SELECT TOP 1 [ProfileID]\n"
+                + "FROM [dbo].[Profile]\n"
+                + "ORDER BY [ProfileID] DESC";
+        int n = 0;
+        try {
+            ResultSet rs = getData(sql);
+            if (rs.next()) {
+                n = rs.getInt("ProfileID");
+            }
+        } catch (SQLException e) {
+        }
+        return n;
     }
 }

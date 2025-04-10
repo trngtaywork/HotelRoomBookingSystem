@@ -5,7 +5,17 @@
 
 <%
     FeedbackDAO feedbackDAO = new FeedbackDAO();
-    List<Feedback> feedbackList = feedbackDAO.getAllFeedbacks(); // Lấy tất cả dữ liệu feedback
+    
+    // Các tham số lọc được lấy từ request
+     String roomName = request.getParameter("roomName");
+     String ratingStr = request.getParameter("rating");
+     String dateStr = request.getParameter("date");
+ 
+     // Chuyển đổi Rating sang số nguyên
+     Integer rating = (ratingStr != null && !ratingStr.isEmpty()) ? Integer.parseInt(ratingStr) : null;
+ 
+     // Gọi phương thức DAO với các tham số lọc
+     List<Feedback> feedbackList = feedbackDAO.getFeedbacksWithFilters(roomName, rating, dateStr); 
 
     // Các tham số phân trang
     int pageSize = 10;  // Số item mỗi trang
@@ -141,7 +151,7 @@
                     <div class="row">
                         <div class="col-lg-2">
                             <div class="logo">
-                                <a href="./index.html">
+                                <a href="./index.jsp">
                                     <img src="img/logo.png" alt="">
                                 </a>
                             </div>
@@ -168,13 +178,16 @@
         <br/>
         <div class="container">
             <h3>Feedback List</h3>
-            <form method="get" action="FeedbackListServlet">
+            <!-- Form lọc -->
+            <form method="get" action="feedbackList.jsp">
                 <div class="row">
                     <div class="col-md-4">
                         <label for="roomName">Room Name:</label>
                         <input type="text" id="roomName" name="roomName" class="form-control" 
                                value="<%= request.getParameter("roomName") != null ? request.getParameter("roomName") : "" %>"
-                               oninput="delaySubmit()">
+                               onkeypress="if (event.keyCode === 13) {
+                                           this.form.submit()
+                                       }">
                     </div>
                     <div class="col-md-4">
                         <label for="rating">Rating:</label>
@@ -197,6 +210,7 @@
             </form>
 
             <hr>
+            <!-- Bảng Feedback -->
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -215,7 +229,14 @@
                     %>
                     <tr>
                         <td><%= feedback.getRoomName() %></td>
+                        <td>
+                            <img src="<%= request.getContextPath() + "/images/" + feedback.getImage() %>" alt="Room Image" 
+                                 style="width: 150px; height: 100px;"
+                                 onerror="this.onerror=null; this.src='/images/default.jpg';">
+                        </td>
+                        <%--
                         <td><img src="<%= request.getContextPath() + feedback.getImage() %>" alt="Room Image" style="width: 150px; height: 100px;"></td>
+                        --%>
                         <td><%= feedback.getRating() %>/5</td>
                         <td><%= feedback.getComment() %></td>
                         <td><%= feedback.getCustomerName() %></td>
@@ -252,7 +273,7 @@
                 <a href="#" class="disabled">Next</a>
                 <% } %>
             </div>
-
+<%--
             <script>
                 let timeout;
                 function delaySubmit() {
@@ -262,6 +283,7 @@
                     }, 1000);  // Trì hoãn 1 giây trước khi gửi form
                 }
             </script>
+--%>
         </div>
 
         <footer class="footer-section">

@@ -35,7 +35,7 @@ public class ServiceDetail extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int serviceID = Integer.parseInt(request.getParameter("serviceID"));
+        int serviceID = Integer.parseInt(request.getParameter("serviceID").trim());
         
         Service service = serviceDAO.SearchServiceByID(serviceID);
         

@@ -15,7 +15,9 @@ import dao.AccountDAO;
 import java.sql.Date;
 import model.Account;
 
+@WebServlet(name = "AddAccountServlet", urlPatterns = {"/AddAccountServlet"})
 public class AddAccountServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     private AccountDAO accountDAO;
 
@@ -36,7 +38,7 @@ public class AddAccountServlet extends HttpServlet {
         if (username.isEmpty()) {
             request.setAttribute("usernameError", "Username is required.");
             hasError = true;
-        } else if (accountDAO.isUsernameTaken(username)) { 
+        } else if (accountDAO.isUsernameTaken(username)) {
             request.setAttribute("usernameError", "Username is already taken.");
             hasError = true;
         }
@@ -76,7 +78,7 @@ public class AddAccountServlet extends HttpServlet {
         boolean isActive = Integer.parseInt(status) == 1;
 
         Account newAccount = new Account(accountID, username, email, password, new Date(System.currentTimeMillis()), role, isActive);
-        boolean success = accountDAO.addAccount(newAccount); 
+        boolean success = accountDAO.addAccount(newAccount);
 
         if (success) {
             request.setAttribute("successMessage", "Account added successfully.");

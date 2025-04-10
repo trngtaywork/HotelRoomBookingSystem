@@ -13,7 +13,9 @@ import java.util.Base64;
 import java.util.Properties;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
+import jakarta.servlet.annotation.WebServlet;
 
+@WebServlet(name = "ResetPasswordServlet", urlPatterns = {"/ResetPasswordServlet"})
 public class ResetPasswordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

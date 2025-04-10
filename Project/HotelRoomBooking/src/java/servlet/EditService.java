@@ -41,7 +41,7 @@ public class EditService extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int serviceID = Integer.parseInt(request.getParameter("serviceID"));
+        int serviceID = Integer.parseInt(request.getParameter("serviceID").trim());
         
         Service service = serviceDAO.SearchServiceByID(serviceID);
         
@@ -94,11 +94,13 @@ public class EditService extends HttpServlet {
             request.getRequestDispatcher("ServiceListAdmin").forward(request, response);
             return;
         }
-
+        
+        Service service = serviceDAO.SearchServiceByID(serviceID);
+        
         String serviceName = request.getParameter("serviceName").trim();
         String description = request.getParameter("description").trim();
         String priceStr = request.getParameter("price").trim();
-        String statusService = request.getParameter("statusService");
+        String statusService = request.getParameter("statusService").trim();
         String typeService = request.getParameter("typeService").trim();
 
         boolean hasError = false;
@@ -121,14 +123,16 @@ public class EditService extends HttpServlet {
         }
 
         if (hasError) {
-            request.getRequestDispatcher("ServiceListAdmin").forward(request, response);
+            request.setAttribute("service", service);
+            request.getRequestDispatcher("EditService.jsp").forward(request, response);
             return;
         }
 
         Service existingService = serviceDAO.SearchServiceByID(serviceID);
         if (existingService == null) {
             request.setAttribute("errorMessage", "Edit Error: Service not found.");
-            request.getRequestDispatcher("ServiceListAdmin").forward(request, response);
+            request.setAttribute("service", service);
+            request.getRequestDispatcher("EditService.jsp").forward(request, response);
             return;
         }
 

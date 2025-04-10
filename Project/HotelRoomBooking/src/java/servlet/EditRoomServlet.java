@@ -4,6 +4,7 @@ import dao.RoomDAO;
 import model.Room;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,7 +15,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @MultipartConfig
+@WebServlet(name = "EditRoomServlet", urlPatterns = {"/EditRoomServlet"})
 public class EditRoomServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
     private RoomDAO roomDAO;
 

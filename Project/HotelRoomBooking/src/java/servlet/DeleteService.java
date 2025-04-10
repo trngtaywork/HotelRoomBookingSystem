@@ -35,7 +35,7 @@ public class DeleteService extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int serviceID = Integer.parseInt(request.getParameter("serviceID"));
+        int serviceID = Integer.parseInt(request.getParameter("serviceID").trim());
         
         Service service = serviceDAO.SearchServiceByID(serviceID);
         
@@ -77,14 +77,20 @@ public class DeleteService extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int serviceID = Integer.parseInt(request.getParameter("serviceID"));
+        int serviceID = Integer.parseInt(request.getParameter("serviceID").trim());
 
+        Service service = serviceDAO.SearchServiceByID(serviceID);
+        
         boolean isDeleted = serviceDAO.Delete(serviceID);
 
         if (isDeleted) {
             response.sendRedirect("ServiceListAdmin");
         } else {
             response.getWriter().println("Error deleting service");
+            
+            request.setAttribute("errorMessage", "Error deleting service");
+            request.setAttribute("service", service);
+            request.getRequestDispatcher("DeleteService.jsp").forward(request, response);
         }
     }
 

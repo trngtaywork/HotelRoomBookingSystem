@@ -216,7 +216,7 @@
                     <div class="row">
                         <div class="col-lg-2">
                             <div class="logo">
-                                <a href="./index.html">
+                                <a href="./index.jsp">
                                     <img src="img/logo.png" alt="">
                                 </a>
                             </div>
@@ -225,7 +225,7 @@
                             <div class="nav-menu">
                                 <nav class="mainmenu">
                                     <ul>
-                                        <li><a href="./index.html">Home</a></li>
+                                        <li><a href="feedbackList.jsp">Feedback List</a></li>
                                         <li><a href="userList.jsp">User List</a></li>
                                         <li><a href="roomListForAdmin.jsp">Room List</a></li>
                                         <li><a href="ServiceListAdmin">Service List</a></li>
@@ -276,6 +276,7 @@
                         <th>Booking Date</th>
                         <th>Total Amount</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -286,6 +287,11 @@
                         <td><%= new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(s.getBookingDate()) %></td>
                         <td>$<%= s.getTotalAmount() %></td>
                         <td><%= s.getStatus() %></td>
+                        <td>
+                            <a href="viewServiceInvoice.jsp?bookingID=<%= s.getBookingID() %>" class="btn btn-info btn-sm">Details</a>
+                            <a href="UpdateBookingStatusServlet?action=confirm&bookingID=<%= s.getBookingID() %>" class="btn btn-success btn-sm">Confirm</a>
+                            <a href="UpdateBookingStatusServlet?action=cancel&bookingID=<%= s.getBookingID() %>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to cancel?');">Cancel</a>
+                        </td>
                     </tr>
                     <% } %>
                 </tbody>

@@ -74,7 +74,7 @@ public class AddBookingRoom extends HttpServlet {
             return;
         }
         
-        int roomID = Integer.parseInt(request.getParameter("roomID"));
+        int roomID = Integer.parseInt(request.getParameter("roomID").trim());
         Room room = roomDAO.SearchRoomByID(roomID);
         if(room == null){
             response.sendRedirect("RoomList");

@@ -34,7 +34,7 @@ public class RoomDetail extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        var roomID = request.getParameter("roomID");
+        var roomID = request.getParameter("roomID").trim();
 
         if (roomID == null || roomID.length() == 0) {
             request.getRequestDispatcher("RoomList.jsp").forward(request, response);

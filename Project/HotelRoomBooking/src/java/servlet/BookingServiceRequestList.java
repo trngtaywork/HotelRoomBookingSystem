@@ -4,7 +4,6 @@
  */
 package servlet;
 
-import dao.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,19 +11,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import model.*;
+import dao.*;
 
 /**
  *
  * @author My PC
  */
-@WebServlet(name = "BookingServiceDetail", urlPatterns = {"/BookingServiceDetail"})
-public class BookingServiceDetail extends HttpServlet {
+@WebServlet(name = "BookingServiceRequestList", urlPatterns = {"/BookingServiceRequestList"})
+public class BookingServiceRequestList extends HttpServlet {
+
     BookingDAO bookingDAO = new BookingDAO();
-    BookingServiceDAO bookingServiceDAO = new BookingServiceDAO();
-    ServiceDAO serviceDAO = new ServiceDAO();
-    RoomDAO roomDAO = new RoomDAO();
+    BookingRequestDAO bookingRequestDAO = new BookingRequestDAO();
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,35 +35,18 @@ public class BookingServiceDetail extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession sessionUser = request.getSession(false);
-        Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
-        if (user == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
-
-        var bookingServiceID = request.getParameter("bookingServiceID").trim();
-
-        //Add user check
-        if (bookingServiceID == null || bookingServiceID.length() == 0) {
-            request.getRequestDispatcher("BookingServiceList").forward(request, response);
-        } else {
-            BookingService bookingService = bookingServiceDAO.SearchBookingService(Integer.parseInt(bookingServiceID));
-            var serviceId = bookingService.getServiceID();
-            var bookingID = bookingService.getBookingID();
-            if (serviceId <= 0 || bookingID <= 0) {
-                request.getRequestDispatcher("BookingServiceList").forward(request, response);
-            }
-
-            Service service = serviceDAO.SearchServiceByID(serviceId);
-            Booking booking = bookingDAO.SearchBooking(bookingID);
-            Room room = roomDAO.SearchRoomByID(booking.getRoomID());
-
-            request.setAttribute("service", service);
-            request.setAttribute("room", room);
-            request.setAttribute("booking", booking);
-            request.setAttribute("bookingService", bookingService);
-            request.getRequestDispatcher("BookingServiceDetail.jsp").forward(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet BookingServiceRequestList</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet BookingServiceRequestList at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 

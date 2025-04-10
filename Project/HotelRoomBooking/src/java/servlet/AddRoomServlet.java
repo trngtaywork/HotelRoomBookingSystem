@@ -4,13 +4,16 @@ import dao.RoomDAO;
 import model.Room;
 
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+@WebServlet(name = "AddRoomServlet", urlPatterns = {"/AddRoomServlet"})
 public class AddRoomServlet extends HttpServlet {
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Get form data
         String roomName = request.getParameter("roomName").trim();
@@ -34,7 +37,7 @@ public class AddRoomServlet extends HttpServlet {
             request.getRequestDispatcher("/addRoom.jsp").forward(request, response);
             return;
         }
-        
+
         // Validate Room Name
         RoomDAO roomDAO = new RoomDAO();
         boolean isRoomNameExists = roomDAO.isRoomNameExists(roomName);

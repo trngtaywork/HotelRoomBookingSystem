@@ -45,7 +45,7 @@ public class BookingDetailAdmin extends HttpServlet {
             return;
         }
         
-        var bookingID = request.getParameter("bookingID");
+        var bookingID = request.getParameter("bookingID").trim();
 
         if (bookingID == null || bookingID.length() == 0) {
             request.getRequestDispatcher("BookingListAdmin").forward(request, response);

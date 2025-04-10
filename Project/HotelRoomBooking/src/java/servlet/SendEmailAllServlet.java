@@ -9,9 +9,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import dao.AccountDAO;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
+import jakarta.servlet.annotation.WebServlet;
 import java.util.Properties;
 import model.Account;
 
+@WebServlet(name = "SendEmailAllServlet", urlPatterns = {"/SendEmailAllServlet"})
 public class SendEmailAllServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String role = request.getParameter("role");

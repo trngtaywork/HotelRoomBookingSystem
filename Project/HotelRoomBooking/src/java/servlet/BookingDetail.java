@@ -44,7 +44,7 @@ public class BookingDetail extends HttpServlet {
             return;
         }
 
-        var bookingID = request.getParameter("bookingID");
+        var bookingID = request.getParameter("bookingID").trim();
 
         //Add user check
         if (bookingID == null || bookingID.length() == 0) {

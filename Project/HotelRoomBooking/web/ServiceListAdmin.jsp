@@ -129,8 +129,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <tbody>
                             <c:forEach items="${requestScope.serviceList}" var="s">
+                                <c:set var="disableDelete" value="false" />
+
+                                <c:forEach items="${requestScope.bookingServiceList}" var="bs">
+                                    <c:if test="${s.getServiceID() == bs.getServiceID()}">
+                                        <c:set var="disableDelete" value="true" />
+                                    </c:if>
+                                </c:forEach>
+
                                 <tr>
                                     <td>${s.getServiceName()}</td>
                                     <td><img src="${pageContext.request.contextPath}${s.getImage()}" width="300" height="150"></td>
@@ -138,9 +145,28 @@
                                     <td>${s.getStatusService()}</td>
                                     <td>${s.getTypeService()}</td>
                                     <td>
-                                        <button style="background-color: #000" class="btn-custom btn-info" onclick="window.location.href = 'EditService?serviceID=${s.getServiceID()}'">Edit</button>
-                                        <button style="background-color: #000" class="btn-custom btn-info" onclick="window.location.href = 'DeleteService?serviceID=${s.getServiceID()}'">Delete</button>
-                                        <button style="background-color: #000" class="btn-custom btn-info" onclick="window.location.href = 'ServiceDetailAdmin?serviceID=${s.getServiceID()}'">Details</button>
+                                        <button style="background-color: #000" class="btn-custom btn-info"
+                                                onclick="window.location.href = 'EditService?serviceID=${s.getServiceID()}'">
+                                            Edit
+                                        </button>
+
+                                        <button style="background-color: #000" class="btn-custom btn-info"
+                                                onclick="window.location.href = 'DeleteService?serviceID=${s.getServiceID()}'"
+                                                <c:if test="${disableDelete}">disabled</c:if>>
+                                            <c:choose>
+                                                <c:when test="${disableDelete}">
+                                                    In Use
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Delete
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </button>
+
+                                        <button style="background-color: #000" class="btn-custom btn-info"
+                                                onclick="window.location.href = 'ServiceDetailAdmin?serviceID=${s.getServiceID()}'">
+                                            Details
+                                        </button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -148,6 +174,7 @@
                     </table>
                 </c:otherwise>
             </c:choose>
+
         </div>
         <%--------------------------------------------------
         <button class="btn-custom1 btn-primary" onclick="window.location.href = 'AddService.jsp'">Add New Service</button>

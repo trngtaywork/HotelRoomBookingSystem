@@ -3,12 +3,14 @@ package servlet;
 import dao.ProfileDAO;
 import model.Profile;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+@WebServlet(name = "EditProfileServlet", urlPatterns = {"/EditProfileServlet"})
 public class EditProfileServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProfileDAO profileDAO;

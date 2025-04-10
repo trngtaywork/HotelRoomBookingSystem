@@ -63,7 +63,7 @@ public class BookingDAO extends DBContext {//add merge?
 
     public List<BookingServiceStatistic> getServiceBookingStatistics(String serviceNameFilter) {
         List<BookingServiceStatistic> list = new ArrayList<>();
-        String sql = "SELECT p.Name AS CustomerName, s.ServiceName, b.BookingDate, b.TotalAmount, b.StatusBooking "
+        String sql = "SELECT b.BookingID, p.Name AS CustomerName, s.ServiceName, b.BookingDate, b.TotalAmount, b.StatusBooking "
                 + "FROM BookingService bs "
                 + "JOIN Booking b ON bs.BookingID = b.BookingID "
                 + "JOIN Profile p ON b.ProfileID = p.ProfileID "
@@ -83,6 +83,7 @@ public class BookingDAO extends DBContext {//add merge?
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     list.add(new BookingServiceStatistic(
+                            rs.getInt("BookingID"),
                             rs.getString("CustomerName"),
                             rs.getString("ServiceName"),
                             rs.getTimestamp("BookingDate"),
@@ -98,16 +99,17 @@ public class BookingDAO extends DBContext {//add merge?
     }
 
     public void Add(Booking booking) {
-        String SQL = "INSERT INTO [dbo].[Booking]([ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking]) "
-                + "VALUES (?, ?, ?, ?, ?)";
+        String SQL = "INSERT INTO [dbo].[Booking]([BookingID], [ProfileID], [RoomID], [BookingDate], [TotalAmount], [StatusBooking]) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(SQL);
-            st.setInt(1, booking.getProfileID());
-            st.setInt(2, booking.getRoomID());
-            st.setDate(3, booking.getBookingDate());
-            st.setFloat(4, booking.getTotalAmount());
-            st.setString(5, booking.getStatusBooking());
+            st.setInt(1, lastBookingID() + 1);
+            st.setInt(2, booking.getProfileID());
+            st.setInt(3, booking.getRoomID());
+            st.setDate(4, booking.getBookingDate());
+            st.setFloat(5, booking.getTotalAmount());
+            st.setString(6, booking.getStatusBooking());
 
             st.executeUpdate();
         } catch (Exception e) {
@@ -513,4 +515,128 @@ public class BookingDAO extends DBContext {//add merge?
 
         return bookings;
     }
+    
+     public List<BookingRoomStatistic> getRoomBookingStatisticsWithID(String roomNameFilter) {
+         List<BookingRoomStatistic> list = new ArrayList<>();
+         String sql = "SELECT b.BookingID, p.Name AS CustomerName, r.RoomName, b.BookingDate, b.TotalAmount, b.StatusBooking "
+                 + "FROM Booking b "
+                 + "JOIN Profile p ON b.ProfileID = p.ProfileID "
+                 + "JOIN Room r ON b.RoomID = r.RoomID";
+ 
+         if (roomNameFilter != null && !roomNameFilter.isEmpty()) {
+             sql += " WHERE r.RoomName LIKE ?";
+         }
+ 
+         try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+             if (roomNameFilter != null && !roomNameFilter.isEmpty()) {
+                 stmt.setString(1, "%" + roomNameFilter + "%");
+             }
+ 
+             ResultSet rs = stmt.executeQuery();
+             while (rs.next()) {
+                 list.add(new BookingRoomStatistic(
+                         rs.getInt("BookingID"),
+                         rs.getString("CustomerName"),
+                         rs.getString("RoomName"),
+                         rs.getTimestamp("BookingDate"),
+                         rs.getDouble("TotalAmount"),
+                         rs.getString("StatusBooking")
+                 ));
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+         return list;
+     }
+ 
+     public InvoiceDetail getInvoiceDetailByBookingID(int bookingID) {
+         String sql = "SELECT p.Name AS CustomerName, a.Username, b.BookingDate, br.StartTime, br.EndTime, b.TotalAmount, b.StatusBooking FROM Booking b "
+                 + "JOIN Profile p ON b.ProfileID = p.ProfileID JOIN Account a ON p.AccountID = a.AccountID JOIN BookingRoom br ON b.BookingID = br.BookingID "
+                 + "WHERE b.BookingID = ?";
+ 
+         try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+             stmt.setInt(1, bookingID);
+             ResultSet rs = stmt.executeQuery();
+             if (rs.next()) {
+                 return new InvoiceDetail(
+                         rs.getString("CustomerName"),
+                         rs.getString("Username"),
+                         rs.getTimestamp("BookingDate"),
+                         rs.getTimestamp("StartTime"),
+                         rs.getTimestamp("EndTime"),
+                         rs.getDouble("TotalAmount"),
+                         rs.getString("StatusBooking")
+                 );
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+         return null;
+     }
+ 
+     public boolean cancelBooking(int bookingID) {
+         String sql = "UPDATE Booking SET StatusBooking = 'Cancelled' WHERE BookingID = ?";
+         try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+             stmt.setInt(1, bookingID);
+             return stmt.executeUpdate() > 0;
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+         return false;
+     }
+ 
+     public boolean confirmBooking(int bookingID) {
+         String sql = "UPDATE Booking SET StatusBooking = 'Confirmed' WHERE BookingID = ?";
+         try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+             stmt.setInt(1, bookingID);
+             return stmt.executeUpdate() > 0;
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+         return false;
+     }
+ 
+     public void updateBookingStatus(int bookingID, String newStatus) {
+         String sql = "UPDATE Booking SET StatusBooking = ? WHERE BookingID = ?";
+         try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+             stmt.setString(1, newStatus);
+             stmt.setInt(2, bookingID);
+             stmt.executeUpdate();
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+     }
+ 
+     public ServiceInvoiceDetail getServiceInvoiceDetailByBookingID(int bookingID) {
+         String sql = "SELECT b.BookingID, p.Name AS CustomerName, a.Username, b.BookingDate, "
+                 + "bs.StartTime, bs.EndTime, b.TotalAmount, b.StatusBooking, s.ServiceName "
+                 + "FROM Booking b "
+                 + "JOIN Profile p ON b.ProfileID = p.ProfileID "
+                 + "JOIN Account a ON p.AccountID = a.AccountID "
+                 + "JOIN BookingService bs ON bs.BookingID = b.BookingID "
+                 + "JOIN Service s ON bs.ServiceID = s.ServiceID "
+                 + "WHERE b.BookingID = ?";
+ 
+         try ( PreparedStatement stmt = conn.prepareStatement(sql)) {
+             stmt.setInt(1, bookingID);
+             ResultSet rs = stmt.executeQuery();
+ 
+             if (rs.next()) {
+                 return new ServiceInvoiceDetail(
+                         rs.getInt("BookingID"),
+                         rs.getString("CustomerName"),
+                         rs.getString("Username"),
+                         rs.getTimestamp("BookingDate"),
+                         rs.getTimestamp("StartTime"),
+                         rs.getTimestamp("EndTime"),
+                         rs.getDouble("TotalAmount"),
+                         rs.getString("StatusBooking"),
+                         rs.getString("ServiceName")
+                 );
+             }
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+         return null;
+     }
 }

@@ -70,11 +70,11 @@ public class AddService extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String serviceName = request.getParameter("serviceName");//is null -> why???????
-        String description = request.getParameter("description");//is null -> why???????
-        String priceStr = request.getParameter("price");//is null -> why???????
-        String statusService = request.getParameter("statusService");
-        String typeService = request.getParameter("typeService");
+        String serviceName = request.getParameter("serviceName").trim();//is null -> why???????
+        String description = request.getParameter("description").trim();//is null -> why???????
+        String priceStr = request.getParameter("price").trim();//is null -> why???????
+        String statusService = request.getParameter("statusService").trim();
+        String typeService = request.getParameter("typeService").trim();
         Part filePart = request.getPart("serviceImage");
 
         serviceName = serviceName.trim();

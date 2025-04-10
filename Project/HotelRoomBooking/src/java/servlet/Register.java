@@ -68,18 +68,18 @@ public class Register extends HttpServlet {
             throws ServletException, IOException {
         request.setAttribute("error", null);
         
-        String username = request.getParameter("username");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String username = request.getParameter("username").trim();
+        String email = request.getParameter("email").trim();
+        String password = request.getParameter("password").trim();
         Date temp = new Date();
         java.sql.Date createdDate = new java.sql.Date(temp.getTime());//get current date
         String role = "Customer";
         boolean isActive = true;
 
-        String fullName = request.getParameter("fullName");
-        String phone = request.getParameter("phoneNumber");
-        String gender = request.getParameter("gender");
-        String address = request.getParameter("address");
+        String fullName = request.getParameter("fullName").trim();
+        String phone = request.getParameter("phoneNumber").trim();
+        String gender = request.getParameter("gender").trim();
+        String address = request.getParameter("address").trim();
         
         if(checkInputEmpty(username, email, password, fullName, phone, gender, address)){
             request.setAttribute("error", "Invalid Register input");

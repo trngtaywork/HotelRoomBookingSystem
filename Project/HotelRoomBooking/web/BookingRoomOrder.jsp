@@ -43,6 +43,13 @@
         <div class="formbold-main-wrapper" style="align-self: center; align-content: center">
             <div class="formbold-form-wrapper">
                 <table class="table table-borderless" >
+                    
+                    <% if (request.getAttribute("errorMessage") != null) { %>
+                    <div class="alert alert-danger">
+                        <%= request.getAttribute("errorMessage") %>
+                    </div>
+                    <% } %></tr>
+                    
                     <h2>Please confirm your booking</h2>
                     <form action="AddBooking" method="post">
                         <input type="hidden" name="roomID" value="<%=r.getRoomID()%>">

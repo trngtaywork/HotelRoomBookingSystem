@@ -44,7 +44,7 @@ public class ServiceDetailAdmin extends HttpServlet {
             return;
         }
         
-        int serviceID = Integer.parseInt(request.getParameter("serviceID"));
+        int serviceID = Integer.parseInt(request.getParameter("serviceID").trim());
         
         Service service = serviceDAO.SearchServiceByID(serviceID);
         

@@ -54,9 +54,25 @@
                             <div class="rd-text">
                                 <div class="rd-title">
                                     <h3><%=s.getServiceName()%></h3>
+                                    
+                                    <%if(s.getStatusService = "Available"){%>
                                     <div class="rdt-right">
                                         <a href="AddBookingService?serviceID=<%=s.getServiceID()%>">Order Now</a>
                                     </div>
+                                    <%} else if(s.getStatusService = "Unavailable"){%>
+                                    <div class="rdt-right">
+                                        <a href="">Service Unavailable</a>
+                                    </div>
+                                    <%} else{%>
+                                    <div class="rdt-right">
+                                        <a href="">Service Unavailable</a>
+                                    </div>
+                                    <%}%>
+                                    <%--
+                                    <div class="rdt-right">
+                                        <a href="AddBookingService?serviceID=<%=s.getServiceID()%>">Order Now</a>
+                                    </div>
+                                    --%>
                                 </div>
                                 <h2><%=s.getPrice()%>$</h2>
                                 <table>

@@ -50,7 +50,7 @@ public class AddBookingService extends HttpServlet {
             return;
         }
 
-        int serviceID = Integer.parseInt(request.getParameter("serviceID"));
+        int serviceID = Integer.parseInt(request.getParameter("serviceID").trim());
         Service service = serviceDAO.SearchServiceByID(serviceID);
         if (service == null) {
             response.sendRedirect("ServiceList");
@@ -106,11 +106,11 @@ public class AddBookingService extends HttpServlet {
             HttpSession sessionUser = request.getSession(false);
             Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
             if (user == null) {
-                response.sendRedirect("ServiceList");
+                response.sendRedirect("login.jsp");
                 return;
             }
 
-            int serviceID = Integer.parseInt(request.getParameter("serviceID"));
+            int serviceID = Integer.parseInt(request.getParameter("serviceID").trim());
 
             Service service = serviceDAO.SearchServiceByID(serviceID);
             if (service == null) {
@@ -118,26 +118,30 @@ public class AddBookingService extends HttpServlet {
                 return;
             }
 
-            int bookingID = Integer.parseInt(request.getParameter("forBooking"));
+            int bookingID = Integer.parseInt(request.getParameter("forBooking").trim());
             Booking booking = bookingDAO.SearchBooking(bookingID);
             if (booking == null) {
                 response.sendRedirect("ServiceList");
                 return;
             }
 
-            String amountStr = request.getParameter("amount");
-            String startTimeStr = request.getParameter("startTime");
-            String endTimeStr = request.getParameter("endTime");
+            String amountStr = request.getParameter("amount").trim();
+            String startTimeStr = request.getParameter("startTime").trim();
+            String endTimeStr = request.getParameter("endTime").trim();
             //String totalAmountStr = request.getParameter("totalAmount");
 
             if (isNullOrEmpty(amountStr) || isNullOrEmpty(startTimeStr) || isNullOrEmpty(endTimeStr)) {
-                response.sendRedirect("ServiceList");
+                request.setAttribute("error", "Input Error: Empty Input");
+                response.sendRedirect("BookingServiceOrder?serviceID=" + serviceID);
                 return;
             }
 
             int amount = Integer.parseInt(amountStr);
             //float totalAmount = Float.parseFloat(totalAmountStr);
 
+            java.util.Date temp = new java.util.Date();
+            java.sql.Date currentDate = new java.sql.Date(temp.getTime());//get current date
+            
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
             java.util.Date startTime = format.parse(startTimeStr);
@@ -148,7 +152,15 @@ public class AddBookingService extends HttpServlet {
 
             if (endTimeSQL.before(startTimeSQL)) {
                 //response.sendRedirect("datetimeError");
-                response.sendRedirect("ServiceList");
+                request.setAttribute("error", "Date Error: End Time is before Start Time");
+                response.sendRedirect("BookingServiceOrder?serviceID=" + serviceID);
+                return;
+            }
+            
+            if (startTimeSQL.before(currentDate)) {
+                //response.sendRedirect("datetimeError");
+                request.setAttribute("error", "Date Error: Start Time is before Current Time");
+                response.sendRedirect("BookingServiceOrder?serviceID=" + serviceID);
                 return;
             }
 

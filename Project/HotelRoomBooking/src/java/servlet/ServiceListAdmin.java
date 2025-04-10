@@ -47,8 +47,10 @@ public class ServiceListAdmin extends HttpServlet {
         }
         
         List<Service> serviceList = serviceDAO.GetServiceList();
+        List<BookingService> bookingServices = bookingServiceDAO.GetBookingServiceList();
         
         request.setAttribute("serviceList", serviceList);
+        request.setAttribute("bookingServiceList", serviceList);
 
         request.getRequestDispatcher("ServiceListAdmin.jsp").forward(request, response);
     }
@@ -79,9 +81,9 @@ public class ServiceListAdmin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String priceFilter = request.getParameter("priceFilter");
-        String statusFilter = request.getParameter("statusFilter");
-        String serviceNameFilter = request.getParameter("serviceNameFilter");
+        String priceFilter = request.getParameter("priceFilter").trim();
+        String statusFilter = request.getParameter("statusFilter").trim();
+        String serviceNameFilter = request.getParameter("serviceNameFilter").trim();
         
         List<Service> serviceList = new ArrayList<Service>();
         
