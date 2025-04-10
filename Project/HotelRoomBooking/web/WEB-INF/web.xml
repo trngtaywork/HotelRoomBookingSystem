@@ -87,6 +87,18 @@
         <servlet-name>ServiceListAdmin</servlet-name>
         <servlet-class>servlet.ServiceListAdmin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CancelBookingServlet</servlet-name>
+        <servlet-class>servlet.CancelBookingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfirmBookingServlet</servlet-name>
+        <servlet-class>servlet.ConfirmBookingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateBookingStatusServlet</servlet-name>
+        <servlet-class>servlet.UpdateBookingStatusServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -166,6 +178,18 @@
     <servlet-mapping>
         <servlet-name>ServiceListAdmin</servlet-name>
         <url-pattern>/ServiceListAdmin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CancelBookingServlet</servlet-name>
+        <url-pattern>/CancelBookingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmBookingServlet</servlet-name>
+        <url-pattern>/ConfirmBookingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateBookingStatusServlet</servlet-name>
+        <url-pattern>/UpdateBookingStatusServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

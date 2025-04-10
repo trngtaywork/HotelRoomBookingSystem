@@ -19,7 +19,7 @@
 
     // Lấy dữ liệu từ database
     BookingDAO bookingDAO = new BookingDAO();
-    List<BookingRoomStatistic> roomStats = bookingDAO.getRoomBookingStatistics(roomNameFilter);
+    List<BookingRoomStatistic> roomStats = bookingDAO.getRoomBookingStatisticsWithID(roomNameFilter);
 
     // Tính số trang
     int totalRecords = roomStats.size(); // Tổng số phòng đặt
@@ -180,6 +180,13 @@
             .pagination .disabled {
                 color: #ccc;
             }
+            .action-buttons {
+                display: flex;
+                gap: 6px; /* Khoảng cách giữa các nút */
+                justify-content: center;
+                flex-wrap: wrap; /* Trong trường hợp màn hình nhỏ */
+            }
+
         </style>
     </head>
     <body>
@@ -220,7 +227,7 @@
             <a href="sendEmail.jsp" class="btn-custom">Send Email</a>
         </div>
 
-        
+
         <!-- Main Content -->
         <div class="main-content">
             <div class="statistics-list">
@@ -252,6 +259,7 @@
                         <th>Booking Date</th>
                         <th>Total Amount</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -262,6 +270,28 @@
                         <td><%= new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(r.getBookingDate()) %></td>
                         <td>$<%= r.getTotalAmount() %></td>
                         <td><%= r.getStatus() %></td>
+                        <td>
+                            <div class="action-buttons">
+                                <form action="viewInvoice.jsp" method="get">
+                                    <input type="hidden" name="bookingID" value="<%= r.getBookingID() %>">
+                                    <button type="submit" class="btn btn-info btn-sm">Details</button>
+                                </form>
+                                <form action="ConfirmBookingServlet" method="post">
+                                    <input type="hidden" name="bookingID" value="<%= r.getBookingID() %>">
+                                    <button type="submit" class="btn btn-success btn-sm"
+                                            onclick="return confirm('Confirm this booking?');">
+                                        Confirm
+                                    </button>
+                                </form>
+                                <form action="CancelBookingServlet" method="post">
+                                    <input type="hidden" name="bookingID" value="<%= r.getBookingID() %>">
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Are you sure you want to cancel this booking?');">
+                                        Cancel
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                     <% } %>
                 </tbody>

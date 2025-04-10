@@ -18,36 +18,36 @@ public class Booking {
     private int ServiceID;
     private Date BookingDate;
     private float TotalAmount;
-    private int StatusID;
+    private int Status;
 
     public Booking() {
     }
 
-    public Booking(int BookingID, int ProfileID, int RoomID, int ServiceID, Date BookingDate, float TotalAmount, int StatusID) {
+    public Booking(int BookingID, int ProfileID, int RoomID, int ServiceID, Date BookingDate, float TotalAmount, int Status) {
         this.BookingID = BookingID;
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
         this.ServiceID = ServiceID;
         this.BookingDate = BookingDate;
         this.TotalAmount = TotalAmount;
-        this.StatusID = StatusID;
+        this.Status = Status;
     }
 
-    public Booking(int BookingID, int ProfileID, int RoomID, Date BookingDate, float TotalAmount, int StatusID) {
+    public Booking(int BookingID, int ProfileID, int RoomID, Date BookingDate, float TotalAmount, int Status) {
         this.BookingID = BookingID;
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
         this.BookingDate = BookingDate;
         this.TotalAmount = TotalAmount;
-        this.StatusID = StatusID;
+        this.Status = Status;
     }
 
-    public Booking(int ProfileID, int RoomID, Date BookingDate, float TotalAmount, int StatusID) {
+    public Booking(int ProfileID, int RoomID, Date BookingDate, float TotalAmount, int Status) {
         this.ProfileID = ProfileID;
         this.RoomID = RoomID;
         this.BookingDate = BookingDate;
         this.TotalAmount = TotalAmount;
-        this.StatusID = StatusID;
+        this.Status = Status;
     }
 
     public int getBookingID() {
@@ -90,12 +90,12 @@ public class Booking {
         this.TotalAmount = TotalAmount;
     }
 
-    public int getStatusID() {
-        return StatusID;
+    public int getStatus() {
+        return Status;
     }
 
-    public void setStatusID(int StatusID) {
-        this.StatusID = StatusID;
+    public void setStatus(int Status) {
+        this.Status = Status;
     }
 
     public int getServiceID() {

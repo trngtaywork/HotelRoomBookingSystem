@@ -276,6 +276,7 @@
                         <th>Booking Date</th>
                         <th>Total Amount</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -286,6 +287,12 @@
                         <td><%= new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm").format(s.getBookingDate()) %></td>
                         <td>$<%= s.getTotalAmount() %></td>
                         <td><%= s.getStatus() %></td>
+                        <td>
+                            <a href="viewServiceInvoice.jsp?bookingID=<%= s.getBookingID() %>" class="btn btn-info btn-sm">Details</a>
+                            <a href="UpdateBookingStatusServlet?action=confirm&bookingID=<%= s.getBookingID() %>" class="btn btn-success btn-sm">Confirm</a>
+                            <a href="UpdateBookingStatusServlet?action=cancel&bookingID=<%= s.getBookingID() %>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to cancel?');">Cancel</a>
+                        </td>
+
                     </tr>
                     <% } %>
                 </tbody>

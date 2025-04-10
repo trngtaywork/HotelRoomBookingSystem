@@ -25,6 +25,14 @@ public class LoginServlet extends HttpServlet {
         Account user = accountDAO.validateLogin(username, password);
 
         if (user != null) {
+            // Kiểm tra xem tài khoản có bị deactivated không
+            if (!user.getIsActive()) {
+                request.setAttribute("error", "Your account is deactivated. Please contact the administrator.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return; // Dừng lại nếu tài khoản bị vô hiệu hóa
+            }
+
+            // Tiến hành đăng nhập và lưu thông tin người dùng vào session
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
 
@@ -37,6 +45,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("profileReceptionist.jsp");
             }
         } else {
+            // Thông báo lỗi khi tên đăng nhập hoặc mật khẩu sai
             request.setAttribute("error", "Invalid username or password!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
