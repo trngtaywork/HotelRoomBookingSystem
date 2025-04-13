@@ -97,6 +97,12 @@ public class AddService extends HttpServlet {
         }
 
         // Validate Service Name
+        if (serviceName.equals("") || serviceName.length() == 0) {
+            request.setAttribute("errorMessage", "Service name is empty.");
+            request.getRequestDispatcher("AddService.jsp").forward(request, response);
+            return;
+        }
+        
         boolean isServiceNameExists = serviceDAO.SearchIfServiceExistByName(serviceName);
         if (isServiceNameExists) {
             request.setAttribute("errorMessage", "Service name already exists. Please choose a different name.");
@@ -118,13 +124,13 @@ public class AddService extends HttpServlet {
             }
 
             // Save the image
-            String path = getServletContext().getRealPath("/uploads");
+            String path = getServletContext().getRealPath("/images");
             File directory = new File(path);
             if (!directory.exists()) {
                 directory.mkdirs(); // Ensure the directory exists
             }
             filePart.write(path + "/" + fileName);
-            image = "/uploads/" + fileName;
+            image = "/images/" + fileName;
         }
 
         // Create Service object
@@ -142,7 +148,7 @@ public class AddService extends HttpServlet {
         }
          */
         // Forward back to ServiceListAdmin
-        request.getRequestDispatcher("ServiceListAdmin").forward(request, response);
+        response.sendRedirect("ServiceListAdmin");
     }
 
     /**

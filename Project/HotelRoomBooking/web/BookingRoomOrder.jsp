@@ -44,9 +44,9 @@
             <div class="formbold-form-wrapper">
                 <table class="table table-borderless" >
                     
-                    <% if (request.getAttribute("errorMessage") != null) { %>
+                    <% if (request.getAttribute("error") != null) { %>
                     <div class="alert alert-danger">
-                        <%= request.getAttribute("errorMessage") %>
+                        <%= request.getAttribute("error") %>
                     </div>
                     <% } %></tr>
                     

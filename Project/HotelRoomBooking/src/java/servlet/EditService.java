@@ -141,13 +141,13 @@ public class EditService extends HttpServlet {
 
         if (filePart != null && filePart.getSize() > 0) {
             String fileName = extractFileName(filePart);
-            String uploadDir = getServletContext().getRealPath("/") + "../web/img/service";
+            String uploadDir = getServletContext().getRealPath("/images");
             File uploadFolder = new File(uploadDir);
             if (!uploadFolder.exists()) {
                 uploadFolder.mkdir();
             }
             filePart.write(uploadDir + File.separator + fileName);
-            imagePath = "/img/serivce/" + fileName;
+            imagePath = "/images/" + fileName;
         }
 
         Service updatedService = new Service(serviceID, serviceName, description, price, imagePath, statusService, typeService);

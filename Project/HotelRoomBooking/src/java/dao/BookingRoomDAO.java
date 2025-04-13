@@ -6,6 +6,7 @@ package dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.*;
@@ -17,16 +18,17 @@ import utils.DBContext;
  */
 public class BookingRoomDAO extends DBContext{
     public void Add(BookingRoom bookingRoom){
-        String SQL = "INSERT INTO [dbo].[BookingRoom]([BookingID], [RoomID], [Quantity], [StartTime], [EndTime]) "
-                       + "VALUES (?, ?, ?, ?, ?)";
+        String SQL = "INSERT INTO [dbo].[BookingRoom]([BookingRoomID], [BookingID], [RoomID], [Quantity], [StartTime], [EndTime]) "
+                       + "VALUES (?, ?, ?, ?, ?, ?)";
         
         try {
                 PreparedStatement st = connection.prepareStatement(SQL);
-                st.setInt(1, bookingRoom.getBookingID());
-                st.setInt(2, bookingRoom.getRoomID());
-                st.setInt(3, bookingRoom.getQuantity());
-                st.setDate(4, bookingRoom.getStartTime());
-                st.setDate(5, bookingRoom.getEndTime());
+                st.setInt(1, lastBookingRoomID() + 1);
+                st.setInt(2, bookingRoom.getBookingID());
+                st.setInt(3, bookingRoom.getRoomID());
+                st.setInt(4, bookingRoom.getQuantity());
+                st.setDate(5, bookingRoom.getStartTime());
+                st.setDate(6, bookingRoom.getEndTime());
 
                 st.executeUpdate();
             } catch (Exception e) {
@@ -111,7 +113,7 @@ public class BookingRoomDAO extends DBContext{
     
     public List<BookingRoom> SearchBookingRooms(int bookingID, int roomID)
     {
-        String sql = "SELECT [BookingRoomID], [BookingID], [RoomID], [Quantity], [StartTime], [EndTime] FROM [dbo].[BookingRoom] WHERE [BookingID] = '" + bookingID + "' AND [RoomID] = '" + roomID + "'";
+        String sql = "SELECT * FROM [dbo].[BookingRoom] WHERE [BookingID] = '" + bookingID + "' AND [RoomID] = '" + roomID + "'";
         
         List<BookingRoom> bookingRooms = new ArrayList<>();
         
@@ -167,5 +169,20 @@ public class BookingRoomDAO extends DBContext{
         }
 
         return null;
+    }
+    
+    public int lastBookingRoomID() {
+        String sql = "SELECT TOP 1 [BookingRoomID]\n"
+                + "FROM [dbo].[BookingRoom]\n"
+                + "ORDER BY [BookingRoomID] DESC";
+        int n = 0;
+        try {
+            ResultSet rs = getData(sql);
+            if (rs.next()) {
+                n = rs.getInt("BookingRoomID");
+            }
+        } catch (SQLException e) {
+        }
+        return n;
     }
 }

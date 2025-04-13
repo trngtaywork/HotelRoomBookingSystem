@@ -55,11 +55,11 @@
                                 <div class="rd-title">
                                     <h3><%=s.getServiceName()%></h3>
                                     
-                                    <%if(s.getStatusService = "Available"){%>
+                                    <%if(s.getStatusService().equals("Available") || s.getStatusService().equals("available")){%>
                                     <div class="rdt-right">
                                         <a href="AddBookingService?serviceID=<%=s.getServiceID()%>">Order Now</a>
                                     </div>
-                                    <%} else if(s.getStatusService = "Unavailable"){%>
+                                    <%} else if(s.getStatusService().equals("Unavailable") || s.getStatusService().equals("unavailable")){%>
                                     <div class="rdt-right">
                                         <a href="">Service Unavailable</a>
                                     </div>

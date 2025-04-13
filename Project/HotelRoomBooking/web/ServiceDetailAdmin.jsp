@@ -45,7 +45,7 @@
                 </tr>
                 <tr>
                     <th>Image</th>
-                    <td><img src="<%=s.getImage()%>" alt=""/></td>
+                    <td><img src="<%= request.getContextPath() + s.getImage() %>" alt="Service Image" width="200" height="150"></td>
                 </tr>
                 <tr>
                     <th>Service ID</th>

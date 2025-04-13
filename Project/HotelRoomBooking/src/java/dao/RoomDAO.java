@@ -182,15 +182,6 @@ public class RoomDAO extends DBContext {
         List<Room> roomList = new ArrayList<>();
         StringBuilder query = new StringBuilder("SELECT * FROM Room WHERE 1=1");
 
-        // Lọc theo giá
-        if (priceFilter != null && !priceFilter.equals("All")) {
-            if (priceFilter.equals("asc")) {
-                query.append(" ORDER BY Price ASC");
-            } else if (priceFilter.equals("desc")) {
-                query.append(" ORDER BY Price DESC");
-            }
-        }
-
         // Lọc theo trạng thái phòng
         if (statusFilter != null && !statusFilter.equals("All")) {
             query.append(" AND StatusRoom = '").append(statusFilter).append("'");
@@ -206,6 +197,15 @@ public class RoomDAO extends DBContext {
             query.append(" AND RoomName LIKE '%").append(roomNameFilter).append("%'");
         }
 
+        // Lọc theo giá
+        if (priceFilter != null && !priceFilter.equals("All")) {
+            if (priceFilter.equals("asc")) {
+                query.append(" ORDER BY Price ASC");
+            } else if (priceFilter.equals("desc")) {
+                query.append(" ORDER BY Price DESC");
+            }
+        }
+        
         // Thực hiện truy vấn
         try ( Statement stmt = dbContext.connection.createStatement();  ResultSet rs = stmt.executeQuery(query.toString())) {
             while (rs.next()) {

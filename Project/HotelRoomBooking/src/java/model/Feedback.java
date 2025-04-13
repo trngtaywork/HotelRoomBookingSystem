@@ -14,6 +14,9 @@ public class Feedback {
     private String image;
     private String customerName;
 
+    public Feedback() {
+    }    
+    
     public Feedback(int feedbackID, int profileID, int roomID, String comment, int rating, Timestamp date, String roomName, String image, String customerName) {
         this.feedbackID = feedbackID;
         this.profileID = profileID;
@@ -26,6 +29,23 @@ public class Feedback {
         this.customerName = customerName;
     }
 
+    public Feedback(int feedbackID, int profileID, int roomID, String comment, int rating, Timestamp date) {
+        this.feedbackID = feedbackID;
+        this.profileID = profileID;
+        this.roomID = roomID;
+        this.comment = comment;
+        this.rating = rating;
+        this.date = date;
+    }
+
+    public Feedback(int profileID, int roomID, String comment, int rating, Timestamp date) {
+        this.profileID = profileID;
+        this.roomID = roomID;
+        this.comment = comment;
+        this.rating = rating;
+        this.date = date;
+    }    
+    
     // Getters and Setters
     public int getFeedbackID() {
         return feedbackID;

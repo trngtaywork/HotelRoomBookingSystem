@@ -27,6 +27,7 @@ public class BookingList extends HttpServlet {
     AccountDAO accountDao = new AccountDAO();
     ProfileDAO profileDAO = new ProfileDAO();
     RoomDAO roomDAO = new RoomDAO();
+    FeedbackDAO feedbackDAO = new FeedbackDAO();
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,7 +55,10 @@ public class BookingList extends HttpServlet {
         List<Account> accountList = accountDao.GetAccountList();
         List<Room> roomList = roomDAO.GetRoomList();
         List<BookingRoom> bookingRoomList = bookingRoomDao.GetBookingRoomList();
+        List<Feedback> feedbackList = feedbackDAO.GetFeedbackList();
         
+        request.setAttribute("currentUser", profile);
+        request.setAttribute("feedbackList", feedbackList);
         request.setAttribute("bookingRoomList", bookingRoomList);
         request.setAttribute("bookingList", bookingList);
         request.setAttribute("profileList", profileList);

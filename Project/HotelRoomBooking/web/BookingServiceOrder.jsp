@@ -83,7 +83,7 @@
                                         <td>
                                             <select name="forBooking" id="forBooking" class="formbold-form-select">
                                                 <c:forEach items="${requestScope.bookingList}" var="b">
-                                                    <option value="${b.getBookingID()}"><c:forEach items="${requestScope.roomList}" var="r"><c:if test="${b.getRoomID() == r.getRoomID()}">Room Name: ${r.getRoomName()} | Booking Date: ${b.getBookingDate()}</c:if></c:forEach></option>
+                                                    <option value="${b.getBookingID()}"><c:forEach items="${requestScope.roomList}" var="r"><c:if test="${b.getRoomID() == r.getRoomID()}">Room Name: ${r.getRoomName()} | Booking Date: ${b.getBookingDate()} | Status: ${b.getStatusBooking()}</c:if></c:forEach></option>
                                                 </c:forEach>
                                             </select>
                                         </td>

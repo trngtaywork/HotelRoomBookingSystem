@@ -57,17 +57,21 @@
                                 <div class="rd-title">
                                     <h3><%=r.getRoomName()%></h3>
 
-                                    <%if(r.getStatusRoom = "Available"){%>
+                                    <%if(r.getStatusRoom().equals("Available")){%>
                                     <div class="rdt-right">
                                         <a href="AddBooking?roomID=<%=r.getRoomID()%>">Booking Now</a>
                                     </div>
-                                    <%} else if(r.getStatusRoom = "Unavailable"){%>
+                                    <%} else if(r.getStatusRoom().equals("Unavailable") || r.getStatusRoom().equals("unavailable")){%>
                                     <div class="rdt-right">
                                         <a href="">Room Unavailable</a>
                                     </div>
-                                    <%} else if(r.getStatusRoom = "Occupied"){%>
+                                    <%} else if(r.getStatusRoom().equals("Occupied") || r.getStatusRoom().equals("occupied")){%>
                                     <div class="rdt-right">
                                         <a href="">Room Occupied</a>
+                                    </div>
+                                    <%} else if(r.getStatusRoom().equals("Maintenance") || r.getStatusRoom().equals("maintenance")){%>
+                                    <div class="rdt-right">
+                                        <a href="">Room currently in maintenance</a>
                                     </div>
                                     <%} else{%>
                                     <div class="rdt-right">

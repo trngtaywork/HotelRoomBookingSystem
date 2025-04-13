@@ -1,29 +1,11 @@
-<%-- 
-    Document   : BookingList
-    Created on : Mar 1, 2025, 9:52:37 AM
-    Author     : My PC
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.*" %>
-
-<%--
-<%
-    HttpSession sessionUser = request.getSession(false);
-    Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
-    if (user == null) {
-        response.sendRedirect("index.jsp");
-        return;
-    }
-%>
---%>
-
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Booking List</title>
+        <title>View FeedBack</title>
 
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
@@ -54,52 +36,33 @@
 
         <div>
             <c:choose>
-                <c:when test="${requestScope.bookingList.size() == 0}">
+                <c:when test="${requestScope.feedbackList.size() == 0}">
                     <div class="container">
-                        <label class="h2">Booking List is Empty</label>
+                        <label class="h2">Feedback List is Empty</label>
                     </div>
-                </c:when>    
+                </c:when>
                 <c:otherwise>
                     <div class="container">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>Room</th>
-                                    <th>Booking Date</th>
-                                    <th>Total Amount</th>
-                                    <th>Status</th>
-                                    <th></th>
-                                    <th></th>
+                                    <th>Comment</th>
+                                    <th>Rating</th>
+                                    <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${requestScope.bookingList}" var="b">
+                                <c:forEach items="${requestScope.feedbackList}" var="f">
                                     <tr>
                                         <c:forEach items="${requestScope.roomList}" var="r">
-                                            <c:if test="${b.getRoomID() == r.getRoomID()}">
+                                            <c:if test="${f.getRoomID() == r.getRoomID()}">
                                                 <td>${r.getRoomName()}</td>
                                             </c:if>
                                         </c:forEach>
-                                        <td>${b.getBookingDate()}</td>
-                                        <td>${b.getTotalAmount()}</td>
-                                        <td>${b.getStatusBooking()}</td>
-                                        <td><a class="link" href="BookingDetail?bookingID=${b.getBookingID()}">More Details</a></td>
-
-                                        <c:set var="haveFeedback" value="false" />
-                                        <c:forEach items="${requestScope.feedbackList}" var="f">
-                                            <c:if test="${b.getRoomID() == f.getRoomID() && b.getProfileID() == requestScope.currentUser.getProfileID() && f.getProfileID() == requestScope.currentUser.getProfileID()}">
-                                                <c:set var="haveFeedback" value="true" />
-                                            </c:if>
-                                        </c:forEach>
-
-                                        <c:choose>
-                                            <c:when test="${haveFeedback}">
-                                                <td>Thank you for your feedback</td>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <td><a class="link" href="WriteFeedback?bookingID=${b.getBookingID()}">Give Feedback</a></td>
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <td>${f.getComment()}</td>
+                                        <td>${f.getRating()}</td>
+                                        <td>${f.getDate()}</td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -107,8 +70,6 @@
                     </div>
                 </c:otherwise>
             </c:choose>
-
-
         </div>
 
         <footer>

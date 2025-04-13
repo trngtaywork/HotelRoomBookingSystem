@@ -140,7 +140,7 @@
 
                                 <tr>
                                     <td>${s.getServiceName()}</td>
-                                    <td><img src="${pageContext.request.contextPath}${s.getImage()}" width="300" height="150"></td>
+                                    <td><img src="${pageContext.request.contextPath}${s.getImage()}" alt="Service Image" width="300" height="150"></td>
                                     <td>${s.getPrice()}</td>
                                     <td>${s.getStatusService()}</td>
                                     <td>${s.getTypeService()}</td>
@@ -149,7 +149,7 @@
                                                 onclick="window.location.href = 'EditService?serviceID=${s.getServiceID()}'">
                                             Edit
                                         </button>
-
+                                            <%--
                                         <button style="background-color: #000" class="btn-custom btn-info"
                                                 onclick="window.location.href = 'DeleteService?serviceID=${s.getServiceID()}'"
                                                 <c:if test="${disableDelete}">disabled</c:if>>
@@ -162,7 +162,7 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </button>
-
+                                            --%>
                                         <button style="background-color: #000" class="btn-custom btn-info"
                                                 onclick="window.location.href = 'ServiceDetailAdmin?serviceID=${s.getServiceID()}'">
                                             Details
@@ -172,87 +172,66 @@
                             </c:forEach>
                         </tbody>
                     </table>
+
+                    <c:if test="${totalPages > 1}">
+                        <div class="pagination-container text-center mt-4">
+                            <nav aria-label="Page navigation" style="color: black; font-weight: bold;">
+                                <ul class="pagination justify-content-center" style="background: none; border: none;">
+
+                                    <!-- Previous Button -->
+                                    <c:choose>
+                                        <c:when test="${currentPage > 1}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="ServiceListAdmin?page=${currentPage - 1}" style="color: black; border: none; background: none;">
+                                                    Previous
+                                                </a>
+                                            </li>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <li class="page-item disabled">
+                                                <span class="page-link" style="color: #999; border: none; background: none;">
+                                                    Previous
+                                                </span>
+                                            </li>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                    <!-- Page x of y -->
+                                    <li class="page-item disabled">
+                                        <span class="page-link" style="color: black; border: none; background: none;">
+                                            Page ${currentPage} of ${totalPages}
+                                        </span>
+                                    </li>
+
+                                    <!-- Next Button -->
+                                    <c:choose>
+                                        <c:when test="${currentPage < totalPages}">
+                                            <li class="page-item">
+                                                <a class="page-link" href="ServiceListAdmin?page=${currentPage + 1}" style="color: black; border: none; background: none;">
+                                                    Next
+                                                </a>
+                                            </li>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <li class="page-item disabled">
+                                                <span class="page-link" style="color: #999; border: none; background: none;">
+                                                    Next
+                                                </span>
+                                            </li>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                </ul>
+                            </nav>
+                        </div>
+                    </c:if>
+
+
+
                 </c:otherwise>
             </c:choose>
 
         </div>
-        <%--------------------------------------------------
-        <button class="btn-custom1 btn-primary" onclick="window.location.href = 'AddService.jsp'">Add New Service</button>
-        <hr>
-
-            <form action="ServiceListAdmin" method="post" class="row">
-                <div class="col-md-3">
-                    <label for="priceFilter">Price:</label>
-                    <select name="priceFilter" id="priceFilter" class="form-control">
-                        <option value="default">No Sorting</option>
-                        <option value="asc">Low to High</option>
-                        <option value="desc">High to Low</option>
-                    </select>
-                </div>
-
-                <div class="col-md-3">
-                    <label for="statusFilter">Status:</label>
-                    <input type="text" name="statusFilter" id="statusFilter" class="form-control" placeholder="Search by status">
-                </div>
-
-                <div class="col-md-3">
-                    <label for="serviceNameFilter">Service Name:</label>
-                    <input type="text" name="serviceNameFilter" id="serviceNameFilter" class="form-control" placeholder="Search by name">
-                </div>
-
-                <div class="col-md-3">
-                    <input type="submit" name="Search" class="form-control">
-                </div>
-            </form>
-
-            <section class="rooms-section spad">
-                <div class="container">
-
-                    <% if (request.getAttribute("errorMessage") != null) { %>
-                    <span class="text-danger"><%= request.getAttribute("errorMessage") %></span>
-                    <% } %>
-
-                    <c:choose>
-                        <c:when test="${requestScope.serviceList.size() == 0}">
-                            <label class="h2 centered">Service List is Empty</label>
-                        </c:when>    
-                        <c:otherwise>
-                            <div class="container mt-4">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Service ID</th>
-                                            <th>Service Name</th>
-                                            <th>Price</th>
-                                            <th>StatusService</th>
-                                            <th>TypeService</th>
-                                            <th style="width: 300px">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach items="${requestScope.serviceList}" var="s">
-                                            <tr>
-                                                <td>${s.getServiceID()}</td>
-                                                <td>${s.getServiceName()}</td>
-                                                <td>${s.getPrice()}</td>
-                                                <td>${s.getStatusService()}</td>
-                                                <td>${s.getTypeService()}</td>
-                                                <td>
-                                                    <a class="btn-custom btn-primary" href = "EditService?serviceID=${s.getServiceID()}" >Edit</a>
-                                                    <a class="btn-custom btn-danger" href="DeleteService?serviceID=${s.getServiceID()}">Delete</a>
-                                                    <a class="btn-custom btn-info" href="ServiceDetailAdmin?serviceID=${s.getServiceID()}">Further Detail</a>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-
-                                </table>
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-            </section>
-        --%>
         <footer>
             <jsp:include page="footerAdmin.jsp"></jsp:include>
         </footer>

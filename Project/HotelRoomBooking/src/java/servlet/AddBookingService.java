@@ -14,7 +14,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.*;
 import dao.*;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -64,15 +66,15 @@ public class AddBookingService extends HttpServlet {
 
         List<Booking> temp = new ArrayList<Booking>();
         for (Booking booking : bookingList) {
-            if (booking.getStatusBooking().equals("Staying") || booking.getStatusBooking().equals("Booked")) {
+            if (booking.getStatusBooking().equals("Staying") || booking.getStatusBooking().equals("Booked") || booking.getStatusBooking().equals("Confirmed")) {
                 temp.add(booking);
             }
-
-            request.setAttribute("service", service);
-            request.setAttribute("bookingList", bookingList);
-            request.setAttribute("roomList", roomList);
-            request.getRequestDispatcher("BookingServiceOrder.jsp").forward(request, response);
         }
+        
+        request.setAttribute("service", service);
+        request.setAttribute("bookingList", temp);
+        request.setAttribute("roomList", roomList);
+        request.getRequestDispatcher("BookingServiceOrder.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -132,16 +134,16 @@ public class AddBookingService extends HttpServlet {
 
             if (isNullOrEmpty(amountStr) || isNullOrEmpty(startTimeStr) || isNullOrEmpty(endTimeStr)) {
                 request.setAttribute("error", "Input Error: Empty Input");
-                response.sendRedirect("BookingServiceOrder?serviceID=" + serviceID);
+                request.getRequestDispatcher("ServiceList").forward(request, response);
                 return;
             }
 
             int amount = Integer.parseInt(amountStr);
             //float totalAmount = Float.parseFloat(totalAmountStr);
 
-            java.util.Date temp = new java.util.Date();
-            java.sql.Date currentDate = new java.sql.Date(temp.getTime());//get current date
-            
+            LocalDate temp = LocalDate.now();
+            java.sql.Date currentDate = Date.valueOf(temp);//get current date
+
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
             java.util.Date startTime = format.parse(startTimeStr);
@@ -153,14 +155,14 @@ public class AddBookingService extends HttpServlet {
             if (endTimeSQL.before(startTimeSQL)) {
                 //response.sendRedirect("datetimeError");
                 request.setAttribute("error", "Date Error: End Time is before Start Time");
-                response.sendRedirect("BookingServiceOrder?serviceID=" + serviceID);
+                request.getRequestDispatcher("ServiceList").forward(request, response);
                 return;
             }
-            
+
             if (startTimeSQL.before(currentDate)) {
                 //response.sendRedirect("datetimeError");
                 request.setAttribute("error", "Date Error: Start Time is before Current Time");
-                response.sendRedirect("BookingServiceOrder?serviceID=" + serviceID);
+                request.getRequestDispatcher("ServiceList").forward(request, response);
                 return;
             }
 

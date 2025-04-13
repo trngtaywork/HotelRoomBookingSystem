@@ -35,8 +35,35 @@ public class RoomList extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Room> RoomList = roomDAO.GetRoomList();
-        request.setAttribute("roomList", RoomList);
+        //List<Room> RoomList = roomDAO.GetRoomList();
+        //request.setAttribute("roomList", RoomList);
+
+        //String error = request.getParameter("error");
+        //request.setAttribute("error", error);
+        int page = 1;
+        int pageSize = 6;
+
+        String pageParam = request.getParameter("page");
+        if (pageParam != null && !pageParam.isEmpty()) {
+            try {
+                page = Integer.parseInt(pageParam);
+            } catch (NumberFormatException e) {
+                page = 1;
+            }
+        }
+
+        List<Room> allRooms = roomDAO.GetRoomList();
+        int totalRooms = allRooms.size();
+        int totalPages = (int) Math.ceil((double) totalRooms / pageSize);
+
+        int fromIndex = (page - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, totalRooms);
+
+        List<Room> paginatedRooms = allRooms.subList(fromIndex, toIndex);
+
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("roomList", paginatedRooms);
 
         request.getRequestDispatcher("RoomList.jsp").forward(request, response);
     }

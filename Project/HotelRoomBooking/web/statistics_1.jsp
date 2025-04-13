@@ -244,7 +244,7 @@
         <div class="sidebar">
             <a href="dashboard.jsp" class="btn-custom">Revenue Report</a>
             <a href="statistics.jsp" class="btn-custom" style="background-color: #dfa974; color: white;">Book Room/Service List</a>
-            <a href="sendEmail.jsp" class="btn-custom">Send Email</a>
+            <a href="sendEmailAll.jsp" class="btn-custom">Send Email</a>
         </div>
 
         <!-- Main Content -->
@@ -289,8 +289,11 @@
                         <td><%= s.getStatus() %></td>
                         <td>
                             <a href="viewServiceInvoice.jsp?bookingID=<%= s.getBookingID() %>" class="btn btn-info btn-sm">Details</a>
+                            
                             <a href="UpdateBookingStatusServlet?action=confirm&bookingID=<%= s.getBookingID() %>" class="btn btn-success btn-sm">Confirm</a>
+                            <%--
                             <a href="UpdateBookingStatusServlet?action=cancel&bookingID=<%= s.getBookingID() %>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to cancel?');">Cancel</a>
+                            --%>
                         </td>
                     </tr>
                     <% } %>

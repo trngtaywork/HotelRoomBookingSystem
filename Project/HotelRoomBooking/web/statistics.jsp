@@ -224,7 +224,7 @@
         <div class="sidebar">
             <a href="dashboard.jsp" class="btn-custom">Revenue Report</a>
             <a href="statistics.jsp" class="btn-custom" style="background-color: #dfa974; color: white;">Book Room/Service List</a>
-            <a href="sendEmail.jsp" class="btn-custom">Send Email</a>
+            <a href="sendEmailAll.jsp" class="btn-custom">Send Email</a>
         </div>
 
         

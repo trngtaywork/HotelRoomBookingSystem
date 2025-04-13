@@ -27,7 +27,9 @@ public class RoomListForAdminServlet extends HttpServlet {
         if (roomNameFilter == null) {
             roomNameFilter = "";
         }
-
+        
+        roomNameFilter = roomNameFilter.trim();
+        
         RoomDAO roomDAO = new RoomDAO();
         List<Room> roomList = roomDAO.getFilteredRooms(priceFilter, statusFilter, typeFilter, roomNameFilter);
 

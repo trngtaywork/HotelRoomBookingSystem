@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import model.*;
 import dao.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -56,6 +57,9 @@ public class AddBooking extends HttpServlet {
             return;
         }
 
+        String error = request.getParameter("error");
+        request.setAttribute("error", error);
+        
         request.setAttribute("room", room);
         request.getRequestDispatcher("BookingRoomOrder.jsp").forward(request, response);
     }
@@ -110,8 +114,8 @@ public class AddBooking extends HttpServlet {
                 return;
             }
 
-            java.util.Date temp = new java.util.Date();
-            java.sql.Date currentDate = new java.sql.Date(temp.getTime());//get current date
+            LocalDate temp = LocalDate.now();
+            java.sql.Date currentDate = java.sql.Date.valueOf(temp);//get current date
 
             String quantityStr = request.getParameter("quantity").trim();
             String startTimeStr = request.getParameter("startTime").trim();
@@ -120,7 +124,7 @@ public class AddBooking extends HttpServlet {
 
             if (isNullOrEmpty(quantityStr) || isNullOrEmpty(startTimeStr) || isNullOrEmpty(endTimeStr)) {
                 request.setAttribute("error", "Input Error: Empty Input");
-                response.sendRedirect("BookingRoomOrder?roomID=" + roomID);
+                request.getRequestDispatcher("RoomList").forward(request, response);
                 return;
             }
 
@@ -140,13 +144,14 @@ public class AddBooking extends HttpServlet {
             //if (startTimeSQL.before(currentDate) || endTimeSQL.before(startTimeSQL) || endTimeSQL.before(startTimeSQL))
             if (endTimeSQL.before(startTimeSQL)) {
                 request.setAttribute("error", "Date Error: End Date is before Start Date");
-                response.sendRedirect("BookingRoomOrder?roomID=" + roomID);
+                request.getRequestDispatcher("RoomList").forward(request, response);
                 return;
             }
             
+            
             if (startTimeSQL.before(currentDate)) {
                 request.setAttribute("error", "Date Error: Start Date is before Current Date");
-                response.sendRedirect("BookingRoomOrder?roomID=" + roomID);
+                request.getRequestDispatcher("RoomList").forward(request, response);
                 return;
             }
 
@@ -161,7 +166,7 @@ public class AddBooking extends HttpServlet {
             totalAmount = quantity * diff * (float)room.getPrice();
             //
 
-            Booking booking = new Booking(profile.getProfileID(), roomID, currentDate, totalAmount, "Processing");
+            Booking booking = new Booking(profile.getProfileID(), roomID, currentDate, totalAmount, "Booked");
 
             bookingDAO.Add(booking);
 
@@ -177,7 +182,7 @@ public class AddBooking extends HttpServlet {
             
             int roomID = Integer.parseInt(request.getParameter("roomID"));
             request.setAttribute("error", ex.toString());
-            response.sendRedirect("BookingRoomOrder?roomID=" + roomID);
+            request.getRequestDispatcher("RoomList").forward(request, response);
         }
     }
 

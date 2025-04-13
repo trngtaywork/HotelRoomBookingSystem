@@ -48,6 +48,19 @@
         <section class="rooms-section spad">
             <div class="container">
 
+                <%--
+                <% if (request.getAttribute("error") != null) { %>
+                    <div class="alert alert-danger">
+                        <%= request.getAttribute("error") %>
+                    </div>
+                    <% } %></tr>
+                --%>
+                <c:if test="${requestScope.error != null}">
+                    <div class="alert alert-danger">
+                        ${requestScope.error}
+                    </div>
+                </c:if>
+
                 <c:choose>
                     <c:when test="${requestScope.roomList.size() == 0}">
                         <label class="h2">Room List is Empty</label>
@@ -78,6 +91,30 @@
                                     </div>
                                 </div>
                             </c:forEach>
+                        </div>
+
+                        <div class="pagination-container text-center mt-4">
+                            <nav>
+                                <ul class="pagination justify-content-center">
+                                    <c:if test="${currentPage > 1}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="RoomList?page=${currentPage - 1}">Previous</a>
+                                        </li>
+                                    </c:if>
+
+                                    <c:forEach begin="1" end="${totalPages}" var="i">
+                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="RoomList?page=${i}">${i}</a>
+                                        </li>
+                                    </c:forEach>
+
+                                    <c:if test="${currentPage < totalPages}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="RoomList?page=${currentPage + 1}">Next</a>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </nav>
                         </div>
                     </c:otherwise>
                 </c:choose>

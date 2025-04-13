@@ -4,7 +4,6 @@
  */
 package servlet;
 
-import dao.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,21 +11,23 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 import model.*;
+import dao.*;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  *
  * @author My PC
  */
-@WebServlet(name = "ServiceList", urlPatterns = {"/ServiceList"})
-public class ServiceList extends HttpServlet {
+@WebServlet(name = "ViewFeedbacks", urlPatterns = {"/ViewFeedbacks"})
+public class ViewFeedbacks extends HttpServlet {
 
     BookingDAO bookingDao = new BookingDAO();
-    BookingServiceDAO bookingServiceDAO = new BookingServiceDAO();
     AccountDAO accountDao = new AccountDAO();
     ProfileDAO profileDAO = new ProfileDAO();
-    ServiceDAO serviceDAO = new ServiceDAO();
+    RoomDAO roomDAO = new RoomDAO();
+    FeedbackDAO feedbackDAO = new FeedbackDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,39 +40,28 @@ public class ServiceList extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //List<Service> serviceList = serviceDAO.GetServiceList();
-
-        //request.setAttribute("serviceList", serviceList);
-        //String error = request.getParameter("error");
-        //request.setAttribute("error", error);
-        int page = 1;
-        int pageSize = 6;
-
-        String pageParam = request.getParameter("page");
-        if (pageParam != null && !pageParam.isEmpty()) {
-            try {
-                page = Integer.parseInt(pageParam);
-            } catch (NumberFormatException e) {
-                page = 1;
-            }
+        HttpSession sessionUser = request.getSession(false);
+        Account user = (sessionUser != null) ? (Account) sessionUser.getAttribute("user") : null;
+        if (user == null) {
+            response.sendRedirect("login.jsp");
+            return;
         }
 
-// Get all services (or ideally implement pagination in your DAO)
-        List<Service> allServices = serviceDAO.GetServiceList();
-        int totalServices = allServices.size();
-        int totalPages = (int) Math.ceil((double) totalServices / pageSize);
+        Profile profile = profileDAO.SearchProfileByAccountId(user.getAccountID());
+        
+        List<Booking> bookingList = bookingDao.GetBookingList();
+        List<Profile> profileList = profileDAO.GetProfileList();
+        List<Account> accountList = accountDao.GetAccountList();
+        List<Room> roomList = roomDAO.GetRoomList();
+        List<Feedback> feedbackList = feedbackDAO.GetFeedbackListByProfileID(profile.getProfileID());
 
-// Calculate slice range
-        int fromIndex = (page - 1) * pageSize;
-        int toIndex = Math.min(fromIndex + pageSize, totalServices);
-
-        List<Service> paginatedList = allServices.subList(fromIndex, toIndex);
-
-        request.setAttribute("currentPage", page);
-        request.setAttribute("totalPages", totalPages);
-        request.setAttribute("serviceList", paginatedList);
-
-        request.getRequestDispatcher("ServiceList.jsp").forward(request, response);
+        request.setAttribute("feedbackList", feedbackList);
+        request.setAttribute("bookingList", bookingList);
+        request.setAttribute("profileList", profileList);
+        request.setAttribute("accountList", accountList);
+        request.setAttribute("roomList", roomList);
+        
+        request.getRequestDispatcher("ViewFeedbacks.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

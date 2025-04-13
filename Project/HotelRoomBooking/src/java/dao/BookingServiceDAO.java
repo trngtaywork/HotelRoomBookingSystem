@@ -6,6 +6,7 @@ package dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.*;
@@ -18,15 +19,16 @@ import utils.DBContext;
 public class BookingServiceDAO extends DBContext {
 
     public void Add(BookingService bookingService) {
-        String sql = "INSERT INTO [dbo].[BookingService] ([ServiceID], [BookingID], [Amount], [StartTime], [EndTime]) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [dbo].[BookingService] ([BookingServiceID], [ServiceID], [BookingID], [Amount], [StartTime], [EndTime]) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, bookingService.getServiceID());
-            st.setInt(2, bookingService.getBookingID());
-            st.setInt(3, bookingService.getAmount());
-            st.setDate(4, bookingService.getStartTime());
-            st.setDate(5, bookingService.getEndTime());
+            st.setInt(1, lastBookingServiceID() + 1);
+            st.setInt(2, bookingService.getServiceID());
+            st.setInt(3, bookingService.getBookingID());
+            st.setInt(4, bookingService.getAmount());
+            st.setDate(5, bookingService.getStartTime());
+            st.setDate(6, bookingService.getEndTime());
 
             st.executeUpdate();
         } catch (Exception e) {
@@ -265,5 +267,20 @@ public class BookingServiceDAO extends DBContext {
         }
 
         return bookingServices;
+    }
+    
+    public int lastBookingServiceID() {
+        String sql = "SELECT TOP 1 [BookingServiceID]\n"
+                + "FROM [dbo].[BookingService]\n"
+                + "ORDER BY [BookingServiceID] DESC";
+        int n = 0;
+        try {
+            ResultSet rs = getData(sql);
+            if (rs.next()) {
+                n = rs.getInt("BookingServiceID");
+            }
+        } catch (SQLException e) {
+        }
+        return n;
     }
 }

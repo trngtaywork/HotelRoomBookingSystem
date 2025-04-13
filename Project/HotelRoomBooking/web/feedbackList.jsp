@@ -229,14 +229,16 @@
                     %>
                     <tr>
                         <td><%= feedback.getRoomName() %></td>
+                        <%--
                         <td>
                             <img src="<%= request.getContextPath() + "/images/" + feedback.getImage() %>" alt="Room Image" 
                                  style="width: 150px; height: 100px;"
                                  onerror="this.onerror=null; this.src='/images/default.jpg';">
                         </td>
-                        <%--
-                        <td><img src="<%= request.getContextPath() + feedback.getImage() %>" alt="Room Image" style="width: 150px; height: 100px;"></td>
                         --%>
+                        
+                        <td><img src="<%= request.getContextPath() + feedback.getImage() %>" alt="Room Image" style="width: 150px; height: 100px;"></td>
+                        
                         <td><%= feedback.getRating() %>/5</td>
                         <td><%= feedback.getComment() %></td>
                         <td><%= feedback.getCustomerName() %></td>

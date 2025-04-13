@@ -66,8 +66,8 @@
                 <div class="form-group">
                     <label for="statusService">Status</label>
                     <select name="statusService" id="statusService" class="form-control" required>
-                        <option value="available" >Available</option>
-                        <option value="notAvailable" >Occupied</option>
+                        <option value="Available" >Available</option>
+                        <option value="Unavailable" >Unavailable</option>
                     </select>
                 </div>
                 
@@ -79,13 +79,13 @@
 
                 <div class="form-group">
                     <label for="serviceImage">Service Image (Optional)</label>
-                    <input type="file" name="ServiceImage" class="form-control">
+                    <input type="file" name="serviceImage" class="form-control">
                 </div>
 
                 <div class="form-group">
                     <label for="serviceImage">Current Image</label>
                     <br>
-                    <img src="<%= request.getContextPath() + r.getImage() %>" alt="" width="200" height="150">
+                    <img src="<%= request.getContextPath() + s.getImage() %>" alt="Service Image" width="200" height="150">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Update Service</button>

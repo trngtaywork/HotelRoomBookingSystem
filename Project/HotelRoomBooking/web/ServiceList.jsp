@@ -44,8 +44,14 @@
         </header><%}
         %>
 
-            <section class="rooms-section spad">
-                <div class="container">
+        <section class="rooms-section spad">
+            <div class="container">
+
+                <c:if test="${requestScope.error != null}">
+                    <div class="alert alert-danger">
+                        ${requestScope.error}
+                    </div>
+                </c:if>
 
                 <c:choose>
                     <c:when test="${requestScope.serviceList.size() == 0}">
@@ -77,6 +83,30 @@
                                     </div>
                                 </div>
                             </c:forEach>
+                        </div>
+
+                        <div class="pagination-container text-center mt-4">
+                            <nav>
+                                <ul class="pagination justify-content-center">
+                                    <c:if test="${currentPage > 1}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="ServiceList?page=${currentPage - 1}">Previous</a>
+                                        </li>
+                                    </c:if>
+
+                                    <c:forEach begin="1" end="${totalPages}" var="i">
+                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="ServiceList?page=${i}">${i}</a>
+                                        </li>
+                                    </c:forEach>
+
+                                    <c:if test="${currentPage < totalPages}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="ServiceList?page=${currentPage + 1}">Next</a>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </nav>
                         </div>
                     </c:otherwise>
                 </c:choose>
